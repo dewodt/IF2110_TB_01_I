@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+// blm handle kasus dia udh login/blm
 
 // struktur data untuk pengguna
 struct User {

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-// blm handle kasus dia udh login/blm
-
+#include "boolean.h"
+// blm pke mesin kata
 // struktur data untuk pengguna
 struct User {
     char username[20];
@@ -43,35 +43,41 @@ void loadUsers(struct User users[], int *totalUsers) {
 struct User users[20];
 int totalUsers = 0;
 
+boolean isLoggedin = false;
+
 // mendaftarkan pengguna
 void DAFTAR() {
-    if (totalUsers >= 20) {
-        printf("Maaf, kapasitas pengguna sudah penuh. Tidak dapat mendaftar lebih banyak pengguna.\n");
-        return;
-    }
-
-    struct User newUser;
-    printf("Masukkan nama: ");
-    scanf("%s", newUser.username);
-
-    // cek apakah nama pengguna udah ada
-    for (int i = 0; i < totalUsers; i++) {
-        if (strcmp(users[i].username, newUser.username) == 0) {
-            printf("Wah, sayang sekali nama tersebut telah diambil.\n");
+    if (isLoggedin) {
+        printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
+    } else {
+        if (totalUsers >= 20) {
+            printf("Maaf, kapasitas pengguna sudah penuh. Tidak dapat mendaftar lebih banyak pengguna.\n");
             return;
         }
+
+        struct User newUser;
+        printf("Masukkan nama: ");
+        scanf("%s", newUser.username);
+
+        // cek apakah nama pengguna udah ada
+        for (int i = 0; i < totalUsers; i++) {
+            if (strcmp(users[i].username, newUser.username) == 0) {
+                printf("Wah, sayang sekali nama tersebut telah diambil.\n");
+                return;
+            }
+        }
+
+        printf("Masukkan kata sandi: ");
+        scanf("%s", newUser.password);
+
+        // simpan pengguna baru
+        users[totalUsers] = newUser;
+        totalUsers++;
+        printf("Pengguna telah berhasil terdaftar. Masuk untuk menikmati fitur-fitur BurBir.\n");
+
+        // simpan pengguna baru ke file konfigurasi
+        saveUsers(users, totalUsers);
     }
-
-    printf("Masukkan kata sandi: ");
-    scanf("%s", newUser.password);
-
-    // simpan pengguna baru
-    users[totalUsers] = newUser;
-    totalUsers++;
-    printf("Pengguna telah berhasil terdaftar. Masuk untuk menikmati fitur-fitur BurBir.\n");
-
-    // simpan pengguna baru ke file konfigurasi
-    saveUsers(users, totalUsers);
 }
 
 // masuk sebagai pengguna
@@ -99,6 +105,7 @@ void MASUK() {
     scanf("%s", password);
 
     if (strcmp(users[userIndex].password, password) == 0) {
+        isLoggedin = true;
         printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username);
     } else {
         printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
@@ -107,7 +114,12 @@ void MASUK() {
 
 // keluar dari akun pengguna
 void KELUAR() {
-    printf("Anda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n");
+    if (!isLoggedin) {
+        printf("Anda belum login! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    } else {
+        isLoggedin = false;
+        printf("Anda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n");
+    }
 }
 
 int main() {

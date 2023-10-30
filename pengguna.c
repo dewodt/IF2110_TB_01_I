@@ -5,10 +5,8 @@
 #include "boolean.h"
 #include "pcolor.h"
 
-boolean isLoggedin = false;
-
 // mendaftarkan pengguna
-ListStatik DAFTAR(ListStatik pengguna) {
+ListStatik DAFTAR(ListStatik pengguna, boolean isLoggedin) {
     if (isLoggedin) {
         printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
     } else {
@@ -42,11 +40,17 @@ ListStatik DAFTAR(ListStatik pengguna) {
         printf("Pengguna telah berhasil terdaftar. Masuk untuk menikmati fitur-fitur BurBir.\n");
         // printList(pengguna);
     }
+
     return pengguna;
 }
 
 // masuk sebagai pengguna
-void MASUK(ListStatik pengguna) {
+boolean MASUK(ListStatik pengguna, boolean isLoggedin) {
+    if (isLoggedin) {
+        printf("Wah Anda sudah masuk. Keluar dulu yuk!\n");
+        return isLoggedin;
+    }
+
     char username[MAX_USERNAME_LENGTH];
 
     printf("Masukkan nama: ");
@@ -70,7 +74,7 @@ void MASUK(ListStatik pengguna) {
 
     if (userIndex == -1) {
         printf("Wah, nama yang Anda cari tidak ada. Masukkan nama lain!\n");
-        return;
+        return isLoggedin;
     } else {
         char password[MAX_PASSWORD_LENGTH];
         
@@ -85,20 +89,24 @@ void MASUK(ListStatik pengguna) {
                 printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
             }
         }
+
+        return isLoggedin;
     }
 
 // keluar dari akun pengguna
-void KELUAR() {
+boolean KELUAR(boolean isLoggedin) {
     if (!isLoggedin) {
         printf("Anda belum login! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
     } else {
         isLoggedin = false;
         printf("Anda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n");
     }
+    return isLoggedin;
 }
 
 int main() {
     char command[20];
+    boolean isLoggedin = false;
     ListStatik pengguna;
     CreateListStatik(&pengguna);
 
@@ -108,11 +116,11 @@ int main() {
         command[strcspn(command, "\n")] = '\0';
 
         if (strcmp(command, "DAFTAR") == 0) {
-            pengguna = DAFTAR(pengguna);
+            pengguna = DAFTAR(pengguna, isLoggedin);
         } else if (strcmp(command, "MASUK") == 0) {
-            MASUK(pengguna);
+            isLoggedin = MASUK(pengguna, isLoggedin);
         } else if (strcmp(command, "KELUAR") == 0) {
-            KELUAR();
+            isLoggedin = KELUAR(isLoggedin);
         }
         
         printList(pengguna);

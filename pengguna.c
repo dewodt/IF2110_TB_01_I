@@ -1,116 +1,91 @@
 #include <stdio.h>
 #include <string.h>
+#include "modifiedliststatik.h"
+#include "modifiedmatrix.h"
 #include "boolean.h"
-// blm pke mesin kata
-// struktur data untuk pengguna
-struct User {
-    char username[20];
-    char password[20];
-};
-
-// menyimpan pengguna ke file konfigurasi
-void saveUsers(struct User users[], int totalUsers) {
-    FILE *file = fopen("config-1", "w");
-    if (file == NULL) {
-        // gagal membuka file untuk penulisan
-        return;
-    }
-
-    for (int i = 0; i < totalUsers; i++) {
-        fprintf(file, "%s %s\n", users[i].username, users[i].password);
-    }
-
-    fclose(file);
-}
-
-// membaca pengguna dari file konfigurasi
-void loadUsers(struct User users[], int *totalUsers) {
-    FILE *file = fopen("config-1", "r");
-    if (file == NULL) {
-        // file konfigurasi tidak ditemukan atau tidak dapat dibaca
-        return;
-    }
-
-    *totalUsers = 0;
-    while (fscanf(file, "%s %s", users[*totalUsers].username, users[*totalUsers].password) == 2) {
-        (*totalUsers)++;
-    }
-
-    fclose(file);
-}
-
-// daftar pengguna (max 20)
-struct User users[20];
-int totalUsers = 0;
+#include "pcolor.h"
 
 boolean isLoggedin = false;
 
 // mendaftarkan pengguna
-void DAFTAR() {
+ListStatik DAFTAR(ListStatik pengguna) {
     if (isLoggedin) {
         printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
     } else {
-        if (totalUsers >= 20) {
+        if (listLength(pengguna) == 20) {
             printf("Maaf, kapasitas pengguna sudah penuh. Tidak dapat mendaftar lebih banyak pengguna.\n");
-            return;
+            return pengguna;
         }
 
-        struct User newUser;
+        int idx = listLength(pengguna);
+        char username_temp[MAX_USERNAME_LENGTH];
         printf("Masukkan nama: ");
-        scanf("%s", newUser.username);
+        fgets(username_temp, MAX_USERNAME_LENGTH, stdin);
+        username_temp[strcspn(username_temp, "\n")] = '\0';
 
         // cek apakah nama pengguna udah ada
-        for (int i = 0; i < totalUsers; i++) {
-            if (strcmp(users[i].username, newUser.username) == 0) {
+        for (int i = 0; i < listLength(pengguna); i++) {
+            if (strcmp(ELMT(pengguna, i).username, username_temp) == 0) {
                 printf("Wah, sayang sekali nama tersebut telah diambil.\n");
-                return;
+                return pengguna;
             }
         }
 
+        strcpy(ELMT(pengguna, idx).username, username_temp);
+
         printf("Masukkan kata sandi: ");
-        scanf("%s", newUser.password);
+        char password_temp[MAX_PASSWORD_LENGTH];
+        fgets(password_temp, MAX_PASSWORD_LENGTH, stdin);
+        password_temp[strcspn(password_temp, "\n")] = '\0';
 
-        // simpan pengguna baru
-        users[totalUsers] = newUser;
-        totalUsers++;
+        strcpy(ELMT(pengguna, idx).password, password_temp);
         printf("Pengguna telah berhasil terdaftar. Masuk untuk menikmati fitur-fitur BurBir.\n");
-
-        // simpan pengguna baru ke file konfigurasi
-        saveUsers(users, totalUsers);
+        // printList(pengguna);
     }
+    return pengguna;
 }
 
 // masuk sebagai pengguna
-void MASUK() {
-    char username[20];
-    char password[20];
+void MASUK(ListStatik pengguna) {
+    char username[MAX_USERNAME_LENGTH];
+
     printf("Masukkan nama: ");
-    scanf("%s", username);
+    fgets(username, MAX_USERNAME_LENGTH, stdin);
+    username[strcspn(username, "\n")] = '\0';
 
     // cari pengguna dengan nama yang cocok
     int userIndex = -1;
-    for (int i = 0; i < totalUsers; i++) {
-        if (strcmp(users[i].username, username) == 0) {
+    boolean found = false;
+    int i = 0;
+
+    while (i < listLength(pengguna) && (!found)) {
+        if (strcmp(ELMT(pengguna, i).username, username) == 0) {
+            found = true;
             userIndex = i;
-            break;
+        } else {
+            i++;
         }
+
     }
 
     if (userIndex == -1) {
         printf("Wah, nama yang Anda cari tidak ada. Masukkan nama lain!\n");
         return;
-    }
-
-    printf("Masukkan kata sandi: ");
-    scanf("%s", password);
-
-    if (strcmp(users[userIndex].password, password) == 0) {
-        isLoggedin = true;
-        printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username);
     } else {
-        printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
+        char password[MAX_PASSWORD_LENGTH];
+        
+        printf("Masukkan kata sandi: ");
+        fgets(password, MAX_PASSWORD_LENGTH, stdin);
+        password[strcspn(password, "\n")] = '\0';
+
+        if (strcmp(ELMT(pengguna, i).password, password) == 0) {
+                isLoggedin = true;
+                printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username);
+            } else {
+                printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
+            }
+        }
     }
-}
 
 // keluar dari akun pengguna
 void KELUAR() {
@@ -124,18 +99,25 @@ void KELUAR() {
 
 int main() {
     char command[20];
-    loadUsers(users, &totalUsers);
+    ListStatik pengguna;
+    CreateListStatik(&pengguna);
 
     while (1) {
         printf(">> ");
-        scanf("%s", command);
+        fgets(command, 20, stdin);
+        command[strcspn(command, "\n")] = '\0';
 
-        if (strcmp(command, "DAFTAR;") == 0) {
-            DAFTAR();
-        } else if (strcmp(command, "MASUK;") == 0) {
-            MASUK();
-        } else if (strcmp(command, "KELUAR;") == 0) {
+        if (strcmp(command, "DAFTAR") == 0) {
+            pengguna = DAFTAR(pengguna);
+        } else if (strcmp(command, "MASUK") == 0) {
+            MASUK(pengguna);
+        } else if (strcmp(command, "KELUAR") == 0) {
             KELUAR();
         }
+        
+        printList(pengguna);
+        printf("\n");
     }
+
+    return 0;
 }

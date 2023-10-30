@@ -18,8 +18,8 @@ ListStatik DAFTAR(ListStatik pengguna, boolean isLoggedin) {
         int idx = listLength(pengguna);
         char username_temp[MAX_USERNAME_LENGTH];
         printf("Masukkan nama: ");
-        fgets(username_temp, MAX_USERNAME_LENGTH, stdin);
-        username_temp[strcspn(username_temp, "\n")] = '\0';
+        fgets(username_temp, MAX_USERNAME_LENGTH, stdin); // stop baca input saat udah smpe max_username_length atau ketemu newline
+        username_temp[strcspn(username_temp, "\n")] = '\0'; // remove si newline (set dia ke null)
 
         // cek apakah nama pengguna udah ada
         for (int i = 0; i < listLength(pengguna); i++) {

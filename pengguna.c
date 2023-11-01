@@ -178,7 +178,7 @@ int main() {
         if (isSame(command, "\nDAFTAR;")) {
             pengguna = DAFTAR(pengguna, isLoggedin);
         } else if(isSame(command, "\nMASUK;")){
-            //isLoggedin = MASUK(pengguna, isLoggedin);
+            // isLoggedin = MASUK(pengguna, isLoggedin);
         } else if(isSame(command, "\nKELUAR;")){
             isLoggedin = KELUAR(isLoggedin);
         }

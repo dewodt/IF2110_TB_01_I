@@ -1,0 +1,6 @@
+1. Belum ada simpan data konfig ke dalam variabel
+2. MARKnya ganti ;
+3. Udah bisa pake perintah
+4. Ada beberapa fungsi lumayan kepake di baca.c
+    4a. fungsi baca(&kata) mirip scanf
+    4b. fungsi isSame untuk bandingkan input kata dengan array of char

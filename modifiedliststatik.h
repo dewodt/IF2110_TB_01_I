@@ -16,8 +16,7 @@
 /* Indeks minimum list */
 #define IDX_UNDEF -1
 /* Indeks tak terdefinisi*/
-#define MARK "."
-/* Nilai elemen tak terdefinisi*/
+
 
 #define MAX_USERS 20
 #define MAX_USERNAME_LENGTH 20

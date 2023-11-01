@@ -60,6 +60,9 @@
     "liststatik.h": "c",
     "pcolor.h": "c",
     "modifiedmatrix.h": "c",
-    "boolean.h": "c"
+    "boolean.h": "c",
+    "charmachine.h": "c",
+    "wordmachine.h": "c",
+    "modifiedliststatik.h": "c"
   }
 }

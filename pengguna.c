@@ -1,44 +1,108 @@
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 #include "modifiedliststatik.h"
 #include "modifiedmatrix.h"
+#include "./ADT/wordmachine/wordmachine.h"
 #include "boolean.h"
-#include "pcolor.h"
+#include "./ADT/pcolor/pcolor.c"
+#include "./ADT/Baca/baca.c"
+
+Word strToWord(char str[], int len) {
+    int i;
+    Word kata;
+    kata.Length = len;
+    for (i = 0; i < len; i++)
+    {
+        kata.TabWord[i] = str[i];
+    }
+    return kata;
+}
+
+void wordToStr(Word word, char *str) {
+    int len = word.Length;
+
+    for (int i = 0; i < len; i++) {
+        str[i] = word.TabWord[i];
+    }
+    str[len] = '\0';
+
+}
+
+int stringLength(const char *str) {
+    int length = 0;
+    while (str[length] != '\0') {
+        length++;
+    }
+    return length;
+}
+
+boolean isWordEqual(Word word1, Word word2) {
+    int i;
+    if (word1.Length != word2.Length) {
+        return false;
+    }
+    for (i = 0; i < word1.Length; i++)
+    {
+        if (word1.TabWord[i] != word2.TabWord[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+char *strcpy(char *destination, const char *source) {
+    char *dest_start = destination;
+    while (*source != '\0') {
+        *destination = *source;
+        destination++;
+        source++;
+    }
+    *destination = '\0';
+    return dest_start;
+}
 
 // mendaftarkan pengguna
 ListStatik DAFTAR(ListStatik pengguna, boolean isLoggedin) {
     if (isLoggedin) {
         printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
     } else {
-        if (listLength(pengguna) == 20) {
+        if (listLength(pengguna) >= MAX_USERS) {
             printf("Maaf, kapasitas pengguna sudah penuh. Tidak dapat mendaftar lebih banyak pengguna.\n");
             return pengguna;
         }
 
         int idx = listLength(pengguna);
-        char username_temp[MAX_USERNAME_LENGTH];
+        printList(pengguna);
+        printf("\n");
+        printf("listlength: %d\n", idx);
+        
+        Word username_temp;
         printf("Masukkan nama: ");
-        fgets(username_temp, MAX_USERNAME_LENGTH, stdin); // stop baca input saat udah smpe max_username_length atau ketemu newline
-        username_temp[strcspn(username_temp, "\n")] = '\0'; // remove si newline (set dia ke null)
+        baca(&username_temp);
 
         // cek apakah nama pengguna udah ada
         for (int i = 0; i < listLength(pengguna); i++) {
-            if (strcmp(ELMT(pengguna, i).username, username_temp) == 0) {
+            if (isWordEqual(strToWord(ELMT(pengguna, i).username, stringLength(ELMT(pengguna, i).username)), username_temp)) {
                 printf("Wah, sayang sekali nama tersebut telah diambil.\n");
                 return pengguna;
             }
         }
 
-        strcpy(ELMT(pengguna, idx).username, username_temp);
+        char username[MAX_USERNAME_LENGTH];
+        wordToStr(username_temp, username);
+        strcpy(ELMT(pengguna, idx).username, username);
+        printf("username: %s\n", ELMT(pengguna, idx).username);
 
+        Word password_temp;
         printf("Masukkan kata sandi: ");
-        char password_temp[MAX_PASSWORD_LENGTH];
-        fgets(password_temp, MAX_PASSWORD_LENGTH, stdin);
-        password_temp[strcspn(password_temp, "\n")] = '\0';
+        baca(&password_temp);
 
-        strcpy(ELMT(pengguna, idx).password, password_temp);
+        char password[MAX_PASSWORD_LENGTH];
+        wordToStr(password_temp, password);
+        strcpy(ELMT(pengguna, idx).password, password);
+        printf("password: %s\n", ELMT(pengguna, idx).password);
+        
         printf("Pengguna telah berhasil terdaftar. Masuk untuk menikmati fitur-fitur BurBir.\n");
-        // printList(pengguna);
     }
 
     return pengguna;
@@ -51,11 +115,9 @@ boolean MASUK(ListStatik pengguna, boolean isLoggedin) {
         return isLoggedin;
     }
 
-    char username[MAX_USERNAME_LENGTH];
-
+    Word username;
     printf("Masukkan nama: ");
-    fgets(username, MAX_USERNAME_LENGTH, stdin);
-    username[strcspn(username, "\n")] = '\0';
+    baca(&username);
 
     // cari pengguna dengan nama yang cocok
     int userIndex = -1;
@@ -63,7 +125,7 @@ boolean MASUK(ListStatik pengguna, boolean isLoggedin) {
     int i = 0;
 
     while (i < listLength(pengguna) && (!found)) {
-        if (strcmp(ELMT(pengguna, i).username, username) == 0) {
+        if (isWordEqual(strToWord(ELMT(pengguna, i).username, stringLength(ELMT(pengguna, i).username)), username)) {
             found = true;
             userIndex = i;
         } else {
@@ -76,22 +138,22 @@ boolean MASUK(ListStatik pengguna, boolean isLoggedin) {
         printf("Wah, nama yang Anda cari tidak ada. Masukkan nama lain!\n");
         return isLoggedin;
     } else {
-        char password[MAX_PASSWORD_LENGTH];
-        
+        Word password;
         printf("Masukkan kata sandi: ");
-        fgets(password, MAX_PASSWORD_LENGTH, stdin);
-        password[strcspn(password, "\n")] = '\0';
+        baca(&password);
 
-        if (strcmp(ELMT(pengguna, i).password, password) == 0) {
+        if (isWordEqual(strToWord(ELMT(pengguna, i).password, stringLength(ELMT(pengguna, i).password)), password)) {
                 isLoggedin = true;
-                printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username);
+                char username_str[MAX_USERNAME_LENGTH];
+                wordToStr(username, username_str);
+                printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username_str + 1);
             } else {
                 printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
             }
         }
 
         return isLoggedin;
-    }
+}
 
 // keluar dari akun pengguna
 boolean KELUAR(boolean isLoggedin) {
@@ -105,26 +167,26 @@ boolean KELUAR(boolean isLoggedin) {
 }
 
 int main() {
-    char command[20];
+    Word command;
     boolean isLoggedin = false;
     ListStatik pengguna;
     CreateListStatik(&pengguna);
 
-    while (1) {
-        printf(">> ");
-        fgets(command, 20, stdin);
-        command[strcspn(command, "\n")] = '\0';
-
-        if (strcmp(command, "DAFTAR") == 0) {
+    printf(">> ");
+    baca(&command);
+    while (!isSame(command, "\nTUTUP_PROGRAM;")) {   
+        if (isSame(command, "\nDAFTAR;")) {
             pengguna = DAFTAR(pengguna, isLoggedin);
-        } else if (strcmp(command, "MASUK") == 0) {
-            isLoggedin = MASUK(pengguna, isLoggedin);
-        } else if (strcmp(command, "KELUAR") == 0) {
+        } else if(isSame(command, "\nMASUK;")){
+            //isLoggedin = MASUK(pengguna, isLoggedin);
+        } else if(isSame(command, "\nKELUAR;")){
             isLoggedin = KELUAR(isLoggedin);
         }
-        
         printList(pengguna);
         printf("\n");
+
+        printf(">> ");
+        baca(&command);
     }
 
     return 0;

@@ -6,12 +6,13 @@
 #ifndef LISTSTATIK_H
 #define LISTSTATIK_H
 
+#include <stdio.h>
+#include <string.h>
 #include "boolean.h"
 #include "modifiedliststatik.h"
 #include "modifiedmatrix.h"
-#include "pcolor.h"
-#include <stdio.h>
-#include <string.h>
+#include "./ADT/charmachine/charmachine.h"
+#include "./ADT/pcolor/pcolor.h"
 
 /*  Kamus Umum */
 #define CAPACITY 20
@@ -20,8 +21,6 @@
 /* Indeks minimum list */
 #define IDX_UNDEF -1
 /* Indeks tak terdefinisi*/
-#define MARK "."
-/* Nilai elemen tak terdefinisi*/
 
 #define MAX_USERS 20
 #define MAX_USERNAME_LENGTH 20

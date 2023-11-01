@@ -5,9 +5,9 @@
 #define __WORDMACHINE_H__
 
 #include "boolean.h"
-#include "charmachine.h"
+#include "../charmachine/charmachine.h"
 
-#define NMax 50
+#define NMax 9999
 #define BLANK ' '
 
 typedef struct

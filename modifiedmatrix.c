@@ -6,7 +6,7 @@
 #include "boolean.h"
 #include "modifiedmatrix.h"
 #include <stdio.h>
-#include "pcolor.h"
+#include "./ADT/pcolor/pcolor.h"
 
 /* Ukuran maksimum baris dan kolom */
 #define ROW_CAP 100

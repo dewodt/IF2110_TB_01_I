@@ -10,6 +10,7 @@
 typedef struct
 {
   int id;
+  char text[280];
   int like;
   char author; /* TO DO: CONNECT KE ADT PENGGUNA */
   DATETIME datetime;
@@ -17,6 +18,7 @@ typedef struct
 
 /* Selektor Kicauan */
 #define ID(k) (k).id
+#define TEXT(k) (k).text
 #define LIKE(k) (k).like
 #define AUTHOR(k) (k).author
 #define DATETIME(k) (k).datetime

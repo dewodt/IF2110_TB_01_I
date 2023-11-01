@@ -16,7 +16,6 @@ void baca(Word *kata){
     "Tuan Hak;" -> [\n, T, u, a, n,  , H, a, k]
     "   Tuan Hak;" -> [\n, T, u, a, n,  , H, a, k]
     */
-    printf(">>");
     STARTWORD();
     *kata = currentWord;
 }

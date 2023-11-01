@@ -16,9 +16,11 @@ int main() {
     printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
     // Baca config
     Word kata;
+    printf(">>");
     baca(&kata);
     // Proses salin konfig ke dalam variabel program
     // Perlu dipastikan tiap data disimpan dalam bentuk apa di dalam program
+    printf(">>");
     baca(&kata);
 
     while (!isSame(kata, "\nTUTUP_PROGRAM;"))
@@ -138,8 +140,8 @@ int main() {
         }else{
             printf("lainnya\n");
         }
+        printf(">>");
         baca(&kata);
-    
     }
     printf("###################Akhir#######################\n ");
     return 0;

@@ -20,6 +20,7 @@ int main() {
     // Proses salin konfig ke dalam variabel program
     // Perlu dipastikan tiap data disimpan dalam bentuk apa di dalam program
     baca(&kata);
+
     while (!isSame(kata, "\nTUTUP_PROGRAM;"))
     {   
         if(isSame(kata, "\nDAFTAR;")){
@@ -138,6 +139,7 @@ int main() {
             printf("lainnya\n");
         }
         baca(&kata);
+    
     }
     printf("###################Akhir#######################\n ");
     return 0;

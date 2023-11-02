@@ -187,5 +187,9 @@ int main() {
         baca(&command);
     }
 
+    if (isSame(command, "\nTUTUP_PROGRAM;")) {
+        printf("Anda telah keluar dari program BurBir. Sampai jumpa di penjelajahan berikutnya.\n");
+    }
+
     return 0;
 }

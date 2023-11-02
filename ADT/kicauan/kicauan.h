@@ -27,12 +27,12 @@ typedef struct
 /* I.S. Sembarang,tidak terbentuk kicauan */
 /* F.S. Bila data yang diinput valid, maka akan terbentuk kicauan dengan id, teks, like, author, datetime sesuai input (ditambahkan ke global var list kicauan)
    Bila data yang diinput tidak valid atau melawan constraint tertentu, maka output pesan kesalahan */
-void Kicau();
+void BuatKicauan();
 
 /* Prosedur Menampilkan Kicauan */
 /* I.S. Sembarang */
 /* F.S. Menampilkan seluruh kicauan buatan diri sendiri dan orang2 yang berada di list teman terurut berdasarkan waktu */
-void Kicauan();
+void TampilkanKicauan();
 
 /* Prosedur like kicauan */
 /* I.S. Sembarang */

@@ -27,7 +27,7 @@ typedef struct
   Bila akun privat dan belum berteman dengan author, output pesan tidak dapat membalas
   Bila idKicau tidak valid, output pesan tidak terdapat kicauan
   Bila idKicau valid namun idBalasan tidak valid, output pesan tidak terdapat balasan */
-void Balas(int idKicau, int idBalasan);
+void BuatBalasan(int idKicau, int idBalasan);
 
 /* Prosedur Mencetak Balasan */
 /* I.S. Sembarang */
@@ -36,12 +36,13 @@ void Balas(int idKicau, int idBalasan);
   Bila Akun yang membuat kicauan privat dan user belum berteman, output pesan kicauan privat
   Bila belum terdapat balasan pada kicauan, output pesan belum terdapat balasan
   Bila pada balasan ada balasan yang privat dan belum berteman, tampilkan balasan PRIVAT */
-void Balasan(int idKicau);
+void TampilkanBalasan(int idKicau);
 
 /* Prosedur Menghapus Balasan */
 /* I.S. Sembarang */
 /* F.S. Bila ditemukan balasan dengan idBalasan pada kicauan dengan idKicau maka balasan terhapus
-  Bila tidak ditemukan, output pesan balasan tidak ditemukan */
+  Bila tidak ditemukan, output pesan balasan tidak ditemukan
+  Bila ditemukan dan bukan miliknya output pesan error */
 void HapusBalasan(int idKicau, int idBalasan);
 
 #endif BALASAN_H

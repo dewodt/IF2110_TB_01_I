@@ -39,9 +39,11 @@ boolean isSame(Word kata1, char fungsi[]){
 void displayKata(Word kata){
     // Menampilkan isi kata
     int i;
+    printf("[");
     for ( i = 0; i < kata.Length; i++)
     {
         printf("%c,", kata.TabWord[i]);
     }
+    printf("]\n");
     
 }

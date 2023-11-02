@@ -4,7 +4,7 @@
 4. Ada beberapa fungsi lumayan kepake di baca.c
     4a. fungsi baca(&kata) mirip scanf.
         fungsi ini ngebaca string dari char pertama bukan spasi sampe ;
-        dan mungkin char pertamanya '\n'
+        selalu char pertamanya '\n' kecuali input pertama
         Contoh:
         "Tuan;" -> [\n, T, u, a, n]
         "   Tuan;" -> [\n, T, u, a, n]

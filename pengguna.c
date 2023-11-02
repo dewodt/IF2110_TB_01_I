@@ -1,100 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "modifiedliststatik.h"
+#include "modifiedliststatik.c"
 #include "modifiedmatrix.h"
 #include "./ADT/wordmachine/wordmachine.h"
 #include "boolean.h"
 #include "./ADT/pcolor/pcolor.c"
-#include "./ADT/Baca/baca.c"
-
-Word strToWord(char str[], int len) {
-    int i;
-    Word kata;
-    kata.Length = len;
-    for (i = 0; i < len; i++)
-    {
-        kata.TabWord[i] = str[i];
-    }
-    return kata;
-}
-
-void wordToStr(Word word, char *str) {
-    int len = word.Length;
-
-    for (int i = 0; i < len; i++) {
-        str[i] = word.TabWord[i];
-    }
-    str[len] = '\0';
-
-}
-
-int stringLength(const char *str) {
-    int length = 0;
-    while (str[length] != '\0') {
-        length++;
-    }
-    return length;
-}
-
-boolean isWordEqual(Word word1, Word word2) {
-    int i;
-    if (word1.Length != word2.Length) {
-        return false;
-    }
-    for (i = 0; i < word1.Length; i++)
-    {
-        if (word1.TabWord[i] != word2.TabWord[i]) {
-            return false;
-        }
-    }
-    return true;
-}
-
-char *strcpy(char *destination, const char *source) {
-    char *dest_start = destination;
-    while (*source != '\0') {
-        *destination = *source;
-        destination++;
-        source++;
-    }
-    *destination = '\0';
-    return dest_start;
-}
-
-int LengthList(ListStatik l) {
-    int i;
-    int count = 0;
-    for (i = 0; i < MAX_USERS; i++) {
-        if (ELMT(l, i).username[0] != '\0') {
-            count += 1;
-        }
-    }
-    return count;
-} 
-
-void print(ListStatik *pengguna) {
-    int i;
-    printf("[");
-    for (i = 0; i < LengthList(*pengguna); i++) {
-        printf("%s", ELMT(*pengguna, i).username);
-        if (i < LengthList(*pengguna) - 1) {
-            printf(",");
-        }
-    }
-    printf("]");
-}
 
 // mendaftarkan pengguna
 void DAFTAR(ListStatik *pengguna, boolean isLoggedin) {
     if (isLoggedin) {
         printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
     } else {
-        if (LengthList(*pengguna) >= MAX_USERS) {
+        if (listLength(*pengguna) >= MAX_USERS) {
             printf("Maaf, kapasitas pengguna sudah penuh. Tidak dapat mendaftar lebih banyak pengguna.\n");
             return;
         }
 
-        int idx = LengthList(*pengguna);
+        int idx = listLength(*pengguna);
         printf("listlength: %d\n", idx);
         
         Word username_temp;
@@ -145,7 +67,7 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin) {
     boolean found = false;
     int i = 0;
 
-    while (i <= LengthList(*pengguna) && (!found)) {
+    while (i <= listLength(*pengguna) && (!found)) {
         if (isWordEqual(strToWord(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
             found = true;
             userIndex = i;
@@ -204,9 +126,9 @@ int main() {
             isLoggedin = KELUAR(&isLoggedin);
         }
 
-        print(&pengguna);
+        printList(&pengguna);
         printf("\n");
-        printf("%d\n", LengthList(pengguna));
+        printf("%d\n", listLength(pengguna));
 
         printf(">> ");
         baca(&command);

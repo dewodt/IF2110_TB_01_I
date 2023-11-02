@@ -7,12 +7,12 @@
 #define LISTSTATIK_H
 
 #include <stdio.h>
-#include <string.h>
 #include "boolean.h"
 #include "modifiedliststatik.h"
 #include "modifiedmatrix.h"
 #include "./ADT/charmachine/charmachine.h"
 #include "./ADT/pcolor/pcolor.h"
+#include "functions.c"
 
 /*  Kamus Umum */
 #define CAPACITY 20
@@ -106,35 +106,16 @@ boolean isFull(ListStatik l) {
     }
 }
 
-
-void printList(ListStatik l) {
+void printList(ListStatik *pengguna) {
     int i;
     printf("[");
-    for (i = 0; i < listLength(l); i++) {
-        printf("%s", ELMT(l, i).username);
-        if (i < listLength(l) - 1) {
+    for (i = 0; i < listLength(*pengguna); i++) {
+        printf("%s", ELMT(*pengguna, i).username);
+        if (i < listLength(*pengguna) - 1) {
             printf(",");
         }
     }
     printf("]");
-}
-
-/* ********** SEARCHING ********** */
-/* ***  Perhatian : List boleh kosong!! *** */
-int indexOf(ListStatik l, User user) {
-    int i = 0;
-    boolean found = false;
-    while (i < listLength(l) && (!found)) {
-        if (strcmp(ELMT(l, i).username, user.username) == 0) {
-            found = true;
-        }
-        i++;
-    }
-    if (found) {
-        return i;
-    } else {
-        return IDX_UNDEF;
-    }
 }
 
 #endif

@@ -107,10 +107,10 @@ void DAFTAR(ListStatik *pengguna, boolean isLoggedin) {
 }
 
 // masuk sebagai pengguna
-void MASUK(ListStatik *pengguna, boolean isLoggedin) {
+boolean MASUK(ListStatik *pengguna, boolean isLoggedin) {
     if (isLoggedin) {
         printf("Wah Anda sudah masuk. Keluar dulu yuk!\n");
-        return;
+        return isLoggedin;
     }
 
     Word username;
@@ -134,7 +134,7 @@ void MASUK(ListStatik *pengguna, boolean isLoggedin) {
 
     if (userIndex == -1) {
         printf("Wah, nama yang Anda cari tidak ada. Masukkan nama lain!\n");
-        return;
+        return isLoggedin;
     } else {
         Word password;
         printf("Masukkan kata sandi: ");
@@ -149,16 +149,19 @@ void MASUK(ListStatik *pengguna, boolean isLoggedin) {
                 printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
             }
         }
+
+    return isLoggedin;
 }
 
 // keluar dari akun pengguna
-void KELUAR(boolean isLoggedin) {
+boolean KELUAR(boolean isLoggedin) {
     if (!isLoggedin) {
         printf("Anda belum login! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
     } else {
         isLoggedin = false;
         printf("Anda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n");
     }
+    return isLoggedin;
 }
 
 int main() {
@@ -173,9 +176,9 @@ int main() {
         if (isSame(command, "\nDAFTAR;")) {
             DAFTAR(&pengguna, isLoggedin);
         } else if(isSame(command, "\nMASUK;")){
-            MASUK(&pengguna, isLoggedin);
+            isLoggedin = MASUK(&pengguna, isLoggedin);
         } else if(isSame(command, "\nKELUAR;")){
-            KELUAR(isLoggedin);
+            isLoggedin = KELUAR(isLoggedin);
         }
         printList(pengguna);
         printf("\n");

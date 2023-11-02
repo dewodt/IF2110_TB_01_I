@@ -72,9 +72,9 @@ void DAFTAR(ListStatik *pengguna, boolean isLoggedin) {
         }
 
         int idx = listLength(*pengguna);
-        // printList(*pengguna);
-        // printf("\n");
-        // printf("listlength: %d\n", idx);
+        printList(*pengguna);
+        printf("\n");
+        printf("listlength: %d\n", idx);
         
         Word username_temp;
         printf("Masukkan nama: ");
@@ -180,9 +180,6 @@ int main() {
         } else if(isSame(command, "\nKELUAR;")){
             isLoggedin = KELUAR(isLoggedin);
         }
-        printList(pengguna);
-        printf("\n");
-        printf("%d\n", listLength(pengguna));
 
         printf(">> ");
         baca(&command);

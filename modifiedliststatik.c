@@ -61,7 +61,7 @@ typedef struct {
 /* Konstruktor : create List kosong  */
 void CreateListStatik(ListStatik *l) {
     int i;
-    for (i = 0; i < CAPACITY; i++) {
+    for (i = 0; i < MAX_USERS; i++) {
         strcpy(ELMT(*l, i).username, "");
         strcpy(ELMT(*l, i).password, "");
         strcpy(ELMT(*l, i).bio, "");
@@ -75,7 +75,7 @@ void CreateListStatik(ListStatik *l) {
 int listLength(ListStatik l) {
     int i;
     int count = 0;
-    for (i = 0; i < CAPACITY; i++) {
+    for (i = 0; i < MAX_USERS; i++) {
         if (ELMT(l, i).username[0] != '\0') {
             count += 1;
         }

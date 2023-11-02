@@ -22,7 +22,7 @@
 #define MAX_USERNAME_LENGTH 20
 #define MAX_PASSWORD_LENGTH 20
 #define MAX_BIO_LENGTH 135
-#define MAX_PHONE_NUM_LENGTH 20
+#define MAX_PHONE_NUM_LENGTH 9999 // unlimited, hrs pikir caranya dulu  (long long int)
 #define MAX_WETON_LENGTH 10
 #define MAX_ACC_TYPE_LENGTH 10
 

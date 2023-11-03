@@ -26,7 +26,6 @@
 #define MAX_USERNAME_LENGTH 20
 #define MAX_PASSWORD_LENGTH 20
 #define MAX_BIO_LENGTH 135
-#define MAX_PHONE_NUM_LENGTH 20
 #define MAX_WETON_LENGTH 10
 #define MAX_ACC_TYPE_LENGTH 10
 
@@ -36,7 +35,7 @@ typedef struct {
     char username[MAX_USERNAME_LENGTH];
     char password[MAX_PASSWORD_LENGTH];
     char bio[MAX_BIO_LENGTH];
-    char phone_num[MAX_PHONE_NUM_LENGTH];
+    MASUKAN phone_num;
     char weton[MAX_WETON_LENGTH];
     char acc_type[MAX_ACC_TYPE_LENGTH];
     Matrix profile;
@@ -65,7 +64,6 @@ void CreateListStatik(ListStatik *l) {
         strcpy(ELMT(*l, i).username, "");
         strcpy(ELMT(*l, i).password, "");
         strcpy(ELMT(*l, i).bio, "");
-        strcpy(ELMT(*l, i).phone_num, "");
         strcpy(ELMT(*l, i).weton, "");
         strcpy(ELMT(*l, i).acc_type, "");
         createMatrix(5, 5, &(ELMT(*l, i).profile));
@@ -116,6 +114,24 @@ void printList(ListStatik *pengguna) {
         }
     }
     printf("]");
+}
+
+void SetPhoneNum(ListStatik *l, int userIndex, MASUKAN nohp) {
+    if (userIndex >= 0 && userIndex < MAX_USERS) {
+        ELMT(*l, userIndex).phone_num = nohp;
+    }
+}
+
+void SetBio(ListStatik *l, int userIndex, const char *bio) {
+    if (userIndex >= 0 && userIndex < MAX_USERS) {
+        strcpy(ELMT(*l, userIndex).bio, bio);
+    }
+}
+
+void SetWeton(ListStatik *l, int userIndex, const char *weton) {
+    if (userIndex >= 0 && userIndex < MAX_USERS) {
+        strcpy(ELMT(*l, userIndex).weton, weton);
+    }
 }
 
 #endif

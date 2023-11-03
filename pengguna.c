@@ -7,8 +7,8 @@
 #include "./ADT/pcolor/pcolor.c"
 
 // mendaftarkan pengguna
-void DAFTAR(ListStatik *pengguna, boolean isLoggedin) {
-    if (isLoggedin) {
+void DAFTAR(ListStatik *pengguna, boolean *isLoggedin) {
+    if (*isLoggedin) {
         printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
     } else {
         if (listLength(*pengguna) >= MAX_USERS) {
@@ -74,7 +74,7 @@ void DAFTAR(ListStatik *pengguna, boolean isLoggedin) {
 }
 
 // masuk sebagai pengguna
-boolean MASUK(ListStatik *pengguna, boolean *isLoggedin) {
+boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser) {
     if (*isLoggedin) {
         printf("Wah Anda sudah masuk. Keluar dulu yuk!\n");
         return *isLoggedin;
@@ -125,6 +125,8 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin) {
         }
     } while (!passwordvalid);
 
+    *currentUser = ELMT(*pengguna, userIndex);
+
     return *isLoggedin;
 }
 
@@ -139,21 +141,105 @@ boolean KELUAR(boolean *isLoggedin) {
     return *isLoggedin;
 }
 
+// ganti profil (nama, bio akun, no HP, weton
+void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) {
+    if (!*isLoggedIn) {
+        printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
+    } else {
+        // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
+        boolean found = false;
+        int i = 0;
+        int userIndex;
+        MASUKAN username;
+        username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
+        while (i < listLength(*pengguna)) {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+                userIndex = i;
+                break;
+            }
+            i++;
+        }
+
+        printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
+        printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
+        char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
+        MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
+        printf("| No HP: %s\n", phonenum);
+        printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
+
+        MASUKAN bio_temp;
+        char bio;
+        printf("Masukkan Bio Akun: ");
+        baca(&bio_temp);
+        MASUKANToStr(bio_temp, &bio);
+        
+        SetBio(pengguna, userIndex, &bio);
+
+        MASUKAN nohp;
+        int z;
+        printf("Masukkan No HP: ");
+        baca(&nohp);
+        boolean validnumber = false;
+
+        do {
+            validnumber = true;
+            for (z = 0; z < nohp.Length; z++) {
+                if (nohp.TabMASUKAN[z] < '0' || nohp.TabMASUKAN[z] > '9') {
+                    validnumber = false;
+                    break;
+                }
+            }
+
+            if (!validnumber) {
+                printf("No HP tidak valid. Masukkan lagi: ");
+                baca(&nohp);
+            }
+        } while (!validnumber);
+
+        SetPhoneNum(pengguna, userIndex, nohp);
+
+        MASUKAN weton_temp;
+        char weton;
+        printf("Masukkan Weton: ");
+        baca(&weton_temp);
+        boolean validweton = false;
+
+        do {
+            if (isSame(weton_temp, ";") || isSame(weton_temp, "Pahing;") || isSame(weton_temp, "Kliwon;") || isSame(weton_temp, "Wage;") || isSame(weton_temp, "Pon;") || isSame(weton_temp, "Legi;")) {
+                validweton = true;
+            }
+            if (!validweton) {
+                printf("Weton anda tidak valid.\n");
+                printf("Masukkan Weton: ");
+                baca(&weton_temp);
+            }
+        } while (!validweton);
+
+        MASUKANToStr(weton_temp, &weton);
+        SetWeton(pengguna, userIndex, &weton);
+
+        printf("Profil Anda sudah berhasil diperbarui!\n");
+    }
+}
+
 int main() {
     MASUKAN command;
     boolean isLoggedin = false;
     ListStatik pengguna;
     CreateListStatik(&pengguna);
+    User currentUser;
 
     printf(">> ");
     baca(&command);
     while (!isSame(command, "TUTUP_PROGRAM;")) {   
         if (isSame(command, "DAFTAR;")) {
-            DAFTAR(&pengguna, isLoggedin);
-        } else if(isSame(command, "MASUK;")){
-            isLoggedin = MASUK(&pengguna, &isLoggedin);
-        } else if(isSame(command, "KELUAR;")){
+            DAFTAR(&pengguna, &isLoggedin);
+        } else if(isSame(command, "MASUK;")) {
+            isLoggedin = MASUK(&pengguna, &isLoggedin, &currentUser);
+        } else if(isSame(command, "KELUAR;")) {
             isLoggedin = KELUAR(&isLoggedin);
+        } else if(isSame(command, "GANTI_PROFIL;")) {
+            GANTI_PROFIL(&pengguna, &isLoggedin, &currentUser);
         }
 
         printList(&pengguna);

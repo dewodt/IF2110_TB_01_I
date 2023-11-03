@@ -1,21 +1,23 @@
-#include "./ADT/Baca/baca.c"
+#include "./ADT/masukan/masukan.c"
 
-Word strToWord(char str[], int len) {
+MASUKAN strToMASUKAN(char str[], int len) {
     int i;
-    Word kata;
+    MASUKAN kata;
     kata.Length = len;
     for (i = 0; i < len; i++)
     {
-        kata.TabWord[i] = str[i];
+        kata.TabMASUKAN[i] = str[i];
     }
     return kata;
 }
 
-void wordToStr(Word word, char *str) {
-    int len = word.Length;
+void MASUKANToStr(MASUKAN masukan, char *str) {
+    int len = masukan.Length;
+    int i;
 
-    for (int i = 0; i < len; i++) {
-        str[i] = word.TabWord[i];
+    for (i = 0; i < len; i++) {
+        // printf("%c\n", masukan.TabMASUKAN[i]);
+        str[i] = masukan.TabMASUKAN[i];
     }
     str[len] = '\0';
 
@@ -29,14 +31,14 @@ int stringLength(const char *str) {
     return length;
 }
 
-boolean isWordEqual(Word word1, Word word2) {
+boolean isMASUKANEqual(MASUKAN word1, MASUKAN word2) {
     int i;
     if (word1.Length != word2.Length) {
         return false;
     }
     for (i = 0; i < word1.Length; i++)
     {
-        if (word1.TabWord[i] != word2.TabWord[i]) {
+        if (word1.TabMASUKAN[i] != word2.TabMASUKAN[i]) {
             return false;
         }
     }

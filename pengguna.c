@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "modifiedliststatik.c"
 #include "modifiedmatrix.h"
-#include "./ADT/wordmachine/wordmachine.h"
 #include "boolean.h"
+#include "./ADT/charmachine/charmachine.c"
 #include "./ADT/pcolor/pcolor.c"
 
 // mendaftarkan pengguna
@@ -19,29 +19,51 @@ void DAFTAR(ListStatik *pengguna, boolean isLoggedin) {
         int idx = listLength(*pengguna);
         printf("listlength: %d\n", idx);
         
-        Word username_temp;
+        boolean uservalid = false;
+        MASUKAN username_temp;
         printf("Masukkan nama: ");
         baca(&username_temp);
 
-        // cek apakah nama pengguna udah ada
-        for (int i = 0; i < idx; i++) {
-            if (isWordEqual(strToWord(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username_temp)) {
-                printf("Wah, sayang sekali nama tersebut telah diambil.\n");
-                return;
+        while (!uservalid) {
+            if (username_temp.Length > 20) {
+                printf("Nama yang anda masukkan > 20 karakter. Ayo coba lagi.\n");
+                    printf("Masukkan nama: ");
+                    baca(&username_temp);
+            } else {
+                // cek apakah nama pengguna udah ada
+                for (int i = 0; i < idx; i++) {
+                    if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username_temp)) {
+                        printf("Wah, sayang sekali nama tersebut telah diambil.\n");
+                        printf("Masukkan nama: ");
+                        baca(&username_temp);
+                    }
+                }
+                uservalid = true;
             }
         }
 
         char username[MAX_USERNAME_LENGTH];
-        wordToStr(username_temp, username);
+        MASUKANToStr(username_temp, username);
         strcpy(ELMT(*pengguna, idx).username, username);
         printf("username: %s\n", ELMT(*pengguna, idx).username);
 
-        Word password_temp;
+        boolean passwordvalid = false;
+        MASUKAN password_temp;
         printf("Masukkan kata sandi: ");
         baca(&password_temp);
 
+        while (!passwordvalid) {
+            if (password_temp.Length > 20) {
+                printf("Kata sandi yang anda masukkan > 20 karakter. Ayo coba lagi.\n");
+                    printf("Masukkan kata sandi: ");
+                    baca(&password_temp);
+            } else {
+                passwordvalid = true;
+            }
+        }
+
         char password[MAX_PASSWORD_LENGTH];
-        wordToStr(password_temp, password);
+        MASUKANToStr(password_temp, password);
         printf("idx skrg: %d\n", idx);
         strcpy(ELMT(*pengguna, idx).password, password);
         printf("password: %s\n", ELMT(*pengguna, idx).password);
@@ -58,42 +80,50 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin) {
         return *isLoggedin;
     }
 
-    Word username;
+    MASUKAN username;
     printf("Masukkan nama: ");
     baca(&username);
 
     // cari pengguna dengan nama yang cocok
     int userIndex = -1;
-    boolean found = false;
-    int i = 0;
 
-    while (i <= listLength(*pengguna) && (!found)) {
-        if (isWordEqual(strToWord(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
-            found = true;
-            userIndex = i;
-        } else {
+    do {
+        boolean found = false;
+        int i = 0;
+        while (i < listLength(*pengguna)) {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+                userIndex = i;
+                found = true;
+                break;
+            }
             i++;
         }
 
-    }
-
-    if (userIndex == -1) {
-        printf("Wah, nama yang Anda cari tidak ada. Masukkan nama lain!\n");
-        return *isLoggedin;
-    } else {
-        Word password;
-        printf("Masukkan kata sandi: ");
-        baca(&password);
-
-        if (isWordEqual(strToWord(ELMT(*pengguna, userIndex).password, stringLength(ELMT(*pengguna, userIndex).password)), password)) {
-                *isLoggedin = true;
-                char username_str[MAX_USERNAME_LENGTH];
-                wordToStr(username, username_str);
-                printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username_str + 1);
-            } else {
-                printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
-            }
+        if (userIndex == -1) {
+            printf("Wah, nama yang Anda cari tidak ada. Masukkan nama lain!\n");
+            printf("Masukkan nama: ");
+            baca(&username);
         }
+    } while (userIndex == -1);
+
+    MASUKAN password;
+    printf("Masukkan kata sandi: ");
+    baca(&password);
+    boolean passwordvalid = false;
+
+    do {
+        if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, userIndex).password, stringLength(ELMT(*pengguna, userIndex).password)), password)) {
+            *isLoggedin = true;
+            char username_str[MAX_USERNAME_LENGTH];
+            MASUKANToStr(username, username_str);
+            printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username_str);
+            passwordvalid = true;
+        } else {
+            printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
+            printf("Masukkan kata sandi: ");
+    baca(&password);
+        }
+    } while (!passwordvalid);
 
     return *isLoggedin;
 }
@@ -110,19 +140,19 @@ boolean KELUAR(boolean *isLoggedin) {
 }
 
 int main() {
-    Word command;
+    MASUKAN command;
     boolean isLoggedin = false;
     ListStatik pengguna;
     CreateListStatik(&pengguna);
 
     printf(">> ");
     baca(&command);
-    while (!isSame(command, "\nTUTUP_PROGRAM;")) {   
-        if (isSame(command, "\nDAFTAR;")) {
+    while (!isSame(command, "TUTUP_PROGRAM;")) {   
+        if (isSame(command, "DAFTAR;")) {
             DAFTAR(&pengguna, isLoggedin);
-        } else if(isSame(command, "\nMASUK;")){
+        } else if(isSame(command, "MASUK;")){
             isLoggedin = MASUK(&pengguna, &isLoggedin);
-        } else if(isSame(command, "\nKELUAR;")){
+        } else if(isSame(command, "KELUAR;")){
             isLoggedin = KELUAR(&isLoggedin);
         }
 

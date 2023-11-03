@@ -2,18 +2,31 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-// Meng-copy word
-void copyText(Word textIn, Word *textOut)
+// Menampilkan date dengan format "DD/MM/YYYY H:M:S" tanpa karakter setelah dan sebelumnya
+void displayTime(DATETIME time)
 {
-  (*textOut).Length = (textIn).Length;
-  for (int i = 0; i < (*textOut).Length; i++)
+  int day, month, year, hour, minute, second;
+  day = Day(time);
+  month = Month(time);
+  year = Year(time);
+  hour = Hour(Time(time));
+  minute = Minute(Time(time));
+  second = Second(Time(time));
+
+  printf("%d/%d/%d %d:%d:%d", day, month, year, hour, minute, second);
+}
+
+// Meng-copy word
+void copyText(char textIn[MAX_CHAR], char *textOut[MAX_CHAR])
+{
+  for (int i = 0; i < 180; i++)
   {
-    (*textOut).TabWord[i] = (textIn).TabWord[i];
+    (*textOut)[i] = textIn[i];
   }
 }
 
-// newNode modified
-Address newThreadNode(Word text, DATETIME time)
+// Membuat kicauan sambungan
+Address newThreadNode(char text[MAX_CHAR], DATETIME time)
 {
   Address p = (Address)malloc(sizeof(ThreadNode));
   if (p != NULL)
@@ -35,31 +48,31 @@ Address newThreadNode(Word text, DATETIME time)
   return p;
 }
 
-// Create Node Modified
+// Membuat UTAS baru
 void CreateThreads(threads *l)
 {
   FIRST(*l) = NULL;
 }
 
-// isEmpty modified
+// Mengembalikan true jika UTAS kosong
 boolean isThreadsEmpty(threads l)
 {
   return FIRST(l) == NULL;
 }
 
-// insertFirst modified
-void insertFirstThreads(threads *l, Word text, DATETIME time)
+// Memasukkan kicauan sambungan di awal threads
+void insertFirstThreads(threads *l, char text[MAX_CHAR], DATETIME time)
 {
   Address p = newThreadNode(text, time);
   if (p != NULL)
   {
-    NextThread(p) = *l;
+    NextThread(p) = FIRST(*l);
     FIRST(*l) = p;
   }
 }
 
-// insertlast modified
-void insertLastThreads(threads *l, Word text, DATETIME time)
+// Memasukkan elemen terakhirpada utas
+void insertLastThreads(threads *l, char text[MAX_CHAR], DATETIME time)
 {
   if (isThreadsEmpty(*l))
   {
@@ -80,17 +93,16 @@ void insertLastThreads(threads *l, Word text, DATETIME time)
   }
 }
 
-// deleteFirst modified
+// Menghapus Elemen pertama pada utas
 void deleteFirstThreads(threads *l)
 {
   Address temp = FIRST(*l);
-  FIRST(*l) = NEXT(temp);
+  FIRST(*l) = NextThread(temp);
   free(temp);
 }
 
-// deleteAt modified
+// Menghapus Elemen dengan index pertama dimulai dari 1
 void deleteAtThreads(threads *l, int idx)
-// First berada pada utas pertama,
 {
   idx -= 1;
   if (idx == 0)
@@ -108,13 +120,13 @@ void deleteAtThreads(threads *l, int idx)
     }
 
     Address p = NextThread(loc);
-    NextThread(loc) = NEXT(p);
+    NextThread(loc) = NextThread(p);
     free(p);
   }
 }
 
-int length(threads l)
-/* Mengirimkan banyaknya elemen list; mengirimkan 0 jika list kosong */
+// Mengembalikan jumlah kicauan sambungan pada threads
+int lengthThreads(threads l)
 {
   int count = 0;
   Address p = FIRST(l);
@@ -124,4 +136,21 @@ int length(threads l)
     p = NextThread(p);
   }
   return count;
+}
+
+// Menampilkan threads secara keseluruhan, kicauan utama tidak ditampilkan
+void displayThreads(threads l)
+{
+  int index = 1;
+
+  Address P = FIRST(l);
+  while (P != NULL)
+  {
+    printf("   | INDEX = %d\n", index);
+    printf("   | INI NANTI DIAMBIL DARI KICAUAN\n");
+    printf("   | ");
+    displayTime(TimeThread(l));
+    printf("\n");
+    printf("   | %s\n", TextThread(l));
+  }
 }

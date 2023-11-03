@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "listlinier.h": "c",
+    "boolean.h": "c",
+    "wordmachine.h": "c"
+  }
+}

@@ -103,7 +103,7 @@ boolean isSame(MASUKAN masuk, char string[]){
     i = 0;
     while ((i < masuk.Length) && hasil)
     {
-        if(masuk.TabWord[i] != string[i]){
+        if(masuk.TabMASUKAN[i] != string[i]){
             hasil = false;
         }
         i ++;
@@ -117,7 +117,7 @@ void displayMASUKAN(MASUKAN masuk){
     printf("[");
     for ( i = 0; i <  masuk.Length; i++)
     {
-        printf("%c,", mmasuk.TabWord[i]);
+        printf("%c,", masuk.TabMASUKAN[i]);
     }
     printf("]\n");
     

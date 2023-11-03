@@ -1,8 +1,7 @@
-#include "ADT/time/time.h"
-#include "ADT/time/datetime.c"
-#include "ADT/listlinier/listlinierForUtas.h"
-#include "ADT/wordmachine/wordmachine.h"
-#include "kicauan.h"
+#include "ADTUsed/time/time.h"
+#include "ADTUsed/datetime/datetime.h"
+#include "ADTUsed/listlinier/listlinierForUtas.h"
+#include "ADTUsed/kicauan/kicauan.h"
 
 #ifndef UTAS_H
 #define UTAS_H

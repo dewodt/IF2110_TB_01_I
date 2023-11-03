@@ -52,7 +52,7 @@ void baca(MASUKAN* masukan){
     *masukan = currentMASUKAN;
     if((*masukan).TabMASUKAN[0] == 10){
         int i;
-        for (i = 1; i < (*masukan).Length-1; i++)
+        for (i = 1; i < (*masukan).Length; i++)
         {
             (*masukan).TabMASUKAN[i-1] = (*masukan).TabMASUKAN[i];
         }

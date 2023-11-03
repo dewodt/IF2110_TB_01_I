@@ -50,13 +50,13 @@ void baca(MASUKAN* masukan){
 // Menerima input untuk nama, sandi, bio, dll
     STARTMASUKAN();
     *masukan = currentMASUKAN;
-    if(*masukan.TabMASUKAN[0] == 10){
+    if((*masukan).TabMASUKAN[0] == 10){
         int i;
-        for (i = 1; i < masukan.Length-1; i++)
+        for (i = 1; i < (*masukan).Length-1; i++)
         {
-            masukan.TabMASUKAN[i-1] = masukan.TabMASUKAN[i];
+            (*masukan).TabMASUKAN[i-1] = (*masukan).TabMASUKAN[i];
         }
-        masukan.Length = masukan.Length-1;
+        (*masukan).Length = (*masukan).Length-1;
     }else{
 
     }

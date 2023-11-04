@@ -39,6 +39,7 @@ typedef struct {
     char weton[MAX_WETON_LENGTH];
     char acc_type[MAX_ACC_TYPE_LENGTH];
     Matrix profile;
+    char jenis_akun[6];
 } User; /* type elemen List */
 typedef int IdxType;
 typedef struct {
@@ -67,6 +68,7 @@ void CreateListStatik(ListStatik *l) {
         strcpy(ELMT(*l, i).weton, "");
         strcpy(ELMT(*l, i).acc_type, "");
         createMatrix(5, 5, &(ELMT(*l, i).profile));
+        strcpy(ELMT(*l, i).jenis_akun, "");
     }
 }
 

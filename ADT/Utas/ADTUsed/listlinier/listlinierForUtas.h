@@ -1,10 +1,9 @@
-#include "../boolean.h"
-#include "../wordmachine/wordmachine.h"
+#ifndef listlinier_H
+#define listlinier_H
+
 #include "../time/time.h"
 #include "../time/datetime.c"
-
-#ifndef listlinier_H
-#define listlinier_Hthreadsthreads
+#include "boolean.h"
 
 #define MAX_CHAR 280
 
@@ -28,6 +27,9 @@ typedef Address threads; // thread -> thread -> thread
 
 #define IDX_UNDEF (-1)
 #define FIRST(l) (l)
+
+// Mengembalikan waktu lokal dalam tipe bentukan DATETIME
+DATETIME getCurrTime();
 
 // Menampilkan date dengan format "DD/MM/YYYY H:M:S" tanpa karakter setelah dan sebelumnya
 void displayTime(DATETIME time);

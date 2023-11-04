@@ -1,6 +1,23 @@
 #include "listlinierForUtas.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include <time.h>
+
+// Mengembalikan waktu lokal dalam tipe bentukan DATETIME
+DATETIME getCurrTime()
+{
+  DATETIME datetime;
+  time_t t = time(NULL);
+  struct tm date = *localtime(&t);
+  Year(datetime) = date.tm_year + 1900;
+  Month(datetime) = date.tm_mon + 1;
+  Day(datetime) = date.tm_mday;
+  Hour(Time(datetime)) = date.tm_hour;
+  Minute(Time(datetime)) = date.tm_min;
+  Second(Time(datetime)) = date.tm_sec;
+
+  return datetime;
+}
 
 // Menampilkan date dengan format "DD/MM/YYYY H:M:S" tanpa karakter setelah dan sebelumnya
 void displayTime(DATETIME time)

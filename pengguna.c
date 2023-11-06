@@ -294,8 +294,8 @@ int main() {
                 namapengguna.Length = j;
                 namapengguna.TabMASUKAN[j] = '\0'; // null-terminator
 
-                printf("Perintah Awal: %s\n", commandAwal);
-                printf("Nama Pengguna: %s\n", namapengguna.TabMASUKAN);
+                // printf("Perintah Awal: %s\n", commandAwal);
+                // printf("Nama Pengguna: %s\n", namapengguna.TabMASUKAN);
 
                 // baru call fungsi LIHAT_PROFIL dengan namapengguna
                 LIHAT_PROFIL(&pengguna, namapengguna);

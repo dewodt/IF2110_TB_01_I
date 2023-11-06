@@ -55,3 +55,17 @@ char *strcpy(char *destination, const char *source) {
     *destination = '\0';
     return dest_start;
 }
+
+int compareString(const char *str1, const char *str2, size_t n) {
+    while (n > 0 && *str1 && (*str1 == *str2)) {
+        str1++;
+        str2++;
+        n--;
+    }
+
+    if (n == 0) {
+        return 0; // string sama hingga n karakter
+    } else {
+        return *(unsigned char *)str1 - *(unsigned char *)str2;
+    }
+}

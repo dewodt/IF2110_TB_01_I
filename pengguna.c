@@ -222,16 +222,46 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) 
     }
 }
 
+// lihat profil pengguna
+void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna) {
+    // cari dulu di list dia idx ke berapa
+    boolean found = false;
+    int i = 0;
+    int userIndex = -1;
+    while (i < listLength(*pengguna)) {
+        if (isMASUKANEqual(namapengguna, strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)))) {
+            userIndex = i;
+            break;
+        }
+        i++;
+    }
+
+    if (userIndex != -1) {
+        printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
+        printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
+        char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
+        MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
+        printf("| No HP: %s\n", phonenum);
+        printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
+    } else {
+        printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", namapengguna.TabMASUKAN);
+    }
+}
+
 int main() {
     MASUKAN command;
     boolean isLoggedin = false;
     ListStatik pengguna;
     CreateListStatik(&pengguna);
     User currentUser;
+    char commandStr[50];
+    char commandAwal[50];
+    MASUKAN namapengguna;
 
     printf(">> ");
     baca(&command);
-    while (!isSame(command, "TUTUP_PROGRAM;")) {   
+
+    while (!isSame(command, "TUTUP_PROGRAM;")) { 
         if (isSame(command, "DAFTAR;")) {
             DAFTAR(&pengguna, &isLoggedin);
         } else if(isSame(command, "MASUK;")) {
@@ -240,7 +270,38 @@ int main() {
             isLoggedin = KELUAR(&isLoggedin);
         } else if(isSame(command, "GANTI_PROFIL;")) {
             GANTI_PROFIL(&pengguna, &isLoggedin, &currentUser);
+        } else if(compareString(command.TabMASUKAN, "LIHAT_PROFIL", 12) == 0) {
+            int len = command.Length;
+            int idx = 0;
+
+            // mencari indeks awal nama pengguna
+            while (idx < len && command.TabMASUKAN[idx] != ' ') {
+                idx++;
+            }
+
+            if (idx < len) {
+                // copy perintah awal (tanpa spasi akhir) dan nama pengguna
+                for (int i = 0; i < idx; i++) {
+                    commandAwal[i] = command.TabMASUKAN[i];
+                }
+                commandAwal[idx] = '\0'; // null-terminator
+
+                int j = 0;
+                for (int i = idx + 1; i < len; i++) {
+                    namapengguna.TabMASUKAN[j] = command.TabMASUKAN[i];
+                    j++;
+                }
+                namapengguna.Length = j;
+                namapengguna.TabMASUKAN[j] = '\0'; // null-terminator
+
+                printf("Perintah Awal: %s\n", commandAwal);
+                printf("Nama Pengguna: %s\n", namapengguna.TabMASUKAN);
+
+                // baru call fungsi LIHAT_PROFIL dengan namapengguna
+                LIHAT_PROFIL(&pengguna, namapengguna);
+            }
         }
+
 
         printList(&pengguna);
         printf("\n");

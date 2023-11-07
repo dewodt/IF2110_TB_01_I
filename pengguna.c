@@ -272,11 +272,9 @@ void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUs
         Matrix baru;
         printf("Foto profil Anda saat ini adalah \n");
         displayProfile(ELMT(*pengguna, userIndex).profile);
-        printf("\n");
         printf("Masukkan foto profil yang baru \n");
         readMatrix(&baru, 5, 10);
         SetProfile(pengguna, userIndex, &baru);
-        printf("\n");
         printf("Foto profil anda sudah berhasil diganti!\n");
     }
 

@@ -68,7 +68,7 @@ void CreateListStatik(ListStatik *l) {
         strcpy(ELMT(*l, i).weton, "");
         strcpy(ELMT(*l, i).acc_type, "");
         createMatrix(5, 10, &(ELMT(*l, i).profile));
-        strcpy(ELMT(*l, i).jenis_akun, "");
+        strcpy(ELMT(*l, i).jenis_akun, "1");
     }
 }
 
@@ -141,6 +141,8 @@ void SetProfile(ListStatik *l, int userIndex, Matrix *profile) {
         ELMT(*l, userIndex).profile = *profile;
     }
 }
+
+
 
 #endif
 

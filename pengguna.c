@@ -237,14 +237,18 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna) {
     }
 
     if (userIndex != -1) {
-        printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
-        printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
-        char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
-        MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
-        printf("| No HP: %s\n", phonenum);
-        printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
-        printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
-        displayProfile(ELMT(*pengguna, userIndex).profile);
+        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1') {
+            printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
+            printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
+            char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
+            MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
+            printf("| No HP: %s\n", phonenum);
+            printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
+            printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
+            displayProfile(ELMT(*pengguna, userIndex).profile);
+        } else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0') {
+            printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", namapengguna.TabMASUKAN, namapengguna.TabMASUKAN);
+        }
     } else {
         printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", namapengguna.TabMASUKAN);
     }
@@ -277,8 +281,59 @@ void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUs
         SetProfile(pengguna, userIndex, &baru);
         printf("Foto profil anda sudah berhasil diganti!\n");
     }
-
 }
+
+// atur jenis akun
+void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) {
+    if (!*isLoggedIn) {
+        printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
+    } else {
+        // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
+        boolean found = false;
+        int i = 0;
+        int userIndex;
+        MASUKAN username;
+        username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
+        while (i < listLength(*pengguna)) {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+                userIndex = i;
+                break;
+            }
+            i++;
+        }
+
+        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1') {
+            printf("Saat ini, akun Anda adalah akun Publik.\n");
+            printf("Ingin mengubah ke akun Privat? (YA/TIDAK) ");
+
+            MASUKAN acctype;
+            baca(&acctype);
+
+            if (isSame(acctype, "YA;")) {
+                ELMT(*pengguna, userIndex).jenis_akun[0] = '0';
+                ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
+                printf("Akun anda sudah diubah menjadi akun Privat.\n");
+            } else if (isSame(acctype, "TIDAK;")) {
+                printf("Akun anda tidak jadi diubah menjadi akun Privat.\n");
+            }
+        } else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0') {
+            printf("Saat ini, akun Anda adalah akun Privat.\n");
+            printf("Ingin mengubah ke akun Publik? (YA/TIDAK) ");
+
+            MASUKAN acctype;
+            baca(&acctype);
+
+            if (isSame(acctype, "YA;")) {
+                ELMT(*pengguna, userIndex).jenis_akun[0] = '1';
+                ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
+                printf("Akun anda sudah diubah menjadi akun Publik.\n");
+            } else if (isSame(acctype, "TIDAK;")) {
+                printf("Akun anda tidak jadi diubah menjadi akun Publik.\n");
+            }
+        }
+    }
+}
+
 
 int main() {
     MASUKAN command;
@@ -334,6 +389,8 @@ int main() {
             }
         } else if(isSame(command, "UBAH_FOTO_PROFIL;")) {
             UBAH_FOTO_PROFIL(&pengguna, &isLoggedin, &currentUser);
+        } else if(isSame(command, "ATUR_JENIS_AKUN;")) {
+            ATUR_JENIS_AKUN(&pengguna, &isLoggedin, &currentUser);
         }
 
         printList(&pengguna);

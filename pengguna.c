@@ -243,9 +243,43 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna) {
         MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
         printf("| No HP: %s\n", phonenum);
         printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
+        printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
+        displayProfile(ELMT(*pengguna, userIndex).profile);
     } else {
         printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", namapengguna.TabMASUKAN);
     }
+}
+
+// ganti profile
+void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) {
+    if (!*isLoggedIn) {
+        printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
+    } else {
+        // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
+        boolean found = false;
+        int i = 0;
+        int userIndex;
+        MASUKAN username;
+        username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
+        while (i < listLength(*pengguna)) {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+                userIndex = i;
+                break;
+            }
+            i++;
+        }
+
+        Matrix baru;
+        printf("Foto profil Anda saat ini adalah \n");
+        displayProfile(ELMT(*pengguna, userIndex).profile);
+        printf("\n");
+        printf("Masukkan foto profil yang baru \n");
+        readMatrix(&baru, 5, 10);
+        SetProfile(pengguna, userIndex, &baru);
+        printf("\n");
+        printf("Foto profil anda sudah berhasil diganti!\n");
+    }
+
 }
 
 int main() {
@@ -300,8 +334,9 @@ int main() {
                 // baru call fungsi LIHAT_PROFIL dengan namapengguna
                 LIHAT_PROFIL(&pengguna, namapengguna);
             }
+        } else if(isSame(command, "UBAH_FOTO_PROFIL;")) {
+            UBAH_FOTO_PROFIL(&pengguna, &isLoggedin, &currentUser);
         }
-
 
         printList(&pengguna);
         printf("\n");

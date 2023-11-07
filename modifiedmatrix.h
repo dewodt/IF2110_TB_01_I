@@ -73,6 +73,8 @@ void displayMatrix(Matrix m);
 8 9 10
 */
 
+void displayProfile(Matrix m);
+
 /* ********** KELOMPOK OPERASI ARITMATIKA TERHADAP TYPE ********** */
 Matrix addMatrix(Matrix m1, Matrix m2);
 /* Prekondisi : m1 berukuran sama dengan m2 */

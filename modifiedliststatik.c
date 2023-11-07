@@ -67,7 +67,7 @@ void CreateListStatik(ListStatik *l) {
         strcpy(ELMT(*l, i).bio, "");
         strcpy(ELMT(*l, i).weton, "");
         strcpy(ELMT(*l, i).acc_type, "");
-        createMatrix(5, 5, &(ELMT(*l, i).profile));
+        createMatrix(5, 10, &(ELMT(*l, i).profile));
         strcpy(ELMT(*l, i).jenis_akun, "");
     }
 }
@@ -133,6 +133,12 @@ void SetBio(ListStatik *l, int userIndex, const char *bio) {
 void SetWeton(ListStatik *l, int userIndex, const char *weton) {
     if (userIndex >= 0 && userIndex < MAX_USERS) {
         strcpy(ELMT(*l, userIndex).weton, weton);
+    }
+}
+
+void SetProfile(ListStatik *l, int userIndex, Matrix *profile) {
+    if (userIndex >= 0 && userIndex < MAX_USERS) {
+        ELMT(*l, userIndex).profile = *profile;
     }
 }
 

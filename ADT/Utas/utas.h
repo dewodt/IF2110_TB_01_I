@@ -9,13 +9,14 @@
 // Bentukan Utas
 typedef struct
 {
-    Kicauan *tweet;   // Pointer menuju kicauan yang berkaitan (Menggunakan pointer supaya dinamis jika kicauan di modified)
-    int IDUtas;       // ID Utas
-    Address threads;  // Alamat mennuju kicauan sambungan pertama
+    Kicauan *tweet;  // Pointer menuju kicauan utama
+    int IDUtas;      // ID Utas
+    Address threads; // Alamat menuju kicauan sambungan pertama
 } UTAS;
 
 #define Threads(u) (u)->threads
 #define IDUtas(u) (u).IDUtas
+#define Sambungan(u) (u).threads
 
 // Membuat sebuah Utas baru dari kicauan yang sudah ada, Akan di-set ID Utas dan pointer kicauan
 void CreateUtas(UTAS *u, Kicauan *tweet);
@@ -27,7 +28,6 @@ void SAMBUNG_UTAS(UTAS *u, char text[MAX_CHAR], int index);
 void CETAK_UTAS(UTAS u);
 
 // Menghapus kicauan sambungan pada ID Utas tertentu, dan index kicauan sambungan tertentu
-void HAPUS_UTAS(UTAS *u);
-
+void HAPUS_UTAS(UTAS *u, int idx);
 
 #endif

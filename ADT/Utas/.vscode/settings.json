@@ -1,0 +1,9 @@
+{
+  "files.associations": {
+    "utas.h": "c",
+    "listdinforutas.h": "c",
+    "stdio.h": "c",
+    "boolean.h": "c",
+    "listlinierforutas.h": "c"
+  }
+}

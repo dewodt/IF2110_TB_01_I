@@ -43,8 +43,9 @@ void copyText(char textIn[MAX_CHAR], char *textOut[MAX_CHAR])
 }
 
 // Membuat kicauan sambungan
-Address newThreadNode(char text[MAX_CHAR], DATETIME time)
+Address newThreadNode(char text[MAX_CHAR])
 {
+  DATETIME time = getCurrTime();
   Address p = (Address)malloc(sizeof(ThreadNode));
   if (p != NULL)
   {
@@ -78,9 +79,9 @@ boolean isThreadsEmpty(threads l)
 }
 
 // Memasukkan kicauan sambungan di awal threads
-void insertFirstThreads(threads *l, char text[MAX_CHAR], DATETIME time)
+void insertFirstThreads(threads *l, char text[MAX_CHAR])
 {
-  Address p = newThreadNode(text, time);
+  Address p = newThreadNode(text);
   if (p != NULL)
   {
     NextThread(p) = FIRST(*l);
@@ -89,15 +90,15 @@ void insertFirstThreads(threads *l, char text[MAX_CHAR], DATETIME time)
 }
 
 // Memasukkan elemen terakhirpada utas
-void insertLastThreads(threads *l, char text[MAX_CHAR], DATETIME time)
+void insertLastThreads(threads *l, char text[MAX_CHAR])
 {
   if (isThreadsEmpty(*l))
   {
-    insertFirstThreads(l, text, time);
+    insertFirstThreads(l, text);
   }
   else
   {
-    Address p = newThreadNode(text, time);
+    Address p = newThreadNode(text);
     if (p != NULL)
     {
       Address temp = FIRST(*l);

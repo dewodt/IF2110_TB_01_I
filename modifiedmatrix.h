@@ -62,6 +62,9 @@ void readMatrix(Matrix *m, int nRow, int nCol);
 4 5 6
 8 9 10 
 */
+
+void readMatrixMasukan(Matrix *m, int nRow, int nCol);
+
 void displayMatrix(Matrix m);
 /* I.S. m terdefinisi */
 /* F.S. Nilai m(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris 

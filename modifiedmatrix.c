@@ -7,6 +7,7 @@
 #include "modifiedmatrix.h"
 #include <stdio.h>
 #include "./ADT/pcolor/pcolor.h"
+#include "masukan.h"
 
 /* Ukuran maksimum baris dan kolom */
 #define ROW_CAP 100
@@ -104,6 +105,28 @@ void readMatrix(Matrix *m, int nRow, int nCol) {
     }
 }
 
+void readMatrixMasukan(Matrix *m, int nRow, int nCol) {
+    if (isMatrixIdxValid(nRow - 1, nCol - 1)) {
+        createMatrix(nRow, nCol, m);
+        int i, j;
+        START();
+        EndMASUKAN = false;
+        for (i = 0; i < nRow && !EndMASUKAN; i++) {
+            for (j = 0; j < nCol && !EndMASUKAN; j++) {
+                while (currentChar == '\n' || currentChar == ' ') {
+                    ADV();
+                }
+                ELMT_MTX(*m, i, j) = currentChar;
+                ADV();
+
+                if (currentChar == ';') {
+                    EndMASUKAN = true;
+                }
+            }
+        }
+    }
+}
+
 void displayMatrix(Matrix m) {
     /* I.S. m terdefinisi */
     /* F.S. Nilai m(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris 
@@ -174,6 +197,6 @@ void displayProfile(Matrix m) {
 //     Matrix m1, m2;
 //     createMatrix(5, 10, &m2);
 //     displayProfile(m2);
-//     readMatrix(&m1, 5, 10);
+//     readMatrixMasukan(&m1, 5, 10);
 //     displayProfile(m1);
 // }

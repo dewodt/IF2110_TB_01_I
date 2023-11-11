@@ -69,3 +69,10 @@ int compareString(const char *str1, const char *str2, size_t n) {
         return *(unsigned char *)str1 - *(unsigned char *)str2;
     }
 }
+
+void toLowerCase(char* str) {
+    while (*str) {
+        *str = (*str >= 'A' && *str <= 'Z') ? (*str + 32) : *str;
+        str++;
+    }
+}

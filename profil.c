@@ -6,7 +6,7 @@
 #include "./ADT/charmachine/charmachine.c"
 #include "./ADT/pcolor/pcolor.c"
 
-// ganti profil (nama, bio akun, no HP, weton
+// ganti profil (nama, bio akun, no HP, weton)
 void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) {
     if (!*isLoggedIn) {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
@@ -64,14 +64,20 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) 
         SetPhoneNum(pengguna, userIndex, nohp);
 
         MASUKAN weton_temp;
-        char weton;
+        char weton[NMax];
         printf("Masukkan Weton: ");
         baca(&weton_temp);
         boolean validweton = false;
 
         do {
-            if (isSame(weton_temp, ";") || isSame(weton_temp, "Pahing;") || isSame(weton_temp, "Kliwon;") || isSame(weton_temp, "Wage;") || isSame(weton_temp, "Pon;") || isSame(weton_temp, "Legi;")) {
+            MASUKANToStr(weton_temp, weton);
+            if (compareString(weton, "\0", 1) == 0) {
                 validweton = true;
+            } else {
+                toLowerCase(weton);
+                if (compareString(weton, ";", 1) == 0 || compareString(weton, "pahing", 6) == 0 || compareString(weton, "kliwon", 6) == 0 || compareString(weton, "wage", 4) == 0 || compareString(weton, "pon", 3) == 0 || compareString(weton, "legi", 4) == 0) {
+                    validweton = true;
+                }
             }
             if (!validweton) {
                 printf("Weton anda tidak valid.\n");
@@ -80,8 +86,7 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) 
             }
         } while (!validweton);
 
-        MASUKANToStr(weton_temp, &weton);
-        SetWeton(pengguna, userIndex, &weton);
+        SetWeton(pengguna, userIndex, weton);
 
         printf("Profil Anda sudah berhasil diperbarui!\n");
     }
@@ -102,14 +107,18 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna) {
     }
 
     if (userIndex != -1) {
-        printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
-        printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
-        char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
-        MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
-        printf("| No HP: %s\n", phonenum);
-        printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
-        printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
-        displayProfile(ELMT(*pengguna, userIndex).profile);
+        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1') {
+            printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
+            printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
+            char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
+            MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
+            printf("| No HP: %s\n", phonenum);
+            printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
+            printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
+            displayProfile(ELMT(*pengguna, userIndex).profile);
+        } else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0') {
+            printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", namapengguna.TabMASUKAN, namapengguna.TabMASUKAN);
+        }
     } else {
         printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", namapengguna.TabMASUKAN);
     }
@@ -138,9 +147,59 @@ void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUs
         printf("Foto profil Anda saat ini adalah \n");
         displayProfile(ELMT(*pengguna, userIndex).profile);
         printf("Masukkan foto profil yang baru \n");
-        readMatrix(&baru, 5, 10);
+        readMatrixMasukan(&baru, 5, 10);
         SetProfile(pengguna, userIndex, &baru);
         printf("Foto profil anda sudah berhasil diganti!\n");
     }
+}
 
+// atur jenis akun
+void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) {
+    if (!*isLoggedIn) {
+        printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
+    } else {
+        // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
+        boolean found = false;
+        int i = 0;
+        int userIndex;
+        MASUKAN username;
+        username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
+        while (i < listLength(*pengguna)) {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+                userIndex = i;
+                break;
+            }
+            i++;
+        }
+
+        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1') {
+            printf("Saat ini, akun Anda adalah akun Publik.\n");
+            printf("Ingin mengubah ke akun Privat? (YA/TIDAK) ");
+
+            MASUKAN acctype;
+            baca(&acctype);
+
+            if (isSame(acctype, "YA;")) {
+                ELMT(*pengguna, userIndex).jenis_akun[0] = '0';
+                ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
+                printf("Akun anda sudah diubah menjadi akun Privat.\n");
+            } else if (isSame(acctype, "TIDAK;")) {
+                printf("Akun anda tidak jadi diubah menjadi akun Privat.\n");
+            }
+        } else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0') {
+            printf("Saat ini, akun Anda adalah akun Privat.\n");
+            printf("Ingin mengubah ke akun Publik? (YA/TIDAK) ");
+
+            MASUKAN acctype;
+            baca(&acctype);
+
+            if (isSame(acctype, "YA;")) {
+                ELMT(*pengguna, userIndex).jenis_akun[0] = '1';
+                ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
+                printf("Akun anda sudah diubah menjadi akun Publik.\n");
+            } else if (isSame(acctype, "TIDAK;")) {
+                printf("Akun anda tidak jadi diubah menjadi akun Publik.\n");
+            }
+        }
+    }
 }

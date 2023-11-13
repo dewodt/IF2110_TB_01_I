@@ -10,36 +10,40 @@
 Left-child artinya reply pertama sebuah balasan atau kicauan
 Right sibling merupakan reply-reply lainnya dari parent */
 
-/* Definisi node balasan */
-typedef struct nodeBalasan *AddressBalasan;
-typedef struct nodeBalasan
+/* Definisi balasan (disimpan dalam node) */
+typedef struct balasan *AddressBalasan;
+typedef struct balasan
 {
-  Balasan InfoBalasan;
+  InfoBalasan infoBalasan;
   AddressBalasan nextBalasanRightSibling;
   AddressBalasan nextBalasanLeftChild;
-} NodeBalasan;
+} Balasan;
 
-/* Definisi node kicauan */
-typedef struct nodeKicauan *AddressKicauan;
-typedef struct nodeKicauan
+/* Definisi kicauan (disimpan di dalam list dinamis) */
+typedef struct kicauan
 {
-  Kicauan InfoKicauan;
+  InfoKicauan infoKicauan;
   AddressBalasan firstLeftChildBalasan;
-} NodeKicauan;
+} Kicauan;
 
-/* Tipe buatan Tree */
-typedef AddressKicauan TreeKicauan;
+/* Selektor Balasan */
+#define INFOBALASAN(b) (b)->infoBalasan
+#define RIGHTSIBLING(b) (b)->nextBalasanRightSibling
+#define LEFTCHILD(b) (b)->nextBalasanLeftChild
 
-/* Prosedur membuat node kicauan baru */
-/* I.S. Sembarang */
-/* F.S. Bila alokasi berhasil, terbentuk alokasi node kicauan baru
-  Bila alokasi gagal, F.S.=I.S. */
-AddressKicauan newNodeKicauan(Kicauan kicauan);
+/* Selektor Kicauan */
+#define INFOKICAUAN(k) (k).infoKicauan
+#define FIRSTLEFTCHILD(k) (k).firstLeftChildBalasan
 
-/* Prosedur membuat node balasan baru */
+/* Prosedur membuat kicauan baru */
+void createKicauan(Kicauan *k, int id, char text[], int like, char author, DATETIME datetime);
+/* I.S. Sembarang, data id, text, like, author, datetime valid */
+/* F.S. Terbentuk kicauan dengan id, teks, like, author, datetime sesuai input */
+
+/* Prosedur membuat balasan baru */
+AddressBalasan newNodeBalasan(Balasan balasan);
 /* I.S. Sembarang */
 /* F.S. Bila alokasi berhasil, terbentuk alokasi node balasan baru
   Bila alokasi gagal, F.S.=I.S. */
-AddressBalasan newNodeBalasan(Balasan balasan);
 
 #endif

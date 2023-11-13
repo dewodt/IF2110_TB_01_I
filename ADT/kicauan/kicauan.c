@@ -6,25 +6,7 @@
 #include "../listdinkicauan/listdinkicauan.h"
 #include "../masukan/masukan.h"
 #include "time.h"
-
-/* Prosedur Mendefinisikan Sebuah Kicauan */
-void CreateKicauan(Kicauan *k, int id, char text[], int like, char author, DATETIME datetime)
-/* I.S. Sembarang, data id, text, like, author, datetime valid */
-/* F.S. Terbentuk kicauan dengan id, teks, like, author, datetime sesuai input */
-{
-  ID(*k) = id;
-  AUTHOR(*k) = author;
-  LIKE(*k) = like;
-  DATETIME(*k) = datetime;
-
-  // Update text
-  int i;
-  for (i = 0; i < 280; i++)
-  {
-    TEXT(*k)
-    [i] = text[i];
-  }
-}
+#include "../tree/tree.h"
 
 /* Prosedur pemanggilan pembuatan Kicau (bersama validasi2nya) */
 void BuatKicauan()
@@ -58,16 +40,16 @@ void BuatKicauan()
   Kicauan kicauanBaru;
   // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
   // CreateKicauan(&kicauanBaru, idKicauanBaru, pesanKicauan, 0, currentUser, waktuKicauan);
-  insertLast(&listKicauan, &kicauanBaru);
+  insertLast(&listKicauan, kicauanBaru);
 
   // Cetak pesan
   printf("Selamat! kicauan telah diterbitkan!\n");
   pritnf("Detil kicauan:\n");
-  printDetailKicauan(kicauanBaru);
+  printDetailKicauan(INFOKICAUAN(kicauanBaru));
 }
 
 /* Prosedur Menampilkan Detail Kicauan */
-void printDetailKicauan(Kicauan k)
+void printDetailKicauan(InfoKicauan k)
 /* I.S. Sembarang */
 /* F.S. Mencetak detail sebuah kicauan */
 {
@@ -90,9 +72,11 @@ void printDetailKicauan(Kicauan k)
 }
 
 /* Prosedur Menampilkan Kicauan */
-void TampilkanKicauan();
+void TampilkanKicauan()
 /* I.S. Sembarang */
 /* F.S. Menampilkan seluruh kicauan buatan diri sendiri dan orang2 yang berada di list teman terurut berdasarkan waktu */
+{
+}
 
 /* Prosedur like kicauan */
 /* I.S. Sembarang */

@@ -20,7 +20,7 @@
 extern ListDinKicauan listKicauan;
 
 /* Definisi elemen dan koleksi objek */
-typedef AddressKicauan ElType; /* type elemen list */
+typedef Kicauan ElType;
 typedef int IdxType;
 typedef struct
 {
@@ -88,6 +88,9 @@ boolean isFull(ListDinKicauan l);
 /* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 
 /* ********** OPERASI LAIN ********** */
+ListDinKicauan sortListDinKicauanByDateTime(ListDinKicauan l, boolean asc);
+/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
+
 void copyList(ListDinKicauan lIn, ListDinKicauan *lOut);
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
 /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */

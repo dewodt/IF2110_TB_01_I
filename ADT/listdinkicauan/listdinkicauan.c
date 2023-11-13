@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../boolean.h"
 #include "../listdinkicauan/listdinkicauan.h"
 
 /* ********** KONSTRUKTOR ********** */
@@ -84,6 +83,45 @@ boolean isFull(ListDinKicauan l)
 }
 
 /* ********** OPERASI LAIN ********** */
+ListDinKicauan sortListDinKicauanByDateTime(ListDinKicauan l, boolean asc)
+/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
+{
+  ListDinKicauan lNew;
+  CreateListDinKicauan(&lNew, CAPACITY(l));
+  copyList(l, &lNew);
+
+  // Bubble sort
+  IdxType i, j;
+  for (i = getFirstIdx(lNew); i <= getLastIdx(lNew); i++)
+  {
+    for (j = getFirstIdx(lNew); j <= getLastIdx(lNew); j++)
+    {
+      DATETIME d1 = DATETIME(INFOKICAUAN(ELMT(lNew, i)));
+      DATETIME d2 = DATETIME(INFOKICAUAN(ELMT(lNew, j)));
+      if (asc)
+      {
+        if (DLT(d1, d2))
+        {
+          ElType temp = ELMT(lNew, i);
+          ELMT(lNew, i) = ELMT(lNew, j);
+          ELMT(lNew, j) = temp;
+        }
+      }
+      else
+      {
+        if (DGT(d1, d2))
+        {
+          ElType temp = ELMT(lNew, i);
+          ELMT(lNew, i) = ELMT(lNew, j);
+          ELMT(lNew, j) = temp;
+        }
+      }
+    }
+  }
+
+  return lNew;
+}
+
 void copyList(ListDinKicauan lIn, ListDinKicauan *lOut)
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
 /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */

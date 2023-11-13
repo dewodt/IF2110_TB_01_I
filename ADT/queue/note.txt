@@ -1,0 +1,1 @@
+masih sangat abstrak dan belum include setiap adt yang diperlukan

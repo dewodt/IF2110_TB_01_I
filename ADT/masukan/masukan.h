@@ -20,7 +20,6 @@ typedef struct
 extern boolean EndMASUKAN;
 extern MASUKAN currentMASUKAN;
 
-
 void STARTMASUKAN();
 /* I.S. : currentChar sembarang
    F.S. : EndMASUKAN = true, dan currentChar = MARK;
@@ -35,14 +34,17 @@ void CopyMASUKAN();
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
-void baca(MASUKAN* masukan);
+void baca(MASUKAN *masukan);
 // Menerima input untuk nama, sandi, bio, dll
 
-void perintah(MASUKAN* perintah, MASUKAN* argumen1, MASUKAN* argumen2);
+void perintah(MASUKAN *perintah, MASUKAN *argumen1, MASUKAN *argumen2);
 // menerima input perintah beserta dengan argumen-argumennya
 
 boolean isSame(MASUKAN masuk, char string[]);
 // membandingkan masuk dengan string
+
+boolean isAllSpace(MASUKAN masuk);
+// memeriksa apakah masuk hanya berisi spasi
 
 void displayMASUKAN(MASUKAN masuk);
 // menampilkan isi dari array masuk

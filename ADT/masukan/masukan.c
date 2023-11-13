@@ -50,13 +50,13 @@ void baca(MASUKAN* masukan){
 // Menerima input untuk nama, sandi, bio, dll
     STARTMASUKAN();
     *masukan = currentMASUKAN;
-    if(*masukan.TabMASUKAN[0] == 10){
+    if((*masukan).TabMASUKAN[0] == 10){
         int i;
-        for (i = 1; i < masukan.Length-1; i++)
+        for (i = 1; i < (*masukan).Length; i++)
         {
-            masukan.TabMASUKAN[i-1] = masukan.TabMASUKAN[i];
+            (*masukan).TabMASUKAN[i-1] = (*masukan).TabMASUKAN[i];
         }
-        masukan.Length = masukan.Length-1;
+        (*masukan).Length = (*masukan).Length-1;
     }else{
 
     }
@@ -103,7 +103,7 @@ boolean isSame(MASUKAN masuk, char string[]){
     i = 0;
     while ((i < masuk.Length) && hasil)
     {
-        if(masuk.TabWord[i] != string[i]){
+        if(masuk.TabMASUKAN[i] != string[i]){
             hasil = false;
         }
         i ++;
@@ -117,7 +117,7 @@ void displayMASUKAN(MASUKAN masuk){
     printf("[");
     for ( i = 0; i <  masuk.Length; i++)
     {
-        printf("%c,", mmasuk.TabWord[i]);
+        printf("%c,", masuk.TabMASUKAN[i]);
     }
     printf("]\n");
     

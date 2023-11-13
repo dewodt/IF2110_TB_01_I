@@ -9,6 +9,15 @@ void BuatKicauan()
 /* F.S. Bila data yang diinput valid, maka akan terbentuk kicauan dengan id, teks, like, author, datetime sesuai input (ditambahkan ke global var list kicauan)
    Bila data yang diinput tidak valid atau melawan constraint tertentu, maka output pesan kesalahan */
 {
+  // Validasi sudah masuk atau belum
+  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
+  boolean isUserLoggedIn = true;
+  if (!isUserLoggedIn)
+  {
+    printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    return;
+  }
+
   // ID Kicauan paling terakhir
   int idKicauanTerakhir = listLength(listKicauan);
   int idKicauanBaru = idKicauanTerakhir + 1;
@@ -71,6 +80,15 @@ void TampilkanKicauan()
 /* I.S. Sembarang */
 /* F.S. Menampilkan seluruh kicauan buatan diri sendiri dan orang2 yang berada di list teman terurut berdasarkan waktu */
 {
+  // Validasi sudah masuk atau belum
+  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
+  boolean isUserLoggedIn = true;
+  if (!isUserLoggedIn)
+  {
+    printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    return;
+  }
+
   // Buat list baru yang telah di sortir berdasarkan date time.
   ListDinKicauan sortedKicauan = sortListDinKicauanByDateTime(listKicauan, true);
 
@@ -93,6 +111,15 @@ void SukaKicauan(int idKicau)
 /* F.S. Bila idKicau valid, maka jumlah like kicauan dengan id idKicau bertambah satu (update global var list kicauan)
   Bila idKicau tidak valid, maka keluarkan pesan kicauan tidak ditemukan */
 {
+  // Validasi sudah masuk atau belum
+  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
+  boolean isUserLoggedIn = true;
+  if (!isUserLoggedIn)
+  {
+    printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    return;
+  }
+
   // Kasus idKicau tidak valid
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
   if (idKicau < 1 || idKicau > listLength(listKicauan))
@@ -126,6 +153,15 @@ void UbahKicauan(int idKicau)
 /* F.S. Bila idKicau valid, maka kicauan dengan suatu id idKicau diperbarui (update global var list kicauan)
   Bila idKicau tidak valid, maka keluarkan pesan kicauan tidak ditemukan */
 {
+  // Validasi sudah masuk atau belum
+  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
+  boolean isUserLoggedIn = true;
+  if (!isUserLoggedIn)
+  {
+    printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    return;
+  }
+
   // Bila idKicau tidak valid
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
   if (idKicau < 1 || idKicau > listLength(listKicauan))

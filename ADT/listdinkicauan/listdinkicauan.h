@@ -22,7 +22,7 @@ extern ListDinKicauan listKicauan;
 /* Definisi elemen dan koleksi objek */
 typedef Kicauan ElType;
 typedef int IdxType;
-typedef struct
+typedef struct listDinKicauan
 {
   ElType *buffer; /* memori tempat penyimpan elemen (container) */
   int nEff;       /* >=0, banyaknya elemen efektif */

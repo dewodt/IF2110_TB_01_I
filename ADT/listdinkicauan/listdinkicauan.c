@@ -67,6 +67,14 @@ boolean isIdxEff(ListDinKicauan l, IdxType i)
   return (i >= getFirstIdx(l) && i <= getLastIdx(l));
 }
 
+/* Prosedur mengecek apakah ada kicauan dengan idKicauan */
+boolean isKicauanExist(ListDinKicauan l, int idKicauan)
+/* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
+{
+  // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
+  return (idKicauan >= 1 && idKicauan <= listLength(l));
+}
+
 /* ********** TEST KOSONG/PENUH ********** */
 /* *** Test list kosong *** */
 boolean isEmpty(ListDinKicauan l)
@@ -83,6 +91,46 @@ boolean isFull(ListDinKicauan l)
 }
 
 /* ********** OPERASI LAIN ********** */
+/* Sortir kicauan berdasarkan datetime */
+ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc)
+/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
+{
+  ListDinKicauan lNew;
+  CreateListDinKicauan(&lNew, CAPACITY(l));
+  copyList(l, &lNew);
+
+  // Bubble sort
+  IdxType i, j;
+  for (i = getFirstIdx(lNew); i <= getLastIdx(lNew); i++)
+  {
+    for (j = getFirstIdx(lNew); j <= getLastIdx(lNew); j++)
+    {
+      DATETIME d1 = DATETIME(InfoKicauan(ELMT(l, i)));
+      DATETIME d2 = DATETIME(InfoKicauan(ELMT(lNew, j)));
+      if (asc)
+      {
+        if (DLT(d1, d2))
+        {
+          ElType temp = ELMT(lNew, i);
+          ELMT(lNew, i) = ELMT(lNew, j);
+          ELMT(lNew, j) = temp;
+        }
+      }
+      else
+      {
+        if (DGT(d1, d2))
+        {
+          ElType temp = ELMT(lNew, i);
+          ELMT(lNew, i) = ELMT(lNew, j);
+          ELMT(lNew, j) = temp;
+        }
+      }
+    }
+  }
+
+  return lNew;
+}
+
 void copyList(ListDinKicauan lIn, ListDinKicauan *lOut)
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
 /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */

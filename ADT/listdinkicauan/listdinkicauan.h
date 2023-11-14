@@ -78,6 +78,9 @@ boolean isIdxValid(ListDinKicauan l, IdxType i);
 boolean isIdxEff(ListDinKicauan l, IdxType i);
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
 /* yaitu antara 0..NEFF(l) */
+/* Prosedur mengecek apakah ada kicauan dengan idKicauan */
+boolean isKicauanExist(ListDinKicauan l, int idKicauan);
+/* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
 
 /* ********** TEST KOSONG/PENUH ********** */
 /* *** Test list kosong *** */
@@ -88,6 +91,9 @@ boolean isFull(ListDinKicauan l);
 /* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 
 /* ********** OPERASI LAIN ********** */
+/* Sortir kicauan berdasarkan datetime */
+ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc);
+/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
 
 void copyList(ListDinKicauan lIn, ListDinKicauan *lOut);
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */

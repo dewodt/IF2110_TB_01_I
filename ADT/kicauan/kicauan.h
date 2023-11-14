@@ -29,14 +29,6 @@ void CreateKicauan(Kicauan *k, int id, char *text, char author, DATETIME datetim
 /* Kicauan terdefinisi */
 /* F.S. kicauan terdefinisi sesuai parameter */
 
-/* Prosedur mengecek apakah ada kicauan dengan idKicauan */
-boolean isKicauanExist(int idKicauan);
-/* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
-
-/* Sortir kicauan berdasarkan datetime */
-ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc);
-/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
-
 /* Prosedur pemanggilan pembuatan Kicau (bersama validasi2nya) */
 void BuatKicauan();
 /* I.S. User sudah masuk, tidak terbentuk kicauan */

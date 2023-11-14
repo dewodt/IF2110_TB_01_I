@@ -3,6 +3,22 @@
 #include "../balasan/balasan.h"
 #include "../listdinkicauan/listdinkicauan.h"
 
+/* Buat balasan baru */
+void CreateBalasan(Balasan *b, int id, char *text, char author, DATETIME datetime)
+/* I.S. balasan sembarang, id, text, author, datetime terdefinisi */
+/* F.S. terbentuk balasan dengan sesuai parameter input */
+{
+  ID(*b) = id;
+  AUTHOR(*b) = author;
+  DATETIME(*b) = datetime;
+  int i;
+  for (i = 0; i < 280; i++)
+  {
+    TEXT(*b)
+    [i] = text[i];
+  }
+}
+
 /* Prosedur Balas */
 void BuatBalasan(int idKicau, int idBalasan)
 /* I.S. Sembarang */
@@ -103,14 +119,126 @@ void BuatBalasan(int idKicau, int idBalasan)
   balasBalasan(balasan, infoBalasan);
 }
 
+// Mencetak kedalaman suatu baris dalam balasan
+void CetakKedalaman(int depth)
+/* I.S. depth valid */
+/* F.S. tercetak spasi kedalaman depth */
+{
+  int i;
+  for (i = 0; i < depth; i++)
+  {
+    printf("   ");
+  }
+}
+
+/* Prosedur mencetak satu detail balasan */
+void CetakDetailBalasan(Balasan b, boolean isPrivat, int depth)
+/* I.S. Sembarang */
+/* F.S. bila privat, akan tercetak privat beserta kedalamannya
+        bila bisa dilihat, akan tercetak detail balasan (nama, text, dll tercetak) beserta dengan spasi kedalaman */
+{
+  if (!isPrivat)
+  {
+    CetakKedalaman(depth);
+    printf("| ID = %d\n", ID(b));
+    printf("\n");
+    CetakKedalaman(depth);
+    printf("| Author = %c\n", AUTHOR(b));
+    printf("\n");
+    CetakKedalaman(depth);
+    TulisDATETIME(DATETIME(b));
+    printf("\n");
+    CetakKedalaman(depth);
+    printf("| Text = %s\n", TEXT(b));
+    printf("\n");
+  }
+  else
+  {
+    CetakKedalaman(depth);
+    printf("| PRIVAT\n", ID(b));
+    printf("\n");
+    CetakKedalaman(depth);
+    printf("| PRIVAT\n", ID(b));
+    printf("\n");
+    CetakKedalaman(depth);
+    printf("| PRIVAT\n", ID(b));
+    printf("\n");
+    CetakKedalaman(depth);
+    printf("| PRIVAT\n", ID(b));
+    printf("\n");
+  }
+}
+
 /* Prosedur Mencetak Balasan */
-void TampilkanBalasan(int idKicau);
+void TampilkanBalasan(int idKicau)
 /* I.S. Sembarang */
 /* F.S. Menampilkan seluruh tree balasan dari sebuah idKicau dengan ketentuan
   Bila idKicau tidak valid, output pesan kicauan tidak ada
   Bila Akun yang membuat kicauan privat dan user belum berteman, output pesan kicauan privat
   Bila belum terdapat balasan pada kicauan, output pesan belum terdapat balasan
   Bila pada balasan ada balasan yang privat dan belum berteman, tampilkan balasan PRIVAT */
+{
+  // Validasi sudah masuk atau belum
+  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
+  boolean isUserLoggedIn = true;
+  if (!isUserLoggedIn)
+  {
+    printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    return;
+  }
+
+  // Kasus kicauan tidak ada
+  if (!isKicauanExist(listKicauan, idKicau))
+  {
+    printf("Tidak terdapat kicauan dengan id tersebut!\n");
+    return;
+  }
+
+  // Get kicauan
+  TreeKicauan kicauan = ELMT(listKicauan, idKicau);
+
+  // Kasus kicauan ada namun tidak ada balasan
+  if (!isBalasanExist(kicauan))
+  {
+    printf("Belum terdapat balasan apapun pada kicauan tersebut. Yuk balas kicauan tersebut!\n");
+  }
+
+  // Kasus pemilik kicauan akun privat
+  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
+  boolean isCurrentUserCanSee = true;
+  if (!isCurrentUserCanSee)
+  {
+    printf("Wah, kicauan tersebut dibuat oleh pengguna dengan akun privat!\n");
+    return;
+  }
+
+  // Cetak balasan-balasan dalam kicauan
+  AddressBalasan firstChildBalasan = getFirstChildBalasan(kicauan);
+  TampilkanBalasanRekursif(firstChildBalasan, 0);
+}
+void TampilkanBalasanRekursif(AddressBalasan nodeBalasan, int depth)
+{
+  // Kasus kosong
+  if (nodeBalasan == NULL)
+  {
+    return;
+  }
+
+  // Kasus tidak kosong
+  // Cetak node sekarang
+  boolean isBalasanBisaDilihatCurrentUser = true;
+  CetakDetailBalasan(InfoBalasan(nodeBalasan), isBalasanBisaDilihatCurrentUser, depth);
+
+  // Selesaikan leftchild dulu, baru right child
+  AddressBalasan leftChild = LeftChildBalasan(nodeBalasan);
+  AddressBalasan rightChild = RightChildBalasan(nodeBalasan);
+
+  // Cetak left child
+  TampilkanBalasanRekursif(leftChild, depth + 1);
+
+  // Cetak right child
+  TampilkanBalasanRekursif(rightChild, depth + 1);
+}
 
 /* Prosedur Menghapus Balasan */
 void HapusBalasan(int idKicau, int idBalasan);

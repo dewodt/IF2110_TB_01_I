@@ -33,8 +33,20 @@ void BuatBalasan(int idKicau, int idBalasan);
   Bila idKicau tidak valid, output pesan tidak terdapat kicauan
   Bila idKicau valid namun idBalasan tidak valid, output pesan tidak terdapat balasan */
 
+// Mencetak kedalaman suatu baris dalam balasan
+void CetakKedalaman(int depth);
+/* I.S. depth valid */
+/* F.S. tercetak spasi kedalaman depth */
+
+/* Prosedur mencetak satu detail balasan */
+void CetakDetailBalasan(Balasan b, boolean isPrivat, int depth);
+/* I.S. Sembarang */
+/* F.S. bila privat, akan tercetak privat beserta kedalamannya
+        bila bisa dilihat, akan tercetak detail balasan (nama, text, dll tercetak) beserta dengan spasi kedalaman */
+
 /* Prosedur Mencetak Balasan */
 void TampilkanBalasan(int idKicau);
+void TampilkanBalasanRekursif(AddressBalasan nodeBalasan, int dept);
 /* I.S. Sembarang */
 /* F.S. Menampilkan seluruh tree balasan dari sebuah idKicau dengan ketentuan
   Bila idKicau tidak valid, output pesan kicauan tidak ada

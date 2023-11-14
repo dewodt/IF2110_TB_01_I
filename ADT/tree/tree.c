@@ -2,32 +2,40 @@
 #include "../tree/tree.h"
 
 /* Prosedur membuat kicauan baru */
-void createKicauan(Kicauan *k, int id, char text[], int like, char author, DATETIME datetime)
-/* I.S. data id, text, like, author, datetime valid */
-/* F.S. Terbentuk kicauan dengan id, teks, like, author, datetime sesuai input */
+AddressKicauan newNodeKicauan(Kicauan kicauan)
+/* I.S. Sembarang */
+/* F.S. Bila alokasi berhasil, terbentuk alokasi node kicauan baru
+  Bila alokasi gagal, F.S.=I.S. */
 {
-  // Update info kicauan
-  InfoKicauan infoKicauan = INFOKICAUAN(*k);
+  // Alokasi
+  AddressKicauan newNode = (AddressKicauan)malloc(sizeof(Kicauan));
 
-  ID(infoKicauan) = id;
-  AUTHOR(infoKicauan) = author;
-  LIKE(infoKicauan) = like;
-  DATETIME(infoKicauan) = datetime;
-
-  // Update text
-  int i;
-  for (i = 0; i < 280; i++)
+  // Alokasi berhasil
+  if (newNode != NULL)
   {
-    TEXT(infoKicauan)
-    [i] = text[i];
+    InfoKicauan(newNode) = kicauan;
+    FirstLeftChildBalasan(newNode) = NULL;
   }
 
-  // Set first child null
-  FIRSTLEFTCHILD(*k) = NULL;
+  return newNode;
 }
 
 /* Prosedur membuat balasan baru */
-AddressBalasan newNodeBalasan(Balasan balasan);
+AddressBalasan newNodeBalasan(Balasan balasan)
 /* I.S. Sembarang */
 /* F.S. Bila alokasi berhasil, terbentuk alokasi node balasan baru
   Bila alokasi gagal, F.S.=I.S. */
+{
+  // Alokasi
+  AddressBalasan newNode = (AddressBalasan)malloc(sizeof(Balasan));
+
+  // Alokasi berhasil
+  if (newNode != NULL)
+  {
+    InfoBalasan(newNode) = balasan;
+    LeftChildBalasan(newNode) = NULL;
+    RightSiblingBalasan(newNode) = NULL;
+  }
+
+  return newNode;
+}

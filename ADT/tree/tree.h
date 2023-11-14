@@ -10,35 +10,40 @@
 Left-child artinya reply pertama sebuah balasan atau kicauan
 Right sibling merupakan reply-reply lainnya dari parent */
 
-/* Definisi balasan (disimpan dalam node) */
-typedef struct balasan *AddressBalasan;
-typedef struct balasan
+/* Definisi node balasan */
+typedef struct nodeBalasan *AddressBalasan;
+typedef struct nodeBalasan
 {
-  InfoBalasan infoBalasan;
-  AddressBalasan nextBalasanRightSibling;
-  AddressBalasan nextBalasanLeftChild;
-} Balasan;
+  Balasan infoBalasan;
+  AddressBalasan rightSiblingBalasan;
+  AddressBalasan leftChildBalasan;
+} NodeBalasan;
 
-/* Definisi kicauan (disimpan di dalam list dinamis) */
-typedef struct kicauan
+/* Definisi node kicauan */
+typedef struct nodeKicauan *AddressKicauan;
+typedef struct nodeKicauan
 {
-  InfoKicauan infoKicauan;
+  Kicauan infoKicauan;
   AddressBalasan firstLeftChildBalasan;
-} Kicauan;
+} NodeKicauan;
+
+/* Definisi Tree */
+typedef AddressKicauan TreeKicauan;
 
 /* Selektor Balasan */
-#define INFOBALASAN(b) (b)->infoBalasan
-#define RIGHTSIBLING(b) (b)->nextBalasanRightSibling
-#define LEFTCHILD(b) (b)->nextBalasanLeftChild
+#define InfoBalasan(P) (P)->infoBalasan
+#define RightSiblingBalasan(P) (P)->rightSiblingBalasan
+#define LeftChildBalasan(P) (P)->leftChildBalasan
 
 /* Selektor Kicauan */
-#define INFOKICAUAN(k) (k).infoKicauan
-#define FIRSTLEFTCHILD(k) (k).firstLeftChildBalasan
+#define InfoKicauan(P) (P)->infoKicauan
+#define FirstLeftChildBalasan(P) (P)->firstLeftChildBalasan
 
 /* Prosedur membuat kicauan baru */
-void createKicauan(Kicauan *k, int id, char text[], int like, char author, DATETIME datetime);
-/* I.S. Sembarang, data id, text, like, author, datetime valid */
-/* F.S. Terbentuk kicauan dengan id, teks, like, author, datetime sesuai input */
+AddressKicauan newNodeKicauan(Kicauan kicauan);
+/* I.S. Sembarang */
+/* F.S. Bila alokasi berhasil, terbentuk alokasi node kicauan baru
+  Bila alokasi gagal, F.S.=I.S. */
 
 /* Prosedur membuat balasan baru */
 AddressBalasan newNodeBalasan(Balasan balasan);

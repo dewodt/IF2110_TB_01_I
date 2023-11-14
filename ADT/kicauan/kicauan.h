@@ -14,7 +14,7 @@ typedef struct
   int like;
   char author; /* TO DO: CONNECT KE ADT PENGGUNA */
   DATETIME datetime;
-} InfoKicauan;
+} Kicauan;
 
 /* Selektor Kicauan */
 #define ID(k) (k).id
@@ -23,6 +23,20 @@ typedef struct
 #define AUTHOR(k) (k).author
 #define DATETIME(k) (k).datetime
 
+/* Konstruktor kicauan */
+void CreateKicauan(Kicauan *k, int id, char *text, char author, DATETIME datetime);
+/* I.S. kicauan sembarang, id, text, author, datetime terdefinisi */
+/* Kicauan terdefinisi */
+/* F.S. kicauan terdefinisi sesuai parameter */
+
+/* Prosedur mengecek apakah ada kicauan dengan idKicauan */
+boolean isKicauanExist(int idKicauan);
+/* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
+
+/* Sortir kicauan berdasarkan datetime */
+ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc);
+/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
+
 /* Prosedur pemanggilan pembuatan Kicau (bersama validasi2nya) */
 void BuatKicauan();
 /* I.S. User sudah masuk, tidak terbentuk kicauan */
@@ -30,7 +44,7 @@ void BuatKicauan();
    Bila data yang diinput tidak valid atau melawan constraint tertentu, maka output pesan kesalahan */
 
 /* Prosedur Menampilkan Detail Kicauan */
-void printDetailKicauan(InfoKicauan k);
+void printDetailKicauan(Kicauan k);
 /* I.S. Sembarang */
 /* F.S. Mencetak detail sebuah kicauan */
 

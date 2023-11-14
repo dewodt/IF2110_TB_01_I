@@ -3,6 +3,72 @@
 #include "../masukan/masukan.h"
 #include "../listdinkicauan/listdinkicauan.h"
 
+/* Konstruktor kicauan */
+void CreateKicauan(Kicauan *k, int id, char *text, char author, DATETIME datetime)
+/* I.S. kicauan sembarang, id, text, author, datetime terdefinisi */
+/* Kicauan terdefinisi */
+/* F.S. kicauan terdefinisi sesuai parameter */
+{
+  ID(*k) = id;
+  LIKE(*k) = 0;
+  AUTHOR(*k) = author;
+  DATETIME(*k) = datetime;
+  int i;
+  for (i = 0; i < 280; i++)
+  {
+    TEXT(*k)
+    [i] = text[i];
+  }
+}
+
+/* Prosedur mengecek apakah ada kicauan dengan idKicauan */
+boolean isKicauanExist(int idKicauan)
+/* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
+{
+  // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
+  return (idKicauan >= 1 && idKicauan <= listLength(listKicauan));
+}
+
+/* Sortir kicauan berdasarkan datetime */
+ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc)
+/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
+{
+  ListDinKicauan lNew;
+  CreateListDinKicauan(&lNew, CAPACITY(l));
+  copyList(l, &lNew);
+
+  // Bubble sort
+  IdxType i, j;
+  for (i = getFirstIdx(lNew); i <= getLastIdx(lNew); i++)
+  {
+    for (j = getFirstIdx(lNew); j <= getLastIdx(lNew); j++)
+    {
+      DATETIME d1 = DATETIME(InfoKicauan(ELMT(l, i)));
+      DATETIME d2 = DATETIME(InfoKicauan(ELMT(lNew, j)));
+      if (asc)
+      {
+        if (DLT(d1, d2))
+        {
+          ElType temp = ELMT(lNew, i);
+          ELMT(lNew, i) = ELMT(lNew, j);
+          ELMT(lNew, j) = temp;
+        }
+      }
+      else
+      {
+        if (DGT(d1, d2))
+        {
+          ElType temp = ELMT(lNew, i);
+          ELMT(lNew, i) = ELMT(lNew, j);
+          ELMT(lNew, j) = temp;
+        }
+      }
+    }
+  }
+
+  return lNew;
+}
+
 /* Prosedur pemanggilan pembuatan Kicau (bersama validasi2nya) */
 void BuatKicauan()
 /* I.S. User sudah masuk, tidak terbentuk kicauan */
@@ -22,15 +88,14 @@ void BuatKicauan()
   int idKicauanTerakhir = listLength(listKicauan);
   int idKicauanBaru = idKicauanTerakhir + 1;
 
+  // Masukan pesan kicauan
   printf("Masukkan kicauan:\n");
   printf(">> ");
-
-  // Masukan pesan kicauan
   MASUKAN pesanKicauan;
   baca(&pesanKicauan);
 
   // Validasi masukan kicauan
-  if (isAllSpace)
+  if (isAllSpace(pesanKicauan))
   {
     printf("Kicauan tidak boleh hanya berisi spasi!\n");
     return;
@@ -43,17 +108,18 @@ void BuatKicauan()
   // Buat kicauan baru
   Kicauan kicauanBaru;
   // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
-  // CreateKicauan(&kicauanBaru, idKicauanBaru, pesanKicauan, 0, currentUser, waktuKicauan);
-  insertLast(&listKicauan, kicauanBaru);
+  // CreateKicauan(&kicauanBaru, idKicauanBaru, pesanKicauan, currentUser, waktuKicauan);
+  TreeKicauan nodeKicauan = newNodeKicauan(kicauanBaru);
+  insertLast(&listKicauan, nodeKicauan);
 
   // Cetak pesan
   printf("Selamat! kicauan telah diterbitkan!\n");
   pritnf("Detil kicauan:\n");
-  printDetailKicauan(INFOKICAUAN(kicauanBaru));
+  printDetailKicauan(kicauanBaru);
 }
 
 /* Prosedur Menampilkan Detail Kicauan */
-void printDetailKicauan(InfoKicauan k)
+void printDetailKicauan(Kicauan k)
 /* I.S. Sembarang */
 /* F.S. Mencetak detail sebuah kicauan */
 {
@@ -90,7 +156,7 @@ void TampilkanKicauan()
   }
 
   // Buat list baru yang telah di sortir berdasarkan date time.
-  ListDinKicauan sortedKicauan = sortListDinKicauanByDateTime(listKicauan, true);
+  ListDinKicauan sortedKicauan = sortKicauanByDateTime(listKicauan, true);
 
   // TO DO: SAMBUNGKAN DENGAN LOGIC CURRENT USER & TEMAN USER
   // Cari kicauan yang dibuat oleh current user atau teman current user
@@ -100,7 +166,7 @@ void TampilkanKicauan()
     boolean isCurrentUserOrFriend = true;
     if (isCurrentUserOrFriend)
     {
-      printDetailKicauan(INFOKICAUAN(ELMT(sortedKicauan, i)));
+      printDetailKicauan(InfoKicauan(ELMT(sortedKicauan, i)));
     }
   }
 }
@@ -122,7 +188,7 @@ void SukaKicauan(int idKicau)
 
   // Kasus idKicau tidak valid
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
-  if (idKicau < 1 || idKicau > listLength(listKicauan))
+  if (!isKicauanExist(idKicau))
   {
     printf("Tidak ditemukan kicauan dengan ID = %d!\n", idKicau);
     return;
@@ -138,13 +204,13 @@ void SukaKicauan(int idKicau)
   }
 
   // Kasus idKicauValid dan kicauan dapat dilihat
-  Kicauan kicauan = ELMT(listKicauan, idKicau);
-  LIKE(INFOKICAUAN(kicauan)) += 1;
+  TreeKicauan nodeKicauan = ELMT(listKicauan, idKicau);
+  LIKE(InfoKicauan(nodeKicauan)) += 1;
 
   // Cetak pesan
   printf("Selamat! kicauan telah disukai!\n");
   printf("Detil kicauan:\n");
-  printDetailKicauan(INFOKICAUAN(kicauan));
+  printDetailKicauan(InfoKicauan(nodeKicauan));
 }
 
 /* Prosedur Ubah Kicauan */
@@ -164,7 +230,7 @@ void UbahKicauan(int idKicau)
 
   // Bila idKicau tidak valid
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
-  if (idKicau < 1 || idKicau > listLength(listKicauan))
+  if (!isKicauanExist(idKicau))
   {
     printf("Tidak ditemukan kicauan dengan ID = %d!\n", idKicau);
     return;
@@ -194,19 +260,18 @@ void UbahKicauan(int idKicau)
   }
 
   // Masukan valid, update kicauan
-  Kicauan kicauan = ELMT(listKicauan, idKicau);
-  InfoKicauan infoKicauan = INFOKICAUAN(kicauan);
+  TreeKicauan nodeKicauan = ELMT(listKicauan, idKicau);
 
   // Update text
   int i;
   for (i = 0; i < 280; i++)
   {
-    TEXT(infoKicauan)
+    TEXT(InfoKicauan(nodeKicauan))
     [i] = pesanKicauan.TabMASUKAN[i];
   }
 
   // Tampilkan pesan
   printf("Selamat! kicauan telah diterbitkan!\n");
   printf("Detil kicauan:\n");
-  printDetailKicauan(INFOKICAUAN(kicauan));
+  printDetailKicauan(InfoKicauan(nodeKicauan));
 }

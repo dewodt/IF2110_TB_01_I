@@ -1,5 +1,5 @@
 /* MODUL KICAUAN DYNAMIC LIST */
-/* Berisi definisi dan semua primitif pemrosesan list dinamis kicauan (menyimpan root tree kicauan & balasan) */
+/* Berisi definisi dan semua primitif pemrosesan list dinamis kicauan menyimpan root tree kicauan */
 /* Penempatan elemen selalu rapat kiri */
 /* Versi II : dengan banyaknya elemen didefinisikan secara eksplisit,
    memori list dinamik */
@@ -20,7 +20,7 @@
 extern ListDinKicauan listKicauan;
 
 /* Definisi elemen dan koleksi objek */
-typedef Kicauan ElType;
+typedef TreeKicauan ElType;
 typedef int IdxType;
 typedef struct listDinKicauan
 {
@@ -88,8 +88,6 @@ boolean isFull(ListDinKicauan l);
 /* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 
 /* ********** OPERASI LAIN ********** */
-ListDinKicauan sortListDinKicauanByDateTime(ListDinKicauan l, boolean asc);
-/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
 
 void copyList(ListDinKicauan lIn, ListDinKicauan *lOut);
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */

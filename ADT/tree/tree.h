@@ -67,4 +67,16 @@ AddressBalasan getBalasanRecursive(AddressBalasan nodeBalasan, int idBalasan);
 /* Mengembalikan node bila ketemu, mengembalika NULL bisa tidak ketemu */
 /* Untuk mengecek seluruh node, input: firstLeftChild dari kicauan */
 
+/* Prosedur untuk append balasan pada sebuah kicauan */
+void balasKicauan(TreeKicauan nodeKicauan, Balasan balasan);
+/* I.S. nodeKicauan terdefinisi dan balasan terdefinisi */
+/* F.S. bila gagal, I.S. = F.S.
+        bila berhasil, balasan ditambahkan pada kicauan */
+
+/* Prosedur untuk membalas balasan */
+void balasBalasan(AddressBalasan nodeBalasan, Balasan balasan);
+/* I.S. nodeBalasan terdefinisi, dan balasan terdefinisi */
+/* F.S. bila gagal, I.S. = F.S.
+        bila berhasil, balasan ditambahkan pada balasan */
+
 #endif

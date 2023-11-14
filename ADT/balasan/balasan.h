@@ -1,7 +1,6 @@
 #ifndef BALASAN_H
 #define BALASAN_H
 
-#include "../time/time.h"
 #include "../datetime/datetime.h"
 
 /* Struktur Info Balasan */
@@ -12,13 +11,18 @@ typedef struct
   char text[280];
   char author; /* TO DO: CONNECT KE ADT PENGGUNA */
   DATETIME datetime;
-} InfoBalasan;
+} Balasan;
 
 /* Selektor Balasan */
 #define ID(k) (k).id
 #define TEXT(k) (k).text
 #define AUTHOR(k) (k).author
 #define DATETIME(k) (k).datetime
+
+/* Buat balasan baru */
+void CreateBalasan(Balasan *b, int id, char *text, char author, DATETIME datetime);
+/* I.S. balasan sembarang, id, text, author, datetime terdefinisi */
+/* F.S. terbentuk balasan dengan sesuai parameter input */
 
 /* Prosedur Balas */
 void BuatBalasan(int idKicau, int idBalasan);

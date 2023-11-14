@@ -190,3 +190,73 @@ AddressBalasan getBalasanRecursive(AddressBalasan nodeBalasan, int idBalasan)
   // Tidak ketemu
   return NULL;
 }
+
+/* Prosedur untuk append balasan pada sebuah kicauan */
+void balasKicauan(TreeKicauan nodeKicauan, Balasan balasan)
+/* I.S. nodeKicauan terdefinisi dan balasan terdefinisi */
+/* F.S. bila gagal, I.S. = F.S.
+        bila berhasil, balasan ditambahkan pada kicauan */
+{
+  // Buat balasan baru
+  AddressBalasan nodeBalasan = newNodeBalasan(balasan);
+
+  // Alokasi gagal
+  if (nodeBalasan == NULL)
+  {
+    return;
+  }
+
+  // Alokasi berhasil
+  // Dapatkan node terakhir balasan dari kicauan
+  AddressBalasan pBalasan = FirstLeftChildBalasan(nodeKicauan);
+
+  if (pBalasan == NULL)
+  {
+    // Kasus belum ada balasan pada kicauan
+    FirstLeftChildBalasan(nodeKicauan) = nodeBalasan;
+  }
+  else
+  {
+    // Kasus sudah ada balasan pada kicauan, append ke yang paling terakhir
+    while (RightSiblingBalasan(pBalasan) != NULL)
+    {
+      pBalasan = RightSiblingBalasan(pBalasan);
+    }
+    RightSiblingBalasan(pBalasan) = nodeBalasan;
+  }
+}
+
+/* Prosedur untuk membalas balasan */
+void balasBalasan(AddressBalasan nodeBalasan, Balasan balasan)
+/* I.S. nodeBalasan terdefinisi, dan balasan terdefinisi */
+/* F.S. bila gagal, I.S. = F.S.
+        bila berhasil, balasan ditambahkan pada balasan */
+{
+  // Buat balasan baru
+  AddressBalasan nodeBalasanBaru = newNodeBalasan(balasan);
+
+  // Alokasi gagal
+  if (nodeBalasanBaru == NULL)
+  {
+    return;
+  }
+
+  // Alokasi berhasil
+  // Dapatkan node terakhir balasan dari kicauan
+  AddressBalasan pBalasan = LeftChildBalasan(nodeBalasan);
+
+  if (pBalasan == NULL)
+  {
+    // Kasus belum ada balasan pada kicauan
+    LeftChildBalasan(nodeBalasan) = nodeBalasanBaru;
+  }
+  else
+  {
+    // Kasus sudah ada balasan pada kicauan, append ke yang paling terakhir
+    while (RightSiblingBalasan(pBalasan) != NULL)
+    {
+      pBalasan = RightSiblingBalasan(pBalasan);
+    }
+    RightSiblingBalasan(pBalasan) = nodeBalasanBaru;
+  }
+}

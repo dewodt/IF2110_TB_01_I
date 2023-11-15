@@ -79,4 +79,15 @@ void balasBalasan(AddressBalasan nodeBalasan, Balasan balasan);
 /* F.S. bila gagal, I.S. = F.S.
         bila berhasil, balasan ditambahkan pada balasan */
 
+/* Prosedur untuk menghapus balasan */
+void hapusBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete);
+void hapusBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete);
+/* I.S. Address balasan terdefinisi */
+/* F.S. Address balasan dan semua anak-anaknya terbebaskan */
+
+/* Prosedur untuk menghapus balasan dan juga seluruh child dari node */
+void freeNodeAndChilds(AddressBalasan nodeBalasan);
+/* I.S. node balasan terdefinisi */
+/* F.S. node balasan dan seluruh childnya dihapus dari node */
+
 #endif

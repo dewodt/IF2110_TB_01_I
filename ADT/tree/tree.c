@@ -260,3 +260,78 @@ void balasBalasan(AddressBalasan nodeBalasan, Balasan balasan)
     RightSiblingBalasan(pBalasan) = nodeBalasanBaru;
   }
 }
+
+/* Prosedur untuk menghapus balasan */
+void hapusBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete)
+/* I.S. Address balasan terdefinisi & valid */
+/* F.S. Address balasan dan semua anak-anaknya (jika ada) terbebaskan */
+{
+  AddressBalasan firstLeftChild = FirstLeftChildBalasan(nodeKicauan);
+  if (firstLeftChild == nodeBalasanDelete)
+  {
+    // Kasus balasan yang ingin dihapus merupakan first child dari root
+    // Ganti firstLeftChild right siblingnya
+    firstLeftChild = RightSiblingBalasan(nodeBalasanDelete);
+    freeNodeAndChilds(nodeBalasanDelete);
+    return;
+  }
+
+  // Kasus balasan yang ingin dihapus bukan merupakan first child dari root
+  hapusBalasanRekursif(firstLeftChild, nodeBalasanDelete);
+}
+void hapusBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete)
+{
+  // Kasus nodeBalasan kosong
+  if (currentNode == NULL)
+  {
+    return;
+  }
+
+  AddressBalasan rightSibling = RightSiblingBalasan(currentNode);
+  AddressBalasan leftChild = LeftChildBalasan(currentNode);
+
+  // Kasus rightSibling dari current node merupakan node yang ingin dihapus
+  if (rightSibling == nodeBalasanDelete)
+  {
+    RightSiblingBalasan(currentNode) = RightSiblingBalasan(nodeBalasanDelete);
+    freeNodeAndChilds(nodeBalasanDelete);
+    return;
+  }
+
+  // Kasus leftChild dari current node merupakan node yang ingin dihapus
+  if (leftChild == nodeBalasanDelete)
+  {
+    LeftChildBalasan(currentNode) = RightSiblingBalasan(nodeBalasanDelete);
+    freeNodeAndChilds(nodeBalasanDelete);
+    return;
+  }
+
+  // Kasus rightSibling dari current node bukan merupakan node yang ingin dihapus
+  hapusBalasanRekursif(rightSibling, nodeBalasanDelete);
+
+  // Kasus leftChild dari current node bukan merupakan node yang ingin dihapus
+  hapusBalasanRekursif(leftChild, nodeBalasanDelete);
+}
+void freeNodeAndChilds(AddressBalasan nodeBalasan)
+{
+  // Kasus nodeBalasan kosong
+  if (nodeBalasan == NULL)
+  {
+    return;
+  }
+
+  // Kasus nodeBalasan memiliki left
+  if (LeftChildBalasan(nodeBalasan) != NULL)
+  {
+    freeNodeAndChilds(LeftChildBalasan(nodeBalasan));
+  }
+
+  // Kasus nodeBalasan memiliki right
+  if (RightSiblingBalasan(nodeBalasan) != NULL)
+  {
+    freeNodeAndChilds(RightSiblingBalasan(nodeBalasan));
+  }
+
+  // Bebaskan current Node
+  free(nodeBalasan);
+}

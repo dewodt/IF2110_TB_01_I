@@ -241,8 +241,46 @@ void TampilkanBalasanRekursif(AddressBalasan nodeBalasan, int depth)
 }
 
 /* Prosedur Menghapus Balasan */
-void HapusBalasan(int idKicau, int idBalasan);
+void HapusBalasan(int idKicau, int idBalasan)
 /* I.S. Sembarang */
 /* F.S. Bila ditemukan balasan dengan idBalasan pada kicauan dengan idKicau maka balasan terhapus
   Bila tidak ditemukan, output pesan balasan tidak ditemukan
   Bila ditemukan dan bukan miliknya output pesan error */
+{
+  // Validasi sudah masuk atau belum
+  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
+  boolean isUserLoggedIn = true;
+  if (!isUserLoggedIn)
+  {
+    printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    return;
+  }
+
+  // Kicauan tidak ditemukan
+  if (!isKicauanExist(listKicauan, idKicau))
+  {
+    printf("Balasan tidak ditemukan!\n");
+    return;
+  }
+
+  // Kicauan ditemukan namun balasan tidak ditemukan
+  TreeKicauan kicauan = ELMT(listKicauan, idKicau);
+  AddressBalasan balasan = getBalasan(kicauan, idBalasan);
+  if (balasan == NULL)
+  {
+    printf("Balasan tidak ditemukan!\n");
+    return;
+  }
+
+  // Kasus balasan ditemukan namun bukan punyanya
+  // TO DO: CONNECT DGN ADT CEK PENGGUNA
+  boolean isPunyaUser = true;
+  if (!isPunyaUser)
+  {
+    printf("Hei, ini balasan punya siapa? Jangan dihapus ya!\n");
+    return;
+  }
+
+  // Kasus balasan ditemukan dan punyanya
+  hapusBalasan(kicauan, balasan);
+}

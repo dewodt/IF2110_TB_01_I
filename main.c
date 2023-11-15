@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include "pengguna.c"
+#include "profil.c"
 #include "./ADT/wordmachine/wordmachine.h"
 #include "./ADT/Baca/baca.c"
+
 int main() {
     // Tampilan awal
     printf(".______    __    __  .______      .______    __  .______ \n");
@@ -14,6 +17,7 @@ int main() {
     printf("metode (pengambilan data berupa) Focused Group Discussion kedua di zamannya.\n");
     printf("Silahkan masukan folder konfigurasi untuk dimuat: \n");
     printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
+
     // Baca config
     Word kata;
     printf(">>");

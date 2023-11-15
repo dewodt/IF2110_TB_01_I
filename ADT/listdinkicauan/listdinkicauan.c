@@ -6,12 +6,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../boolean.h"
 #include "../listdinkicauan/listdinkicauan.h"
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create list kosong  */
-void CreateListDin(ListDin *l, int capacity)
+void CreateListDinKicauan(ListDinKicauan *l, int capacity)
 /* I.S. l sembarang, capacity > 0 */
 /* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity */
 {
@@ -20,7 +19,7 @@ void CreateListDin(ListDin *l, int capacity)
   BUFFER(*l) = (ElType *)malloc(CAPACITY(*l) * sizeof(ElType));
 }
 
-void dealocateList(ListDin *l)
+void dealocateList(ListDinKicauan *l)
 /* I.S. l terdefinisi; */
 /* F.S. (l) dikembalikan ke system, CAPACITY(l)=0; NEFF(l)=0 */
 {
@@ -31,7 +30,7 @@ void dealocateList(ListDin *l)
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
 /* *** Banyaknya elemen *** */
-int listLength(ListDin l)
+int listLength(ListDinKicauan l)
 /* Mengirimkan banyaknya elemen efektif list */
 /* Mengirimkan nol jika list l kosong */
 /* *** Daya tampung container *** */
@@ -40,13 +39,13 @@ int listLength(ListDin l)
 }
 
 /* *** Selektor INDEKS *** */
-IdxType getFirstIdx(ListDin l)
+IdxType getFirstIdx(ListDinKicauan l)
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l pertama */
 {
   return IDX_MIN;
 }
-IdxType getLastIdx(ListDin l)
+IdxType getLastIdx(ListDinKicauan l)
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l terakhir */
 {
@@ -54,43 +53,91 @@ IdxType getLastIdx(ListDin l)
 }
 
 /* ********** Test Indeks yang valid ********** */
-boolean isIdxValid(ListDin l, IdxType i)
+boolean isIdxValid(ListDinKicauan l, IdxType i)
 /* Mengirimkan true jika i adalah indeks yang valid utk kapasitas list l */
 /* yaitu antara indeks yang terdefinisi utk container*/
 {
   return (i >= getFirstIdx(l) && i < CAPACITY(l));
 }
 
-boolean isIdxEff(ListDin l, IdxType i)
+boolean isIdxEff(ListDinKicauan l, IdxType i)
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
 /* yaitu antara 0..NEFF(l) */
 {
   return (i >= getFirstIdx(l) && i <= getLastIdx(l));
 }
 
+/* Prosedur mengecek apakah ada kicauan dengan idKicauan */
+boolean isKicauanExist(ListDinKicauan l, int idKicauan)
+/* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
+{
+  // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
+  return (idKicauan >= 1 && idKicauan <= listLength(l));
+}
+
 /* ********** TEST KOSONG/PENUH ********** */
 /* *** Test list kosong *** */
-boolean isEmpty(ListDin l)
+boolean isEmpty(ListDinKicauan l)
 /* Mengirimkan true jika list l kosong, mengirimkan false jika tidak */
 {
   return NEFF(l) == 0;
 }
 
 /* *** Test list penuh *** */
-boolean isFull(ListDin l)
+boolean isFull(ListDinKicauan l)
 /* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 {
   return NEFF(l) == CAPACITY(l);
 }
 
 /* ********** OPERASI LAIN ********** */
-void copyList(ListDin lIn, ListDin *lOut)
+/* Sortir kicauan berdasarkan datetime */
+ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc)
+/* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
+{
+  ListDinKicauan lNew;
+  CreateListDinKicauan(&lNew, CAPACITY(l));
+  copyList(l, &lNew);
+
+  // Bubble sort
+  IdxType i, j;
+  for (i = getFirstIdx(lNew); i <= getLastIdx(lNew); i++)
+  {
+    for (j = getFirstIdx(lNew); j <= getLastIdx(lNew); j++)
+    {
+      DATETIME d1 = DATETIME(InfoKicauan(ELMT(l, i)));
+      DATETIME d2 = DATETIME(InfoKicauan(ELMT(lNew, j)));
+      if (asc)
+      {
+        if (DLT(d1, d2))
+        {
+          ElType temp = ELMT(lNew, i);
+          ELMT(lNew, i) = ELMT(lNew, j);
+          ELMT(lNew, j) = temp;
+        }
+      }
+      else
+      {
+        if (DGT(d1, d2))
+        {
+          ElType temp = ELMT(lNew, i);
+          ELMT(lNew, i) = ELMT(lNew, j);
+          ELMT(lNew, j) = temp;
+        }
+      }
+    }
+  }
+
+  return lNew;
+}
+
+void copyList(ListDinKicauan lIn, ListDinKicauan *lOut)
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
 /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
 /* Proses : Menyalin isi lIn ke lOut */
 {
   int i;
-  CreateListDin(lOut, CAPACITY(lIn));
+  CreateListDinKicauan(lOut, CAPACITY(lIn));
   NEFF(*lOut) = NEFF(lIn);
   for (i = getFirstIdx(lIn); i <= getLastIdx(lIn); i++)
   {
@@ -100,7 +147,7 @@ void copyList(ListDin lIn, ListDin *lOut)
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void insertLast(ListDin *l, ElType val)
+void insertLast(ListDinKicauan *l, ElType val)
 /* Proses: Menambahkan val sebagai elemen terakhir list */
 /* I.S. List l boleh kosong, tetapi tidak penuh */
 /* F.S. val adalah elemen terakhir l yang baru */
@@ -120,7 +167,7 @@ void insertLast(ListDin *l, ElType val)
 }
 
 /* ********** MENGHAPUS ELEMEN ********** */
-void deleteLast(ListDin *l, ElType *val)
+void deleteLast(ListDinKicauan *l, ElType *val)
 /* Proses : Menghapus elemen terakhir list */
 /* I.S. List tidak kosong */
 /* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
@@ -135,13 +182,13 @@ void deleteLast(ListDin *l, ElType *val)
 }
 
 /* ********* MENGUBAH UKURAN ARRAY ********* */
-void expandList(ListDin *l, int num)
+void expandList(ListDinKicauan *l, int num)
 /* Proses : Menambahkan capacity l sebanyak num */
 /* I.S. List sudah terdefinisi */
 /* F.S. Ukuran list bertambah sebanyak num */
 {
-  ListDin lNew;
-  CreateListDin(&lNew, CAPACITY(*l) + num);
+  ListDinKicauan lNew;
+  CreateListDinKicauan(&lNew, CAPACITY(*l) + num);
   NEFF(lNew) = NEFF(*l);
 
   IdxType i;
@@ -153,13 +200,13 @@ void expandList(ListDin *l, int num)
   *l = lNew;
 }
 
-void shrinkList(ListDin *l, int num)
+void shrinkList(ListDinKicauan *l, int num)
 /* Proses : Mengurangi capacity sebanyak num */
 /* I.S. List sudah terdefinisi, ukuran capacity > num, dan nEff < capacity - num. */
 /* F.S. Ukuran list berkurang sebanyak num. */
 {
-  ListDin lNew;
-  CreateListDin(&lNew, CAPACITY(*l) - num);
+  ListDinKicauan lNew;
+  CreateListDinKicauan(&lNew, CAPACITY(*l) - num);
   if (NEFF(*l) < CAPACITY(*l) - num)
   {
     NEFF(lNew) = NEFF(*l);
@@ -178,13 +225,13 @@ void shrinkList(ListDin *l, int num)
   *l = lNew;
 }
 
-void compressList(ListDin *l)
+void compressList(ListDinKicauan *l)
 /* Proses : Mengubah capacity sehingga nEff = capacity */
 /* I.S. List tidak kosong */
 /* F.S. Ukuran nEff = capacity */
 {
-  ListDin lNew;
-  CreateListDin(&lNew, NEFF(*l));
+  ListDinKicauan lNew;
+  CreateListDinKicauan(&lNew, NEFF(*l));
   NEFF(lNew) = NEFF(*l);
 
   IdxType i;

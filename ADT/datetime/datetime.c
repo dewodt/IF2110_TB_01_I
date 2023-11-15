@@ -70,6 +70,27 @@ void CreateDATETIME(DATETIME *D, int DD, int MM, int YYYY, int hh, int mm, int s
   CreateTime(&Time(*D), hh, mm, ss);
 }
 
+/* Dapatkan Date Time Local (Sekarang) */
+void GetCurrentLocalDATETIME(DATETIME *D)
+/* I.S. DateTime sembarang */
+/* F.S. DateTime merupakan DateTime local sekarang */
+{
+  // Dapatkan waktu dari library time.h
+  time_t rawtime;
+  struct tm *timeinfo;
+  time(&rawtime);
+  timeinfo = localtime(&rawtime);
+  int DD = timeinfo->tm_mday;
+  int MM = timeinfo->tm_mon + 1;
+  int YYYY = timeinfo->tm_year + 1900;
+  int hh = timeinfo->tm_hour;
+  int mm = timeinfo->tm_min;
+  int ss = timeinfo->tm_sec;
+
+  // Dapatkan waktu kicauan
+  CreateDATETIME(D, DD, MM, YYYY, hh, mm, ss);
+}
+
 void BacaDATETIME(DATETIME *D)
 /* I.S. : D tidak terdefinisi */
 /* F.S. : D terdefinisi dan merupakan DATETIME yang valid */

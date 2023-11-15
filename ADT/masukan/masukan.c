@@ -8,7 +8,6 @@ MASUKAN currentMASUKAN;
 boolean EOP;
 char currentChar;
 
-
 void STARTMASUKAN()
 /* I.S. : currentChar sembarang
    F.S. : EndMASUKAN = true, dan currentChar = MARK;
@@ -27,7 +26,6 @@ void STARTMASUKAN()
   }
 }
 
-
 void CopyMASUKAN()
 /* Mengakuisisi MASUKAN, menyimpan dalam currentMASUKAN
    I.S. : currentChar adalah karakter pertama dari MASUKAN
@@ -42,83 +40,114 @@ void CopyMASUKAN()
     currentMASUKAN.TabMASUKAN[i] = currentChar;
     ADV();
     i += 1;
-  } while (currentChar != ';' && i < NMax); 
+  } while (currentChar != ';' && i < NMax);
   currentMASUKAN.Length = i;
 }
 
-void baca(MASUKAN* masukan){
-// Menerima input untuk nama, sandi, bio, dll
-    STARTMASUKAN();
-    *masukan = currentMASUKAN;
-    if((*masukan).TabMASUKAN[0] == 10){
-        int i;
-        for (i = 1; i < (*masukan).Length; i++)
-        {
-            (*masukan).TabMASUKAN[i-1] = (*masukan).TabMASUKAN[i];
-        }
-        (*masukan).Length = (*masukan).Length-1;
-    }else{
-
+void baca(MASUKAN *masukan)
+{
+  // Menerima input untuk nama, sandi, bio, dll
+  STARTMASUKAN();
+  *masukan = currentMASUKAN;
+  if ((*masukan).TabMASUKAN[0] == 10)
+  {
+    int i;
+    for (i = 1; i < (*masukan).Length; i++)
+    {
+      (*masukan).TabMASUKAN[i - 1] = (*masukan).TabMASUKAN[i];
     }
+    (*masukan).Length = (*masukan).Length - 1;
+  }
+  else
+  {
+  }
 }
 
-void perintah(MASUKAN* perintah, MASUKAN* argumen1, MASUKAN* argumen2){
-// menerima input perintah beserta dengan argumen-argumennya
+void perintah(MASUKAN *perintah, MASUKAN *argumen1, MASUKAN *argumen2)
+{
+  // menerima input perintah beserta dengan argumen-argumennya
   MASUKAN temp;
   STARTMASUKAN();
   temp = currentMASUKAN;
-  int i,j,k;
+  int i, j, k;
   j = 0;
   k = 0;
-  for ( i = 0; i < temp.Length; i++)
+  for (i = 0; i < temp.Length; i++)
   {
-    if((temp.TabMASUKAN[i] == 32) || (temp.TabMASUKAN[i]  == 10)){
-      if(j != 0){
-        k ++;
+    if ((temp.TabMASUKAN[i] == 32) || (temp.TabMASUKAN[i] == 10))
+    {
+      if (j != 0)
+      {
+        k++;
         j = 0;
-      }else{
-
       }
-    }else{
-      if(k == 0){
+      else
+      {
+      }
+    }
+    else
+    {
+      if (k == 0)
+      {
         (*perintah).TabMASUKAN[j] = temp.TabMASUKAN[i];
         j++;
-      }else if(k == 1){
+      }
+      else if (k == 1)
+      {
         (*argumen1).TabMASUKAN[j] = temp.TabMASUKAN[i];
         j++;
-      }else{
+      }
+      else
+      {
         (*argumen2).TabMASUKAN[j] = temp.TabMASUKAN[i];
         j++;
       }
     }
   }
-  
-  
 }
-boolean isSame(MASUKAN masuk, char string[]){
-    // Membandingkan masuk dengan string
-    boolean hasil;
-    hasil = true;
-    int i;
-    i = 0;
-    while ((i < masuk.Length) && hasil)
+boolean isSame(MASUKAN masuk, char string[])
+{
+  // Membandingkan masuk dengan string
+  boolean hasil;
+  hasil = true;
+  int i;
+  i = 0;
+  while ((i < masuk.Length) && hasil)
+  {
+    if (masuk.TabMASUKAN[i] != string[i])
     {
-        if(masuk.TabMASUKAN[i] != string[i]){
-            hasil = false;
-        }
-        i ++;
+      hasil = false;
     }
-    return hasil;
+    i++;
+  }
+  return hasil;
 }
 
-void displayMASUKAN(MASUKAN masuk){
-    // Menampilkan isi masukan
-    int i;
-    printf("[");
-    for ( i = 0; i <  masuk.Length; i++)
+boolean isAllSpace(MASUKAN masuk)
+{
+  // Memeriksa apakah masuk hanya berisi spasi
+  boolean allSpace;
+  allSpace = true;
+  int i = 0;
+  while ((i < masuk.Length) && allSpace)
+  {
+    if (masuk.TabMASUKAN[i] != ' ')
     {
-        printf("%c,", masuk.TabMASUKAN[i]);
+      allSpace = false;
     }
-    printf("]\n");
-    
+    i++;
+  }
+  return allSpace;
+}
+
+void displayMASUKAN(MASUKAN masuk)
+{
+  // Menampilkan isi masukan
+  int i;
+  printf("[");
+  for (i = 0; i < masuk.Length; i++)
+  {
+    printf("%c,", masuk.TabMASUKAN[i]);
+  }
+  printf("]\n");
 }

@@ -1,8 +1,8 @@
 #ifndef KICAUAN_H
 #define KICAUAN_H
 
-#include "../time/time.h"
 #include "../datetime/datetime.h"
+#include "../listdinkicauan/listdinkicauan.h"
 
 /* Struktur Kicauan */
 /* Kicauan memiliki id, teks, like, author, datetime */
@@ -23,27 +23,38 @@ typedef struct
 #define AUTHOR(k) (k).author
 #define DATETIME(k) (k).datetime
 
+/* Konstruktor kicauan */
+void CreateKicauan(Kicauan *k, int id, char *text, char author, DATETIME datetime);
+/* I.S. kicauan sembarang, id, text, author, datetime terdefinisi */
+/* Kicauan terdefinisi */
+/* F.S. kicauan terdefinisi sesuai parameter */
+
 /* Prosedur pemanggilan pembuatan Kicau (bersama validasi2nya) */
-/* I.S. Sembarang,tidak terbentuk kicauan */
+void BuatKicauan();
+/* I.S. User sudah masuk, tidak terbentuk kicauan */
 /* F.S. Bila data yang diinput valid, maka akan terbentuk kicauan dengan id, teks, like, author, datetime sesuai input (ditambahkan ke global var list kicauan)
    Bila data yang diinput tidak valid atau melawan constraint tertentu, maka output pesan kesalahan */
-void BuatKicauan();
+
+/* Prosedur Menampilkan Detail Kicauan */
+void printDetailKicauan(Kicauan k);
+/* I.S. Sembarang */
+/* F.S. Mencetak detail sebuah kicauan */
 
 /* Prosedur Menampilkan Kicauan */
+void TampilkanKicauan();
 /* I.S. Sembarang */
 /* F.S. Menampilkan seluruh kicauan buatan diri sendiri dan orang2 yang berada di list teman terurut berdasarkan waktu */
-void TampilkanKicauan();
 
 /* Prosedur like kicauan */
 /* I.S. Sembarang */
+void SukaKicauan(int idKicau);
 /* F.S. Bila idKicau valid, maka jumlah like kicauan dengan id idKicau bertambah satu (update global var list kicauan)
   Bila idKicau tidak valid, maka keluarkan pesan kicauan tidak ditemukan */
-void SukaKicauan(int idKicau);
 
 /* Prosedur Ubah Kicauan */
 /* I.S. Sembarang */
+void UbahKicauan(int idKicau);
 /* F.S. Bila idKicau valid, maka kicauan dengan suatu id idKicau diperbarui (update global var list kicauan)
   Bila idKicau tidak valid, maka keluarkan pesan kicauan tidak ditemukan */
-void UbahKicauan(int idKicau);
 
 #endif KICAUAN_H

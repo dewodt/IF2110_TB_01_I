@@ -47,6 +47,11 @@ void CreateDATETIME(DATETIME *D, int DD, int MM, int YYYY, int hh, int mm, int s
 /* Membentuk sebuah DATETIME dari komponen-komponennya yang valid */
 /* Prekondisi : DD, MM, YYYY, h, m, s valid untuk membentuk DATETIME */
 
+/* Dapatkan Date Time Local (Sekarang) */
+void GetCurrentLocalDATETIME(DATETIME *D);
+/* I.S. DateTime sembarang */
+/* F.S. DateTime merupakan DateTime local sekarang */
+
 /* ***************************************************************** */
 /* KELOMPOK BACA/TULIS                                               */
 /* ***************************************************************** */

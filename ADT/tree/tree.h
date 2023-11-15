@@ -14,32 +14,80 @@ Right sibling merupakan reply-reply lainnya dari parent */
 typedef struct nodeBalasan *AddressBalasan;
 typedef struct nodeBalasan
 {
-  Balasan InfoBalasan;
-  AddressBalasan nextBalasanRightSibling;
-  AddressBalasan nextBalasanLeftChild;
+  Balasan infoBalasan;
+  AddressBalasan rightSiblingBalasan;
+  AddressBalasan leftChildBalasan;
 } NodeBalasan;
 
 /* Definisi node kicauan */
 typedef struct nodeKicauan *AddressKicauan;
 typedef struct nodeKicauan
 {
-  Kicauan InfoKicauan;
+  Kicauan infoKicauan;
   AddressBalasan firstLeftChildBalasan;
 } NodeKicauan;
 
-/* Tipe buatan Tree */
+/* Definisi Tree */
 typedef AddressKicauan TreeKicauan;
 
-/* Prosedur membuat node kicauan baru */
+/* Selektor Balasan */
+#define InfoBalasan(P) (P)->infoBalasan
+#define RightSiblingBalasan(P) (P)->rightSiblingBalasan
+#define LeftChildBalasan(P) (P)->leftChildBalasan
+
+/* Selektor Kicauan */
+#define InfoKicauan(P) (P)->infoKicauan
+#define FirstLeftChildBalasan(P) (P)->firstLeftChildBalasan
+
+/* Prosedur membuat kicauan baru */
+AddressKicauan newNodeKicauan(Kicauan kicauan);
 /* I.S. Sembarang */
 /* F.S. Bila alokasi berhasil, terbentuk alokasi node kicauan baru
   Bila alokasi gagal, F.S.=I.S. */
-AddressKicauan newNodeKicauan(Kicauan kicauan);
 
-/* Prosedur membuat node balasan baru */
+/* Prosedur membuat balasan baru */
+AddressBalasan newNodeBalasan(Balasan balasan);
 /* I.S. Sembarang */
 /* F.S. Bila alokasi berhasil, terbentuk alokasi node balasan baru
   Bila alokasi gagal, F.S.=I.S. */
-AddressBalasan newNodeBalasan(Balasan balasan);
+
+/* Prosedur untuk mengecek apakah ada balasan */
+boolean isBalasanExist(TreeKicauan nodeKicauan);
+/* Mengembalikan true bila ada balasan, mengembalikan false bila tidak ada balasan */
+
+/* Dapatkan node balasan dengan id terbesar (latest balasan) */
+AddressBalasan getLatestBalasan(TreeKicauan nodeKicauan);
+AddressBalasan getLatestBalasanRecursive(AddressBalasan nodeBalasan);
+/* Menghasilkan node balasan dengan id terbesar */
+/* Menghasilkan null bila tidak ada */
+
+/* Dapatkan node balasan pada kicauan dengan id tertentu */
+AddressBalasan getBalasan(TreeKicauan nodeKicauan, int idBalasan);
+AddressBalasan getBalasanRecursive(AddressBalasan nodeBalasan, int idBalasan);
+/* Mengembalikan node bila ketemu, mengembalika NULL bisa tidak ketemu */
+/* Untuk mengecek seluruh node, input: firstLeftChild dari kicauan */
+
+/* Prosedur untuk append balasan pada sebuah kicauan */
+void balasKicauan(TreeKicauan nodeKicauan, Balasan balasan);
+/* I.S. nodeKicauan terdefinisi dan balasan terdefinisi */
+/* F.S. bila gagal, I.S. = F.S.
+        bila berhasil, balasan ditambahkan pada kicauan */
+
+/* Prosedur untuk membalas balasan */
+void balasBalasan(AddressBalasan nodeBalasan, Balasan balasan);
+/* I.S. nodeBalasan terdefinisi, dan balasan terdefinisi */
+/* F.S. bila gagal, I.S. = F.S.
+        bila berhasil, balasan ditambahkan pada balasan */
+
+/* Prosedur untuk menghapus balasan */
+void hapusBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete);
+void hapusBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete);
+/* I.S. Address balasan terdefinisi */
+/* F.S. Address balasan dan semua anak-anaknya terbebaskan */
+
+/* Prosedur untuk menghapus balasan dan juga seluruh child dari node */
+void freeNodeAndChilds(AddressBalasan nodeBalasan);
+/* I.S. node balasan terdefinisi */
+/* F.S. node balasan dan seluruh childnya dihapus dari node */
 
 #endif

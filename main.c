@@ -1,10 +1,9 @@
 #include <stdio.h>
-#include "pengguna.c"
 #include "profil.c"
-#include "./ADT/wordmachine/wordmachine.h"
 #include "./ADT/Baca/baca.c"
 
-int main() {
+int main()
+{
     // Tampilan awal
     printf(".______    __    __  .______      .______    __  .______ \n");
     printf("|   _  \\  |  |  |  | |   _  \\     |   _  \\  |  | |   _  \\\n");
@@ -28,120 +27,233 @@ int main() {
     baca(&kata);
 
     while (!isSame(kata, "\nTUTUP_PROGRAM;"))
-    {   
-        if(isSame(kata, "\nDAFTAR;")){
+    {
+        if (isSame(kata, "\nDAFTAR;"))
+        {
             printf("ini DAFTAR");
-        }else if(isSame(kata, "\nDAFTAR;")){
+        }
+        else if (isSame(kata, "\nDAFTAR;"))
+        {
             printf("ini DAFTAR");
-        }else if(isSame(kata, "\nMASUK;")){
+        }
+        else if (isSame(kata, "\nMASUK;"))
+        {
             printf("ini MASUK");
-        }else if(isSame(kata, "\nMASUK;")){
+        }
+        else if (isSame(kata, "\nMASUK;"))
+        {
             printf("ini MASUK");
-        }else if(isSame(kata, "\nKELUAR;")){
+        }
+        else if (isSame(kata, "\nKELUAR;"))
+        {
             printf("ini KELUAR");
-        }else if(isSame(kata, "\nKELUAR;")){
+        }
+        else if (isSame(kata, "\nKELUAR;"))
+        {
             printf("ini KELUAR");
-        }else if(isSame(kata, "\nTUTUP_PROGRAM;")){
+        }
+        else if (isSame(kata, "\nTUTUP_PROGRAM;"))
+        {
             printf("ini TUTUP_PROGRAM");
-        }else if(isSame(kata, "\nTUTUP_PROGRAM;")){
+        }
+        else if (isSame(kata, "\nTUTUP_PROGRAM;"))
+        {
             printf("ini TUTUP_PROGRAM");
-        }else if(isSame(kata, "\nGANTI_PROFIL;")){
+        }
+        else if (isSame(kata, "\nGANTI_PROFIL;"))
+        {
             printf("ini GANTI_PROFIL");
-        }else if(isSame(kata, "\nGANTI_PROFIL;")){
+        }
+        else if (isSame(kata, "\nGANTI_PROFIL;"))
+        {
             printf("ini GANTI_PROFIL");
-        }else if(isSame(kata, "\nLIHAT_PROFIL;")){
+        }
+        else if (isSame(kata, "\nLIHAT_PROFIL;"))
+        {
             printf("ini LIHAT_PROFIL");
-        }else if(isSame(kata, "\nLIHAT_PROFIL;")){
+        }
+        else if (isSame(kata, "\nLIHAT_PROFIL;"))
+        {
             printf("ini LIHAT_PROFIL");
-        }else if(isSame(kata, "\nATUR_JENIS_AKUN;")){
+        }
+        else if (isSame(kata, "\nATUR_JENIS_AKUN;"))
+        {
             printf("ini ATUR_JENIS_AKUN");
-        }else if(isSame(kata, "\nATUR_JENIS_AKUN;")){
+        }
+        else if (isSame(kata, "\nATUR_JENIS_AKUN;"))
+        {
             printf("ini ATUR_JENIS_AKUN");
-        }else if(isSame(kata, "\nUBAH_FOTO_PROFIL;")){
+        }
+        else if (isSame(kata, "\nUBAH_FOTO_PROFIL;"))
+        {
             printf("ini UBAH_FOTO_PROFIL");
-        }else if(isSame(kata, "\nUBAH_FOTO_PROFIL;")){
+        }
+        else if (isSame(kata, "\nUBAH_FOTO_PROFIL;"))
+        {
             printf("ini UBAH_FOTO_PROFIL");
-        }else if(isSame(kata, "\nDAFTAR_TEMAN;")){
+        }
+        else if (isSame(kata, "\nDAFTAR_TEMAN;"))
+        {
             printf("ini DAFTAR_TEMAN");
-        }else if(isSame(kata, "\nDAFTAR_TEMAN;")){
+        }
+        else if (isSame(kata, "\nDAFTAR_TEMAN;"))
+        {
             printf("ini DAFTAR_TEMAN");
-        }else if(isSame(kata, "\nHAPUS_TEMAN;")){
+        }
+        else if (isSame(kata, "\nHAPUS_TEMAN;"))
+        {
             printf("ini HAPUS_TEMAN");
-        }else if(isSame(kata, "\nHAPUS_TEMAN;")){
+        }
+        else if (isSame(kata, "\nHAPUS_TEMAN;"))
+        {
             printf("ini HAPUS_TEMAN");
-        }else if(isSame(kata, "\nTAMBAH_TEMAN;")){
+        }
+        else if (isSame(kata, "\nTAMBAH_TEMAN;"))
+        {
             printf("ini TAMBAH_TEMAN");
-        }else if(isSame(kata, "\nTAMBAH_TEMAN;")){
+        }
+        else if (isSame(kata, "\nTAMBAH_TEMAN;"))
+        {
             printf("ini TAMBAH_TEMAN");
-        }else if(isSame(kata, "\nBATAL_TAMBAH_TEMAN;")){
+        }
+        else if (isSame(kata, "\nBATAL_TAMBAH_TEMAN;"))
+        {
             printf("ini BATAL_TAMBAH_TEMAN");
-        }else if(isSame(kata, "\nBATAL_TAMBAH_TEMAN;")){
+        }
+        else if (isSame(kata, "\nBATAL_TAMBAH_TEMAN;"))
+        {
             printf("ini BATAL_TAMBAH_TEMAN");
-        }else if(isSame(kata, "\nDAFTAR_PERMINTAAN_PERTEMANAN;")){
+        }
+        else if (isSame(kata, "\nDAFTAR_PERMINTAAN_PERTEMANAN;"))
+        {
             printf("ini DAFTAR_PERMINTAAN_PERTEMANAN");
-        }else if(isSame(kata, "\nDAFTAR_PERMINTAAN_PERTEMANAN;")){
+        }
+        else if (isSame(kata, "\nDAFTAR_PERMINTAAN_PERTEMANAN;"))
+        {
             printf("ini DAFTAR_PERMINTAAN_PERTEMANAN");
-        }else if(isSame(kata, "\nSETUJUI_PERTEMANAN;")){
+        }
+        else if (isSame(kata, "\nSETUJUI_PERTEMANAN;"))
+        {
             printf("ini SETUJUI_PERTEMANAN");
-        }else if(isSame(kata, "\nSETUJUI_PERTEMANAN;")){
+        }
+        else if (isSame(kata, "\nSETUJUI_PERTEMANAN;"))
+        {
             printf("ini SETUJUI_PERTEMANAN");
-        }else if(isSame(kata, "\nKICAU;")){
+        }
+        else if (isSame(kata, "\nKICAU;"))
+        {
             printf("ini KICAU");
-        }else if(isSame(kata, "\nKICAU;")){
+        }
+        else if (isSame(kata, "\nKICAU;"))
+        {
             printf("ini KICAU");
-        }else if(isSame(kata, "\nSUKA_KICAUAN;")){
+        }
+        else if (isSame(kata, "\nSUKA_KICAUAN;"))
+        {
             printf("ini SUKA_KICAUAN");
-        }else if(isSame(kata, "\nSUKA_KICAUAN;")){
+        }
+        else if (isSame(kata, "\nSUKA_KICAUAN;"))
+        {
             printf("ini SUKA_KICAUAN");
-        }else if(isSame(kata, "\nUBAH_KICAUAN;")){
+        }
+        else if (isSame(kata, "\nUBAH_KICAUAN;"))
+        {
             printf("ini UBAH_KICAUAN");
-        }else if(isSame(kata, "\nUBAH_KICAUAN;")){
+        }
+        else if (isSame(kata, "\nUBAH_KICAUAN;"))
+        {
             printf("ini UBAH_KICAUAN");
-        }else if(isSame(kata, "\nBALAS;")){
+        }
+        else if (isSame(kata, "\nBALAS;"))
+        {
             printf("ini BALAS");
-        }else if(isSame(kata, "\nBALAS;")){
+        }
+        else if (isSame(kata, "\nBALAS;"))
+        {
             printf("ini BALAS");
-        }else if(isSame(kata, "\nBALASAN;")){
+        }
+        else if (isSame(kata, "\nBALASAN;"))
+        {
             printf("ini BALASAN");
-        }else if(isSame(kata, "\nBALASAN;")){
+        }
+        else if (isSame(kata, "\nBALASAN;"))
+        {
             printf("ini BALASAN");
-        }else if(isSame(kata, "\nHAPUS_BALASAN;")){
+        }
+        else if (isSame(kata, "\nHAPUS_BALASAN;"))
+        {
             printf("ini HAPUS_BALASAN");
-        }else if(isSame(kata, "\nHAPUS_BALASAN;")){
+        }
+        else if (isSame(kata, "\nHAPUS_BALASAN;"))
+        {
             printf("ini HAPUS_BALASAN");
-        }else if(isSame(kata, "\nBUAT_DRAF;")){
+        }
+        else if (isSame(kata, "\nBUAT_DRAF;"))
+        {
             printf("ini BUAT_DRAF");
-        }else if(isSame(kata, "\nBUAT_DRAF;")){
+        }
+        else if (isSame(kata, "\nBUAT_DRAF;"))
+        {
             printf("ini BUAT_DRAF");
-        }else if(isSame(kata, "\nLIHAT_DRAF;")){
+        }
+        else if (isSame(kata, "\nLIHAT_DRAF;"))
+        {
             printf("ini LIHAT_DRAF");
-        }else if(isSame(kata, "\nLIHAT_DRAF;")){
+        }
+        else if (isSame(kata, "\nLIHAT_DRAF;"))
+        {
             printf("ini LIHAT_DRAF");
-        }else if(isSame(kata, "\nUTAS;")){
+        }
+        else if (isSame(kata, "\nUTAS;"))
+        {
             printf("ini UTAS");
-        }else if(isSame(kata, "\nUTAS;")){
+        }
+        else if (isSame(kata, "\nUTAS;"))
+        {
             printf("ini UTAS");
-        }else if(isSame(kata, "\nSAMBUNG_UTAS;")){
+        }
+        else if (isSame(kata, "\nSAMBUNG_UTAS;"))
+        {
             printf("ini SAMBUNG_UTAS");
-        }else if(isSame(kata, "\nSAMBUNG_UTAS;")){
+        }
+        else if (isSame(kata, "\nSAMBUNG_UTAS;"))
+        {
             printf("ini SAMBUNG_UTAS");
-        }else if(isSame(kata, "\nHAPUS_UTAS;")){
+        }
+        else if (isSame(kata, "\nHAPUS_UTAS;"))
+        {
             printf("ini HAPUS_UTAS");
-        }else if(isSame(kata, "\nHAPUS_UTAS;")){
+        }
+        else if (isSame(kata, "\nHAPUS_UTAS;"))
+        {
             printf("ini HAPUS_UTAS");
-        }else if(isSame(kata, "\nCETAK_UTAS;")){
+        }
+        else if (isSame(kata, "\nCETAK_UTAS;"))
+        {
             printf("ini CETAK_UTAS");
-        }else if(isSame(kata, "\nCETAK_UTAS;")){
+        }
+        else if (isSame(kata, "\nCETAK_UTAS;"))
+        {
             printf("ini CETAK_UTAS");
-        }else if(isSame(kata, "\nSIMPAN;")){
+        }
+        else if (isSame(kata, "\nSIMPAN;"))
+        {
             printf("ini SIMPAN");
-        }else if(isSame(kata, "\nSIMPAN;")){
+        }
+        else if (isSame(kata, "\nSIMPAN;"))
+        {
             printf("ini SIMPAN");
-        }else if(isSame(kata, "\nMUAT;")){
+        }
+        else if (isSame(kata, "\nMUAT;"))
+        {
             printf("ini MUAT");
-        }else if(isSame(kata, "\nMUAT;")){
+        }
+        else if (isSame(kata, "\nMUAT;"))
+        {
             printf("ini MUAT");
-        }else{
+        }
+        else
+        {
             printf("lainnya\n");
         }
         printf(">>");

@@ -1,38 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "modifiedliststatik.c"
-#include "modifiedmatrix.h"
-#include "boolean.h"
-#include "./ADT/charmachine/charmachine.c"
-#include "./ADT/pcolor/pcolor.c"
+#include "../masukan/masukan.h"
+#include "pengguna.h"
 
 // mendaftarkan pengguna
-void DAFTAR(ListStatik *pengguna, boolean *isLoggedin) {
-    if (*isLoggedin) {
+void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
+{
+    if (*isLoggedin)
+    {
         printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
-    } else {
-        if (listLength(*pengguna) >= MAX_USERS) {
+    }
+    else
+    {
+        if (listLength(*pengguna) >= MAX_USERS)
+        {
             printf("Maaf, kapasitas pengguna sudah penuh. Tidak dapat mendaftar lebih banyak pengguna.\n");
             return;
         }
 
         int idx = listLength(*pengguna);
         printf("listlength: %d\n", idx);
-        
+
         boolean uservalid = false;
         MASUKAN username_temp;
         printf("Masukkan nama: ");
         baca(&username_temp);
 
-        while (!uservalid) {
-            if (username_temp.Length > 20) {
+        while (!uservalid)
+        {
+            if (username_temp.Length > 20)
+            {
                 printf("Nama yang anda masukkan > 20 karakter. Ayo coba lagi.\n");
-                    printf("Masukkan nama: ");
-                    baca(&username_temp);
-            } else {
+                printf("Masukkan nama: ");
+                baca(&username_temp);
+            }
+            else
+            {
                 // cek apakah nama pengguna udah ada
-                for (int i = 0; i < idx; i++) {
-                    if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username_temp)) {
+                for (int i = 0; i < idx; i++)
+                {
+                    if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username_temp))
+                    {
                         printf("Wah, sayang sekali nama tersebut telah diambil.\n");
                         printf("Masukkan nama: ");
                         baca(&username_temp);
@@ -52,12 +60,16 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin) {
         printf("Masukkan kata sandi: ");
         baca(&password_temp);
 
-        while (!passwordvalid) {
-            if (password_temp.Length > 20) {
+        while (!passwordvalid)
+        {
+            if (password_temp.Length > 20)
+            {
                 printf("Kata sandi yang anda masukkan > 20 karakter. Ayo coba lagi.\n");
-                    printf("Masukkan kata sandi: ");
-                    baca(&password_temp);
-            } else {
+                printf("Masukkan kata sandi: ");
+                baca(&password_temp);
+            }
+            else
+            {
                 passwordvalid = true;
             }
         }
@@ -67,15 +79,16 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin) {
         printf("idx skrg: %d\n", idx);
         strcpy(ELMT(*pengguna, idx).password, password);
         printf("password: %s\n", ELMT(*pengguna, idx).password);
-        
+
         printf("Pengguna telah berhasil terdaftar. Masuk untuk menikmati fitur-fitur BurBir.\n");
-        
     }
 }
 
 // masuk sebagai pengguna
-boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser) {
-    if (*isLoggedin) {
+boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
+{
+    if (*isLoggedin)
+    {
         printf("Wah Anda sudah masuk. Keluar dulu yuk!\n");
         return *isLoggedin;
     }
@@ -87,11 +100,14 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser) {
     // cari pengguna dengan nama yang cocok
     int userIndex = -1;
 
-    do {
+    do
+    {
         boolean found = false;
         int i = 0;
-        while (i < listLength(*pengguna)) {
-            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+        while (i < listLength(*pengguna))
+        {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username))
+            {
                 userIndex = i;
                 found = true;
                 break;
@@ -99,7 +115,8 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser) {
             i++;
         }
 
-        if (userIndex == -1) {
+        if (userIndex == -1)
+        {
             printf("Wah, nama yang Anda cari tidak ada. Masukkan nama lain!\n");
             printf("Masukkan nama: ");
             baca(&username);
@@ -111,17 +128,21 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser) {
     baca(&password);
     boolean passwordvalid = false;
 
-    do {
-        if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, userIndex).password, stringLength(ELMT(*pengguna, userIndex).password)), password)) {
+    do
+    {
+        if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, userIndex).password, stringLength(ELMT(*pengguna, userIndex).password)), password))
+        {
             *isLoggedin = true;
             char username_str[MAX_USERNAME_LENGTH];
             MASUKANToStr(username, username_str);
             printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username_str);
             passwordvalid = true;
-        } else {
+        }
+        else
+        {
             printf("Wah, kata sandi yang Anda masukkan belum tepat. Periksa kembali kata sandi Anda!\n");
             printf("Masukkan kata sandi: ");
-    baca(&password);
+            baca(&password);
         }
     } while (!passwordvalid);
 
@@ -131,10 +152,14 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser) {
 }
 
 // keluar dari akun pengguna
-boolean KELUAR(boolean *isLoggedin) {
-    if (!*isLoggedin) {
+boolean KELUAR(boolean *isLoggedin)
+{
+    if (!*isLoggedin)
+    {
         printf("Anda belum login! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
-    } else {
+    }
+    else
+    {
         *isLoggedin = false;
         printf("Anda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n");
     }
@@ -142,18 +167,24 @@ boolean KELUAR(boolean *isLoggedin) {
 }
 
 // ganti profil (nama, bio akun, no HP, weton)
-void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) {
-    if (!*isLoggedIn) {
+void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+{
+    if (!*isLoggedIn)
+    {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
-    } else {
+    }
+    else
+    {
         // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
         boolean found = false;
         int i = 0;
         int userIndex;
         MASUKAN username;
         username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
-        while (i < listLength(*pengguna)) {
-            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+        while (i < listLength(*pengguna))
+        {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username))
+            {
                 userIndex = i;
                 break;
             }
@@ -172,7 +203,7 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) 
         printf("Masukkan Bio Akun: ");
         baca(&bio_temp);
         MASUKANToStr(bio_temp, &bio);
-        
+
         SetBio(pengguna, userIndex, &bio);
 
         MASUKAN nohp;
@@ -181,16 +212,20 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) 
         baca(&nohp);
         boolean validnumber = false;
 
-        do {
+        do
+        {
             validnumber = true;
-            for (z = 0; z < nohp.Length; z++) {
-                if (nohp.TabMASUKAN[z] < '0' || nohp.TabMASUKAN[z] > '9') {
+            for (z = 0; z < nohp.Length; z++)
+            {
+                if (nohp.TabMASUKAN[z] < '0' || nohp.TabMASUKAN[z] > '9')
+                {
                     validnumber = false;
                     break;
                 }
             }
 
-            if (!validnumber) {
+            if (!validnumber)
+            {
                 printf("No HP tidak valid. Masukkan lagi: ");
                 baca(&nohp);
             }
@@ -204,17 +239,23 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) 
         baca(&weton_temp);
         boolean validweton = false;
 
-        do {
+        do
+        {
             MASUKANToStr(weton_temp, weton);
-            if (compareString(weton, "\0", 1) == 0) {
+            if (compareString(weton, "\0", 1) == 0)
+            {
                 validweton = true;
-            } else {
+            }
+            else
+            {
                 toLowerCase(weton);
-                if (compareString(weton, ";", 1) == 0 || compareString(weton, "pahing", 6) == 0 || compareString(weton, "kliwon", 6) == 0 || compareString(weton, "wage", 4) == 0 || compareString(weton, "pon", 3) == 0 || compareString(weton, "legi", 4) == 0) {
+                if (compareString(weton, ";", 1) == 0 || compareString(weton, "pahing", 6) == 0 || compareString(weton, "kliwon", 6) == 0 || compareString(weton, "wage", 4) == 0 || compareString(weton, "pon", 3) == 0 || compareString(weton, "legi", 4) == 0)
+                {
                     validweton = true;
                 }
             }
-            if (!validweton) {
+            if (!validweton)
+            {
                 printf("Weton anda tidak valid.\n");
                 printf("Masukkan Weton: ");
                 baca(&weton_temp);
@@ -228,21 +269,26 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) 
 }
 
 // lihat profil pengguna
-void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna) {
+void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
+{
     // cari dulu di list dia idx ke berapa
     boolean found = false;
     int i = 0;
     int userIndex = -1;
-    while (i < listLength(*pengguna)) {
-        if (isMASUKANEqual(namapengguna, strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)))) {
+    while (i < listLength(*pengguna))
+    {
+        if (isMASUKANEqual(namapengguna, strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username))))
+        {
             userIndex = i;
             break;
         }
         i++;
     }
 
-    if (userIndex != -1) {
-        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1') {
+    if (userIndex != -1)
+    {
+        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1')
+        {
             printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
             printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
             char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
@@ -251,27 +297,37 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna) {
             printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
             printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
             displayProfile(ELMT(*pengguna, userIndex).profile);
-        } else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0') {
+        }
+        else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0')
+        {
             printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", namapengguna.TabMASUKAN, namapengguna.TabMASUKAN);
         }
-    } else {
+    }
+    else
+    {
         printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", namapengguna.TabMASUKAN);
     }
 }
 
 // ganti profile
-void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) {
-    if (!*isLoggedIn) {
+void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+{
+    if (!*isLoggedIn)
+    {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
-    } else {
+    }
+    else
+    {
         // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
         boolean found = false;
         int i = 0;
         int userIndex;
         MASUKAN username;
         username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
-        while (i < listLength(*pengguna)) {
-            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+        while (i < listLength(*pengguna))
+        {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username))
+            {
                 userIndex = i;
                 break;
             }
@@ -289,58 +345,73 @@ void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUs
 }
 
 // atur jenis akun
-void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser) {
-    if (!*isLoggedIn) {
+void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+{
+    if (!*isLoggedIn)
+    {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
-    } else {
+    }
+    else
+    {
         // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
         boolean found = false;
         int i = 0;
         int userIndex;
         MASUKAN username;
         username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
-        while (i < listLength(*pengguna)) {
-            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username)) {
+        while (i < listLength(*pengguna))
+        {
+            if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username))
+            {
                 userIndex = i;
                 break;
             }
             i++;
         }
 
-        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1') {
+        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1')
+        {
             printf("Saat ini, akun Anda adalah akun Publik.\n");
             printf("Ingin mengubah ke akun Privat? (YA/TIDAK) ");
 
             MASUKAN acctype;
             baca(&acctype);
 
-            if (isSame(acctype, "YA;")) {
+            if (isSame(acctype, "YA;"))
+            {
                 ELMT(*pengguna, userIndex).jenis_akun[0] = '0';
                 ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
                 printf("Akun anda sudah diubah menjadi akun Privat.\n");
-            } else if (isSame(acctype, "TIDAK;")) {
+            }
+            else if (isSame(acctype, "TIDAK;"))
+            {
                 printf("Akun anda tidak jadi diubah menjadi akun Privat.\n");
             }
-        } else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0') {
+        }
+        else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0')
+        {
             printf("Saat ini, akun Anda adalah akun Privat.\n");
             printf("Ingin mengubah ke akun Publik? (YA/TIDAK) ");
 
             MASUKAN acctype;
             baca(&acctype);
 
-            if (isSame(acctype, "YA;")) {
+            if (isSame(acctype, "YA;"))
+            {
                 ELMT(*pengguna, userIndex).jenis_akun[0] = '1';
                 ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
                 printf("Akun anda sudah diubah menjadi akun Publik.\n");
-            } else if (isSame(acctype, "TIDAK;")) {
+            }
+            else if (isSame(acctype, "TIDAK;"))
+            {
                 printf("Akun anda tidak jadi diubah menjadi akun Publik.\n");
             }
         }
     }
 }
 
-
-int main() {
+int main()
+{
     MASUKAN command;
     boolean isLoggedin = false;
     ListStatik pengguna;
@@ -353,33 +424,47 @@ int main() {
     printf(">> ");
     baca(&command);
 
-    while (!isSame(command, "TUTUP_PROGRAM;")) { 
-        if (isSame(command, "DAFTAR;")) {
+    while (!isSame(command, "TUTUP_PROGRAM;"))
+    {
+        if (isSame(command, "DAFTAR;"))
+        {
             DAFTAR(&pengguna, &isLoggedin);
-        } else if(isSame(command, "MASUK;")) {
+        }
+        else if (isSame(command, "MASUK;"))
+        {
             isLoggedin = MASUK(&pengguna, &isLoggedin, &currentUser);
-        } else if(isSame(command, "KELUAR;")) {
+        }
+        else if (isSame(command, "KELUAR;"))
+        {
             isLoggedin = KELUAR(&isLoggedin);
-        } else if(isSame(command, "GANTI_PROFIL;")) {
+        }
+        else if (isSame(command, "GANTI_PROFIL;"))
+        {
             GANTI_PROFIL(&pengguna, &isLoggedin, &currentUser);
-        } else if(compareString(command.TabMASUKAN, "LIHAT_PROFIL", 12) == 0) {
+        }
+        else if (compareString(command.TabMASUKAN, "LIHAT_PROFIL", 12) == 0)
+        {
             int len = command.Length;
             int idx = 0;
 
             // mencari indeks awal nama pengguna
-            while (idx < len && command.TabMASUKAN[idx] != ' ') {
+            while (idx < len && command.TabMASUKAN[idx] != ' ')
+            {
                 idx++;
             }
 
-            if (idx < len) {
+            if (idx < len)
+            {
                 // copy perintah awal (tanpa spasi akhir) dan nama pengguna
-                for (int i = 0; i < idx; i++) {
+                for (int i = 0; i < idx; i++)
+                {
                     commandAwal[i] = command.TabMASUKAN[i];
                 }
                 commandAwal[idx] = '\0'; // null-terminator
 
                 int j = 0;
-                for (int i = idx + 1; i < len; i++) {
+                for (int i = idx + 1; i < len; i++)
+                {
                     namapengguna.TabMASUKAN[j] = command.TabMASUKAN[i];
                     j++;
                 }
@@ -392,9 +477,13 @@ int main() {
                 // baru call fungsi LIHAT_PROFIL dengan namapengguna
                 LIHAT_PROFIL(&pengguna, namapengguna);
             }
-        } else if(isSame(command, "UBAH_FOTO_PROFIL;")) {
+        }
+        else if (isSame(command, "UBAH_FOTO_PROFIL;"))
+        {
             UBAH_FOTO_PROFIL(&pengguna, &isLoggedin, &currentUser);
-        } else if(isSame(command, "ATUR_JENIS_AKUN;")) {
+        }
+        else if (isSame(command, "ATUR_JENIS_AKUN;"))
+        {
             ATUR_JENIS_AKUN(&pengguna, &isLoggedin, &currentUser);
         }
 
@@ -406,7 +495,8 @@ int main() {
         baca(&command);
     }
 
-    if (isSame(command, "\nTUTUP_PROGRAM;")) {
+    if (isSame(command, "\nTUTUP_PROGRAM;"))
+    {
         printf("Anda telah keluar dari program BurBir. Sampai jumpa di penjelajahan berikutnya.\n");
     }
 

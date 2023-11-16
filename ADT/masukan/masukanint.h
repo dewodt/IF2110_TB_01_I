@@ -4,8 +4,8 @@
 #ifndef __MASUKANINT_H__
 #define __MASUKANINT_H__
 
-#include "boolean.h"
-#include "charmachine.h"
+#include "../boolean.h"
+#include "../charmachine/charmachine.h"
 
 #define NMax 281
 #define BLANK ' '

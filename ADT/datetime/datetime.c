@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "time.h"
+#include <time.h>
 #include "datetime.h"
 
 int GetMaxDay(int M, int Y)

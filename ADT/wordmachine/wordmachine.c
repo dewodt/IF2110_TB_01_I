@@ -70,6 +70,6 @@ void CopyWord()
     currentWord.TabWord[i] = currentChar;
     ADV();
     i += 1;
-  } while (currentChar != MARK && currentChar != BLANK && i < NMax); 
+  } while (currentChar != MARK && currentChar != BLANK && i < NMax);
   currentWord.Length = i;
 }

@@ -1,4 +1,3 @@
-#include "boolean.h"
 #include "stack.h"
 
 /* ************ Prototype ************ */

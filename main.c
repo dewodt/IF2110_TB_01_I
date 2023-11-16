@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "profil.c"
-#include "./ADT/Baca/baca.c"
+#include "ADT/masukan/masukan.h"
 
 int main()
 {
@@ -18,7 +17,7 @@ int main()
     printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
 
     // Baca config
-    Word kata;
+    MASUKAN kata;
     printf(">>");
     baca(&kata);
     // Proses salin konfig ke dalam variabel program

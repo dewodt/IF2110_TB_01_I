@@ -80,7 +80,7 @@ boolean isIdxEffListDinKicauan(ListDinKicauan l, IdxType i);
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
 /* yaitu antara 0..NEFF(l) */
 /* Prosedur mengecek apakah ada kicauan dengan idKicauan */
-boolean isKicauanExist(ListDinKicauan l, int idKicauan);
+boolean isKicauanExist(int idKicauan);
 /* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
 
 /* ********** TEST KOSONG/PENUH ********** */

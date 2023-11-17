@@ -42,7 +42,7 @@ void BuatBalasan(int idKicau, int idBalasan)
 
   // Kasus idKicau tidak valid (kicauan tidak ditemukan)
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
-  if (!isKicauanExist(listKicauan, idKicau))
+  if (!isKicauanExist(idKicau))
   {
     printf("Wah, tidak terdapat kicauan yang ingin Anda balas!\n");
     return;
@@ -69,8 +69,7 @@ void BuatBalasan(int idKicau, int idBalasan)
       printf("Masukkan balasan:\n");
       MASUKAN balasanMasukan;
       baca(&balasanMasukan);
-      char *balasanStr = "";
-      MASUKANToStr(balasanMasukan, balasanStr);
+      char *balasanStr = MASUKANToStr(balasanMasukan);
       printf("\n");
 
       // Dapatkan node balasan paling terakhir
@@ -82,8 +81,10 @@ void BuatBalasan(int idKicau, int idBalasan)
       GetCurrentLocalDATETIME(&datetime);
 
       // Buat balasan baru
+      // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
+      // ADT MASIH BERMASALAH, SET TO NULL DULU
       Balasan balasan;
-      CreateBalasan(&balasan, nextId, balasanStr, currentUser, datetime);
+      CreateBalasan(&balasan, nextId, balasanStr, NULL, datetime);
 
       // Balas
       balasKicauan(kicauan, balasan);
@@ -115,8 +116,7 @@ void BuatBalasan(int idKicau, int idBalasan)
   MASUKAN balasanMasukan;
   baca(&balasanMasukan);
 
-  char *balasanStr = "";
-  MASUKANToStr(balasanMasukan, balasanStr);
+  char *balasanStr = MASUKANToStr(balasanMasukan);
   printf("\n");
 
   // Dapatkan node balasan paling terakhir
@@ -128,8 +128,10 @@ void BuatBalasan(int idKicau, int idBalasan)
   GetCurrentLocalDATETIME(&datetime);
 
   // Buat balasan baru
+  // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
+  // ADT MASIH BERMASALAH, SET TO NULL DULU
   Balasan infoBalasan;
-  CreateBalasan(&infoBalasan, nextId, balasanStr, currentUser, datetime);
+  CreateBalasan(&infoBalasan, nextId, balasanStr, NULL, datetime);
 
   // Balas
   balasBalasan(balasan, infoBalasan);
@@ -204,7 +206,7 @@ void TampilkanBalasan(int idKicau)
   }
 
   // Kasus kicauan tidak ada
-  if (!isKicauanExist(listKicauan, idKicau))
+  if (!isKicauanExist(idKicau))
   {
     printf("Tidak terdapat kicauan dengan id tersebut!\n");
     return;
@@ -273,7 +275,7 @@ void HapusBalasan(int idKicau, int idBalasan)
   }
 
   // Kicauan tidak ditemukan
-  if (!isKicauanExist(listKicauan, idKicau))
+  if (!isKicauanExist(idKicau))
   {
     printf("Balasan tidak ditemukan!\n");
     return;

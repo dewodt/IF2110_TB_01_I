@@ -4,7 +4,7 @@
 #include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
 
 /* Konstruktor kicauan */
-void CreateKicauan(Kicauan *k, int id, char *text, User *author, DATETIME datetime)
+void CreateKicauan(Kicauan *k, int id, char *text, int like, User *author, DATETIME datetime)
 /* I.S. kicauan sembarang, id, text, author, datetime terdefinisi */
 /* Kicauan terdefinisi */
 /* F.S. kicauan terdefinisi sesuai parameter */
@@ -13,7 +13,7 @@ void CreateKicauan(Kicauan *k, int id, char *text, User *author, DATETIME dateti
   ID(*k) = id;
 
   // Like
-  LIKE(*k) = 0;
+  LIKE(*k) = like;
 
   // Author
   AUTHOR(*k) = author;
@@ -41,16 +41,16 @@ void BuatKicauan()
   }
 
   // ID Kicauan paling terakhir
-  int idKicauanTerakhir = listDinKicauanLength(listKicauan);
-  int idKicauanBaru = idKicauanTerakhir + 1;
+  int idKicauanBaru = listDinKicauanLength(listKicauan);
 
-  // Masukan pesan kicauan
+  // Pesan kicauan
   printf("Masukkan kicauan:\n");
   printf(">> ");
+  // Masukan
   MASUKAN kicauanMasukan;
   baca(&kicauanMasukan);
-  char *kicauanStr = "";
-  MASUKANToStr(kicauanMasukan, kicauanStr);
+  // String
+  char *kicauanStr = MASUKANToStr(kicauanMasukan);
 
   // Validasi masukan kicauan
   if (isAllSpace(kicauanMasukan))
@@ -67,7 +67,8 @@ void BuatKicauan()
   Kicauan kicauanBaru;
 
   // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
-  CreateKicauan(&kicauanBaru, idKicauanBaru, kicauanStr, currentUser, waktuKicauan);
+  // ADT PENGGUNA MASIH BERMASALAH, SET TO NULL DULU
+  CreateKicauan(&kicauanBaru, idKicauanBaru, kicauanStr, 0, NULL, waktuKicauan);
   TreeKicauan nodeKicauan = newNodeKicauan(kicauanBaru);
   insertLastListDinKicauan(&listKicauan, nodeKicauan);
 
@@ -147,7 +148,7 @@ void SukaKicauan(int idKicau)
 
   // Kasus idKicau tidak valid
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
-  if (!isKicauanExist(listKicauan, idKicau))
+  if (!isKicauanExist(idKicau))
   {
     printf("Tidak ditemukan kicauan dengan ID = %d!\n", idKicau);
     return;
@@ -189,7 +190,7 @@ void UbahKicauan(int idKicau)
 
   // Bila idKicau tidak valid
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
-  if (!isKicauanExist(listKicauan, idKicau))
+  if (!isKicauanExist(idKicau))
   {
     printf("Tidak ditemukan kicauan dengan ID = %d!\n", idKicau);
     return;

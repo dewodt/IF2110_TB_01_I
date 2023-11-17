@@ -106,7 +106,7 @@ ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc)
   {
     for (j = getFirstIdxListDinKicauan(lNew); j <= getLastIdxListDinKicauan(lNew); j++)
     {
-      DATETIME d1 = DATETIME(InfoKicauan(ELMT_LDK(l, i)));
+      DATETIME d1 = DATETIME(InfoKicauan(ELMT_LDK(lNew, i)));
       DATETIME d2 = DATETIME(InfoKicauan(ELMT_LDK(lNew, j)));
       if (asc)
       {

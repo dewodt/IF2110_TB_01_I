@@ -2,6 +2,7 @@
 #include "../masukan/masukan.h"
 #include "../balasan/balasan.h"
 #include "../listdinkicauan/listdinkicauan.h"
+#include "../modifiedliststatik/modifiedliststatik.h"
 
 /* Buat balasan baru */
 void CreateBalasan(Balasan *b, int id, char *text, User *author, DATETIME datetime)

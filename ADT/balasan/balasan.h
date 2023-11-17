@@ -2,22 +2,7 @@
 #define BALASAN_H
 
 #include "../datetime/datetime.h"
-
-/* Struktur Info Balasan */
-/* Balasan memiliki id, teks, author, datetime */
-typedef struct
-{
-  int id;
-  char text[280];
-  char author; /* TO DO: CONNECT KE ADT PENGGUNA */
-  DATETIME datetime;
-} Balasan;
-
-/* Selektor Balasan */
-#define ID(k) (k).id
-#define TEXT(k) (k).text
-#define AUTHOR(k) (k).author
-#define DATETIME(k) (k).datetime
+#include "../tree/tree.h"
 
 /* Buat balasan baru */
 void CreateBalasan(Balasan *b, int id, char *text, char author, DATETIME datetime);
@@ -61,4 +46,4 @@ void HapusBalasan(int idKicau, int idBalasan);
   Bila tidak ditemukan, output pesan balasan tidak ditemukan
   Bila ditemukan dan bukan miliknya output pesan error */
 
-#endif BALASAN_H
+#endif

@@ -10,23 +10,22 @@
 #include "../boolean.h"
 #include "../tree/tree.h"
 
+/* Definisi Tree */
+
 /*  Kamus Umum */
 #define IDX_MIN 0
 /* Indeks minimum list */
 #define IDX_UNDEF -1
 /* Indeks tak terdefinisi*/
 
-// Global Variable List Kicauan
-extern ListDinKicauan listKicauan;
-
 /* Definisi elemen dan koleksi objek */
-typedef TreeKicauan ElType;
+typedef TreeKicauan ElTypeListDin;
 typedef int IdxType;
 typedef struct listDinKicauan
 {
-  ElType *buffer; /* memori tempat penyimpan elemen (container) */
-  int nEff;       /* >=0, banyaknya elemen efektif */
-  int capacity;   /* ukuran elemen */
+  ElTypeListDin *buffer; /* memori tempat penyimpan elemen (container) */
+  int nEff;              /* >=0, banyaknya elemen efektif */
+  int capacity;          /* ukuran elemen */
 } ListDinKicauan;
 /* Indeks yang digunakan [0..capacity-1] */
 /* Jika l adalah : ListDinKicauan, cara deklarasi dan akses: */
@@ -39,6 +38,9 @@ typedef struct listDinKicauan
   list kosong: l.nEff = 0
   Definisi elemen pertama : l.buffer[i] dengan i=0
   Definisi elemen terakhir yang terdefinisi: l.buffer[i] dengan i=l.capacity */
+
+// Global Variable List Kicauan
+extern ListDinKicauan listKicauan;
 
 /* ********** SELEKTOR ********** */
 #define NEFF(l) (l).nEff
@@ -102,12 +104,12 @@ void copyList(ListDinKicauan lIn, ListDinKicauan *lOut);
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void insertLast(ListDinKicauan *l, ElType val);
+void insertLast(ListDinKicauan *l, ElTypeListDin val);
 /* Proses: Menambahkan val sebagai elemen terakhir list */
 /* I.S. List l boleh kosong, tetapi tidak penuh */
 /* F.S. val adalah elemen terakhir l yang baru */
 /* ********** MENGHAPUS ELEMEN ********** */
-void deleteLast(ListDinKicauan *l, ElType *val);
+void deleteLast(ListDinKicauan *l, ElTypeListDin *val);
 /* Proses : Menghapus elemen terakhir list */
 /* I.S. List tidak kosong */
 /* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */

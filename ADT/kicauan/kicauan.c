@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "../datetime/datetime.h"
 #include "../masukan/masukan.h"
-#include "../listdinkicauan/listdinkicauan.h"
+#include "../kicauan/kicauan.h"
+#include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
 
 /* Konstruktor kicauan */
 void CreateKicauan(Kicauan *k, int id, char *text, char author, DATETIME datetime)
@@ -66,7 +66,7 @@ void BuatKicauan()
 
   // Cetak pesan
   printf("Selamat! kicauan telah diterbitkan!\n");
-  pritnf("Detil kicauan:\n");
+  printf("Detil kicauan:\n");
   printDetailKicauan(kicauanBaru);
 }
 

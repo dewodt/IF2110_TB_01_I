@@ -1,8 +1,42 @@
 #ifndef TREE_H
 #define TREE_H
 
-#include "../kicauan/kicauan.h"
-#include "../balasan/balasan.h"
+#include "../boolean.h"
+
+/* Struktur Kicauan */
+/* Kicauan memiliki id, teks, like, author, datetime */
+/* Kicauan juga bisa menjadi sebuah utas */
+typedef struct kicauan
+{
+  int id;
+  char text[280];
+  int like;
+  char author[20]; /* TO DO: CONNECT KE ADT PENGGUNA */
+  DATETIME datetime;
+} Kicauan;
+
+/* Selektor Kicauan */
+#define ID(k) (k).id
+#define TEXT(k) (k).text
+#define LIKE(k) (k).like
+#define AUTHOR(k) (k).author
+#define DATETIME(k) (k).datetime
+
+/* Struktur Info Balasan */
+/* Balasan memiliki id, teks, author, datetime */
+typedef struct balasan
+{
+  int id;
+  char text[280];
+  char author[20]; /* TO DO: CONNECT KE ADT PENGGUNA */
+  DATETIME datetime;
+} Balasan;
+
+/* Selektor Balasan */
+#define ID(k) (k).id
+#define TEXT(k) (k).text
+#define AUTHOR(k) (k).author
+#define DATETIME(k) (k).datetime
 
 /* ADT Tree digunakan untuk mendeskripsikan kicauan & balasan */
 /* Definisi struktur tree */

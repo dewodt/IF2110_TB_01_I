@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "../datetime/datetime.h"
 #include "../listdinkicauan/listdinkicauan.h"
 
 /* ********** KONSTRUKTOR ********** */
@@ -16,7 +17,7 @@ void CreateListDinKicauan(ListDinKicauan *l, int capacity)
 {
   CAPACITY(*l) = capacity;
   NEFF(*l) = 0;
-  BUFFER(*l) = (ElType *)malloc(CAPACITY(*l) * sizeof(ElType));
+  BUFFER(*l) = (ElTypeListDin *)malloc(CAPACITY(*l) * sizeof(ElTypeListDin));
 }
 
 void dealocateList(ListDinKicauan *l)
@@ -111,7 +112,7 @@ ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc)
       {
         if (DLT(d1, d2))
         {
-          ElType temp = ELMT(lNew, i);
+          ElTypeListDin temp = ELMT(lNew, i);
           ELMT(lNew, i) = ELMT(lNew, j);
           ELMT(lNew, j) = temp;
         }
@@ -120,7 +121,7 @@ ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc)
       {
         if (DGT(d1, d2))
         {
-          ElType temp = ELMT(lNew, i);
+          ElTypeListDin temp = ELMT(lNew, i);
           ELMT(lNew, i) = ELMT(lNew, j);
           ELMT(lNew, j) = temp;
         }
@@ -147,7 +148,7 @@ void copyList(ListDinKicauan lIn, ListDinKicauan *lOut)
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void insertLast(ListDinKicauan *l, ElType val)
+void insertLast(ListDinKicauan *l, ElTypeListDin val)
 /* Proses: Menambahkan val sebagai elemen terakhir list */
 /* I.S. List l boleh kosong, tetapi tidak penuh */
 /* F.S. val adalah elemen terakhir l yang baru */
@@ -167,7 +168,7 @@ void insertLast(ListDinKicauan *l, ElType val)
 }
 
 /* ********** MENGHAPUS ELEMEN ********** */
-void deleteLast(ListDinKicauan *l, ElType *val)
+void deleteLast(ListDinKicauan *l, ElTypeListDin *val)
 /* Proses : Menghapus elemen terakhir list */
 /* I.S. List tidak kosong */
 /* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */

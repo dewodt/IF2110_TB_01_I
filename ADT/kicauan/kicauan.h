@@ -2,26 +2,7 @@
 #define KICAUAN_H
 
 #include "../datetime/datetime.h"
-#include "../listdinkicauan/listdinkicauan.h"
-
-/* Struktur Kicauan */
-/* Kicauan memiliki id, teks, like, author, datetime */
-/* Kicauan juga bisa menjadi sebuah utas */
-typedef struct
-{
-  int id;
-  char text[280];
-  int like;
-  char author; /* TO DO: CONNECT KE ADT PENGGUNA */
-  DATETIME datetime;
-} Kicauan;
-
-/* Selektor Kicauan */
-#define ID(k) (k).id
-#define TEXT(k) (k).text
-#define LIKE(k) (k).like
-#define AUTHOR(k) (k).author
-#define DATETIME(k) (k).datetime
+#include "../tree/tree.h"
 
 /* Konstruktor kicauan */
 void CreateKicauan(Kicauan *k, int id, char *text, char author, DATETIME datetime);
@@ -57,4 +38,4 @@ void UbahKicauan(int idKicau);
 /* F.S. Bila idKicau valid, maka kicauan dengan suatu id idKicau diperbarui (update global var list kicauan)
   Bila idKicau tidak valid, maka keluarkan pesan kicauan tidak ditemukan */
 
-#endif KICAUAN_H
+#endif

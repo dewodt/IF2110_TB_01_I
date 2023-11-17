@@ -72,9 +72,13 @@ void BuatBalasan(int idKicau, int idBalasan)
       AddressBalasan latestBalasan = getLatestBalasan(kicauan);
       int nextId = ID(InfoBalasan(latestBalasan)) + 1;
 
+      // Dapatkan waktu sekarang
+      DATETIME datetime;
+      GetCurrentLocalDATETIME(&datetime);
+
       // Buat balasan baru
       Balasan balasan;
-      // CreateBalasan(&balasan, nextId, textBalasan, 'A', getCurrentDateTime());
+      CreateBalasan(&balasan, nextId, "sds", 'A', datetime);
 
       // Balas
       balasKicauan(kicauan, balasan);
@@ -111,9 +115,13 @@ void BuatBalasan(int idKicau, int idBalasan)
   AddressBalasan latestBalasan = getLatestBalasan(kicauan);
   int nextId = ID(InfoBalasan(latestBalasan)) + 1;
 
+  // Dapatkan waktu sekarang
+  DATETIME datetime;
+  GetCurrentLocalDATETIME(&datetime);
+
   // Buat balasan baru
   Balasan infoBalasan;
-  // CreateBalasan(&balasan, nextId, textBalasan, 'A', getCurrentDateTime());
+  CreateBalasan(&infoBalasan, nextId, "sds", 'A', datetime);
 
   // Balas
   balasBalasan(balasan, infoBalasan);
@@ -155,16 +163,16 @@ void CetakDetailBalasan(Balasan b, boolean isPrivat, int depth)
   else
   {
     CetakKedalaman(depth);
-    printf("| PRIVAT\n", ID(b));
+    printf("| PRIVAT\n");
     printf("\n");
     CetakKedalaman(depth);
-    printf("| PRIVAT\n", ID(b));
+    printf("| PRIVAT\n");
     printf("\n");
     CetakKedalaman(depth);
-    printf("| PRIVAT\n", ID(b));
+    printf("| PRIVAT\n");
     printf("\n");
     CetakKedalaman(depth);
-    printf("| PRIVAT\n", ID(b));
+    printf("| PRIVAT\n");
     printf("\n");
   }
 }
@@ -213,7 +221,7 @@ void TampilkanBalasan(int idKicau)
   }
 
   // Cetak balasan-balasan dalam kicauan
-  AddressBalasan firstChildBalasan = getFirstChildBalasan(kicauan);
+  AddressBalasan firstChildBalasan = FirstLeftChildBalasan(kicauan);
   TampilkanBalasanRekursif(firstChildBalasan, 0);
 }
 void TampilkanBalasanRekursif(AddressBalasan nodeBalasan, int depth)
@@ -231,13 +239,13 @@ void TampilkanBalasanRekursif(AddressBalasan nodeBalasan, int depth)
 
   // Selesaikan leftchild dulu, baru right child
   AddressBalasan leftChild = LeftChildBalasan(nodeBalasan);
-  AddressBalasan rightChild = RightChildBalasan(nodeBalasan);
+  AddressBalasan rightSibling = RightSiblingBalasan(nodeBalasan);
 
   // Cetak left child
   TampilkanBalasanRekursif(leftChild, depth + 1);
 
-  // Cetak right child
-  TampilkanBalasanRekursif(rightChild, depth + 1);
+  // Cetak right sibling
+  TampilkanBalasanRekursif(rightSibling, depth);
 }
 
 /* Prosedur Menghapus Balasan */

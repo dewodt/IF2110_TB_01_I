@@ -54,8 +54,21 @@ typedef struct
    List kosong: semua elemen bernilai MARK
    Definisi elemen pertama: ELMT(l,i) dengan i=0 */
 
+/* Global variable menyimpan state user yang sedang masuk */
+/* Saat program jalan, bernilai null */
+/* Saat user login, bernilai pointer ke user yang sedang login */
+extern User *currentUser;
+
 /* ********** SELEKTOR ********** */
 #define ELMT(l, i) (l).contents[(i)]
+#define USERNAME(l, i) (l).contents[(i)].username
+#define PASSWORD(l, i) (l).contents[(i)].password
+#define BIO(l, i) (l).contents[(i)].bio
+#define PHONE_NUM(l, i) (l).contents[(i)].phone_num
+#define WETON(l, i) (l).contents[(i)].weton
+#define ACC_TYPE(l, i) (l).contents[(i)].acc_type
+#define PROFILE(l, i) (l).contents[(i)].profile
+#define JENIS_AKUN(l, i) (l).contents[(i)].jenis_akun
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create List kosong  */

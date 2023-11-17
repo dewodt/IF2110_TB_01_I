@@ -4,21 +4,25 @@
 #include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
 
 /* Konstruktor kicauan */
-void CreateKicauan(Kicauan *k, int id, char *text, char author, DATETIME datetime)
+void CreateKicauan(Kicauan *k, int id, char *text, User *author, DATETIME datetime)
 /* I.S. kicauan sembarang, id, text, author, datetime terdefinisi */
 /* Kicauan terdefinisi */
 /* F.S. kicauan terdefinisi sesuai parameter */
 {
+  // ID
   ID(*k) = id;
+
+  // Like
   LIKE(*k) = 0;
+
+  // Author
   AUTHOR(*k) = author;
+
+  // Datetime
   DATETIME(*k) = datetime;
-  int i;
-  for (i = 0; i < 280; i++)
-  {
-    TEXT(*k)
-    [i] = text[i];
-  }
+
+  // Text
+  strcpy(TEXT(*k), text);
 }
 
 /* Prosedur pemanggilan pembuatan Kicau (bersama validasi2nya) */
@@ -37,17 +41,19 @@ void BuatKicauan()
   }
 
   // ID Kicauan paling terakhir
-  int idKicauanTerakhir = listLength(listKicauan);
+  int idKicauanTerakhir = listDinKicauanLength(listKicauan);
   int idKicauanBaru = idKicauanTerakhir + 1;
 
   // Masukan pesan kicauan
   printf("Masukkan kicauan:\n");
   printf(">> ");
-  MASUKAN pesanKicauan;
-  baca(&pesanKicauan);
+  MASUKAN kicauanMasukan;
+  baca(&kicauanMasukan);
+  char *kicauanStr = "";
+  MASUKANToStr(kicauanMasukan, kicauanStr);
 
   // Validasi masukan kicauan
-  if (isAllSpace(pesanKicauan))
+  if (isAllSpace(kicauanMasukan))
   {
     printf("Kicauan tidak boleh hanya berisi spasi!\n");
     return;
@@ -59,10 +65,11 @@ void BuatKicauan()
 
   // Buat kicauan baru
   Kicauan kicauanBaru;
+
   // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
-  // CreateKicauan(&kicauanBaru, idKicauanBaru, pesanKicauan, currentUser, waktuKicauan);
+  CreateKicauan(&kicauanBaru, idKicauanBaru, kicauanStr, currentUser, waktuKicauan);
   TreeKicauan nodeKicauan = newNodeKicauan(kicauanBaru);
-  insertLast(&listKicauan, nodeKicauan);
+  insertLastListDinKicauan(&listKicauan, nodeKicauan);
 
   // Cetak pesan
   printf("Selamat! kicauan telah diterbitkan!\n");
@@ -79,7 +86,7 @@ void printDetailKicauan(Kicauan k)
   printf("| ID = %d\n", ID(k));
 
   // Author
-  printf("| %s\n", AUTHOR(k));
+  printf("| %s\n", AUTHOR(k)->username);
 
   // Tanggal
   printf("| ");
@@ -113,12 +120,12 @@ void TampilkanKicauan()
   // TO DO: SAMBUNGKAN DENGAN LOGIC CURRENT USER & TEMAN USER
   // Cari kicauan yang dibuat oleh current user atau teman current user
   IdxType i;
-  for (i = getFirstIdx(sortedKicauan); i <= getLastIdx(sortedKicauan); i++)
+  for (i = getFirstIdxListDinKicauan(sortedKicauan); i <= getLastIdxListDinKicauan(sortedKicauan); i++)
   {
     boolean isCurrentUserOrFriend = true;
     if (isCurrentUserOrFriend)
     {
-      printDetailKicauan(InfoKicauan(ELMT(sortedKicauan, i)));
+      printDetailKicauan(InfoKicauan(ELMT_LDK(sortedKicauan, i)));
     }
   }
 }
@@ -156,7 +163,7 @@ void SukaKicauan(int idKicau)
   }
 
   // Kasus idKicauValid dan kicauan dapat dilihat
-  TreeKicauan nodeKicauan = ELMT(listKicauan, idKicau);
+  TreeKicauan nodeKicauan = ELMT_LDK(listKicauan, idKicau);
   LIKE(InfoKicauan(nodeKicauan)) += 1;
 
   // Cetak pesan
@@ -212,7 +219,7 @@ void UbahKicauan(int idKicau)
   }
 
   // Masukan valid, update kicauan
-  TreeKicauan nodeKicauan = ELMT(listKicauan, idKicau);
+  TreeKicauan nodeKicauan = ELMT_LDK(listKicauan, idKicau);
 
   // Update text
   int i;

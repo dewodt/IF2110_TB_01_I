@@ -5,7 +5,7 @@
 #include "../tree/tree.h"
 
 /* Buat balasan baru */
-void CreateBalasan(Balasan *b, int id, char *text, char author, DATETIME datetime);
+void CreateBalasan(Balasan *b, int id, char *text, User *author, DATETIME datetime);
 /* I.S. balasan sembarang, id, text, author, datetime terdefinisi */
 /* F.S. terbentuk balasan dengan sesuai parameter input */
 

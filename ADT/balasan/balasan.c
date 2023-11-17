@@ -4,19 +4,21 @@
 #include "../listdinkicauan/listdinkicauan.h"
 
 /* Buat balasan baru */
-void CreateBalasan(Balasan *b, int id, char *text, char author, DATETIME datetime)
+void CreateBalasan(Balasan *b, int id, char *text, User *author, DATETIME datetime)
 /* I.S. balasan sembarang, id, text, author, datetime terdefinisi */
 /* F.S. terbentuk balasan dengan sesuai parameter input */
 {
+  // Update ID
   ID(*b) = id;
+
+  // Update author (use pointer)
   AUTHOR(*b) = author;
+
+  // Update date time
   DATETIME(*b) = datetime;
-  int i;
-  for (i = 0; i < 280; i++)
-  {
-    TEXT(*b)
-    [i] = text[i];
-  }
+
+  // Update text
+  strcpy(TEXT(*b), text);
 }
 
 /* Prosedur Balas */
@@ -46,7 +48,7 @@ void BuatBalasan(int idKicau, int idBalasan)
   }
 
   // Kasus idKicau valid, idBalasan = -1 (membalas kicauan)
-  TreeKicauan kicauan = ELMT(listKicauan, idKicau);
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idKicau);
   if (idBalasan == -1)
   {
     // TO DO: CONNECT DGN ADT CEK TEMAN & CEK PRIVAT PENGGUNA
@@ -64,8 +66,10 @@ void BuatBalasan(int idKicau, int idBalasan)
 
       // Dapatkan input balasan
       printf("Masukkan balasan:\n");
-      MASUKAN textBalasan;
-      baca(&textBalasan);
+      MASUKAN balasanMasukan;
+      baca(&balasanMasukan);
+      char *balasanStr = "";
+      MASUKANToStr(balasanMasukan, balasanStr);
       printf("\n");
 
       // Dapatkan node balasan paling terakhir
@@ -78,7 +82,7 @@ void BuatBalasan(int idKicau, int idBalasan)
 
       // Buat balasan baru
       Balasan balasan;
-      CreateBalasan(&balasan, nextId, "sds", 'A', datetime);
+      CreateBalasan(&balasan, nextId, balasanStr, currentUser, datetime);
 
       // Balas
       balasKicauan(kicauan, balasan);
@@ -107,8 +111,11 @@ void BuatBalasan(int idKicau, int idBalasan)
   // Kasus idKicau valid, idBalasan valid (membalas balasan)
   // Dapatkan input balasan
   printf("Masukkan balasan:\n");
-  MASUKAN textBalasan;
-  baca(&textBalasan);
+  MASUKAN balasanMasukan;
+  baca(&balasanMasukan);
+
+  char *balasanStr = "";
+  MASUKANToStr(balasanMasukan, balasanStr);
   printf("\n");
 
   // Dapatkan node balasan paling terakhir
@@ -121,7 +128,7 @@ void BuatBalasan(int idKicau, int idBalasan)
 
   // Buat balasan baru
   Balasan infoBalasan;
-  CreateBalasan(&infoBalasan, nextId, "sds", 'A', datetime);
+  CreateBalasan(&infoBalasan, nextId, balasanStr, currentUser, datetime);
 
   // Balas
   balasBalasan(balasan, infoBalasan);
@@ -151,7 +158,7 @@ void CetakDetailBalasan(Balasan b, boolean isPrivat, int depth)
     printf("| ID = %d\n", ID(b));
     printf("\n");
     CetakKedalaman(depth);
-    printf("| Author = %c\n", AUTHOR(b));
+    printf("| Author = %s\n", AUTHOR(b)->username);
     printf("\n");
     CetakKedalaman(depth);
     TulisDATETIME(DATETIME(b));
@@ -203,7 +210,7 @@ void TampilkanBalasan(int idKicau)
   }
 
   // Get kicauan
-  TreeKicauan kicauan = ELMT(listKicauan, idKicau);
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idKicau);
 
   // Kasus kicauan ada namun tidak ada balasan
   if (!isBalasanExist(kicauan))
@@ -272,7 +279,7 @@ void HapusBalasan(int idKicau, int idBalasan)
   }
 
   // Kicauan ditemukan namun balasan tidak ditemukan
-  TreeKicauan kicauan = ELMT(listKicauan, idKicau);
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idKicau);
   AddressBalasan balasan = getBalasan(kicauan, idBalasan);
   if (balasan == NULL)
   {

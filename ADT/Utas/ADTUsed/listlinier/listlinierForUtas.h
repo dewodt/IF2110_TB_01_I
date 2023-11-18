@@ -2,7 +2,7 @@
 #define listlinierforutas_H
 
 #include "../time/time.h"
-#include "../datetime/datetime.c"
+#include "../datetime/datetime.h"
 #include "../boolean.h"
 
 #define MAX_CHAR 280
@@ -36,7 +36,7 @@ DATETIME getCurrTime();
 void displayTime(DATETIME time);
 
 // Meng-copy word
-void copyText(char textIn[MAX_CHAR], char *textOut[MAX_CHAR]);
+void copyText(char textIn[MAX_CHAR], char textOut[MAX_CHAR]);
 
 // Membuat UTAS baru
 void CreateThreads(threads *l);
@@ -50,6 +50,9 @@ void insertFirstThreads(threads *l, char text[MAX_CHAR]);
 // Memasukkan elemen terakhirpada utas
 void insertLastThreads(threads *l, char text[MAX_CHAR]);
 
+// Memasukkan Elemen pada indeks tertentu, indeks dipastikan valid, index dimulai dari 1
+void insertAtThreads(threads *l, char text[MAX_CHAR], int idx);
+
 // Menghapus Elemen pertama pada utas
 void deleteFirstThreads(threads *l);
 
@@ -60,6 +63,6 @@ void deleteAtThreads(threads *l, int idx);
 int lengthThreads(threads l);
 
 // Menampilkan threads secara keseluruhan, kicauan utama tidak ditampilkan
-void displayThreads(threads l);
+void displayThreads(threads l, char author[20]);
 
 #endif

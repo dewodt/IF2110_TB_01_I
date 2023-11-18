@@ -4,7 +4,7 @@
 #include <time.h>
 
 // Mengembalikan waktu lokal dalam tipe bentukan DATETIME
-DATETIME getCurrTime()
+DATETIME getCurrTime() // Works
 {
   DATETIME datetime;
   time_t t = time(NULL);
@@ -20,7 +20,7 @@ DATETIME getCurrTime()
 }
 
 // Menampilkan date dengan format "DD/MM/YYYY H:M:S" tanpa karakter setelah dan sebelumnya
-void displayTime(DATETIME time)
+void displayTime(DATETIME time) // Works
 {
   int day, month, year, hour, minute, second;
   day = Day(time);
@@ -34,23 +34,23 @@ void displayTime(DATETIME time)
 }
 
 // Meng-copy word
-void copyText(char textIn[MAX_CHAR], char *textOut[MAX_CHAR])
+void copyText(char textIn[MAX_CHAR], char textOut[MAX_CHAR]) // Works
 {
   for (int i = 0; i < 180; i++)
   {
-    (*textOut)[i] = textIn[i];
+    (textOut)[i] = textIn[i];
   }
 }
 
 // Membuat kicauan sambungan
-Address newThreadNode(char text[MAX_CHAR])
+Address newThreadNode(char text[MAX_CHAR]) // Works
 {
   DATETIME time = getCurrTime();
   Address p = (Address)malloc(sizeof(ThreadNode));
   if (p != NULL)
   {
     // Text Thread
-    copyText(text, &TextThread(p));
+    copyText(text, TextThread(p));
 
     // Date Time Thread
     Day(TimeThread(p)) = Day(time);
@@ -67,7 +67,7 @@ Address newThreadNode(char text[MAX_CHAR])
 }
 
 // Membuat UTAS baru
-void CreateThreads(threads *l)
+void CreateThreads(threads *l) // Works
 {
   FIRST(*l) = NULL;
 }
@@ -79,7 +79,7 @@ boolean isThreadsEmpty(threads l)
 }
 
 // Memasukkan kicauan sambungan di awal threads
-void insertFirstThreads(threads *l, char text[MAX_CHAR])
+void insertFirstThreads(threads *l, char text[MAX_CHAR]) // Works
 {
   Address p = newThreadNode(text);
   if (p != NULL)
@@ -90,7 +90,7 @@ void insertFirstThreads(threads *l, char text[MAX_CHAR])
 }
 
 // Memasukkan elemen terakhirpada utas
-void insertLastThreads(threads *l, char text[MAX_CHAR])
+void insertLastThreads(threads *l, char text[MAX_CHAR]) // Works
 {
   if (isThreadsEmpty(*l))
   {
@@ -111,16 +111,39 @@ void insertLastThreads(threads *l, char text[MAX_CHAR])
   }
 }
 
+// Memasukkan Elemen pada indeks tertentu, indeks dipastikan valid, index dimulai dari 1
+void insertAtThreads(threads *l, char text[MAX_CHAR], int idx)
+{
+  Address P = *l;
+  Address prevP = NULL;
+
+  if (idx == 1)
+  {
+    insertFirstThreads(l, text);
+  }
+  else
+  {
+    Address N = newThreadNode(text);
+    for (int i = 1; i < idx; i++)
+    {
+      prevP = P;
+      P = NextThread(P);
+    }
+    NextThread(prevP) = N;
+    NextThread(N) = P;
+  }
+}
+
 // Menghapus Elemen pertama pada utas
-void deleteFirstThreads(threads *l)
+void deleteFirstThreads(threads *l) // Works
 {
   Address temp = FIRST(*l);
   FIRST(*l) = NextThread(temp);
   free(temp);
 }
 
-// Menghapus Elemen dengan index pertama dimulai dari 1
-void deleteAtThreads(threads *l, int idx)
+// Menghapus Elemen dengan index pertama dimulai dari 1, dipastikan indeks valid
+void deleteAtThreads(threads *l, int idx) // Works
 {
   idx -= 1;
   if (idx == 0)
@@ -136,6 +159,7 @@ void deleteAtThreads(threads *l, int idx)
       i++;
       loc = NextThread(loc);
     }
+    
 
     Address p = NextThread(loc);
     NextThread(loc) = NextThread(p);
@@ -144,7 +168,7 @@ void deleteAtThreads(threads *l, int idx)
 }
 
 // Mengembalikan jumlah kicauan sambungan pada threads
-int lengthThreads(threads l)
+int lengthThreads(threads l) // Works
 {
   int count = 0;
   Address p = FIRST(l);
@@ -157,7 +181,7 @@ int lengthThreads(threads l)
 }
 
 // Menampilkan threads secara keseluruhan, kicauan utama tidak ditampilkan
-void displayThreads(threads l)
+void displayThreads(threads l, char author[20])
 {
   int index = 1;
 
@@ -165,10 +189,13 @@ void displayThreads(threads l)
   while (P != NULL)
   {
     printf("   | INDEX = %d\n", index);
-    printf("   | INI NANTI DIAMBIL DARI KICAUAN\n");
+    printf("   | %s\n", author);
     printf("   | ");
-    displayTime(TimeThread(l));
+    displayTime(TimeThread(P));
     printf("\n");
-    printf("   | %s\n", TextThread(l));
+    printf("   | %s\n", TextThread(P));
+    printf("\n");
+    P = NextThread(P);
+    index++;
   }
 }

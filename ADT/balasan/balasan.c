@@ -97,6 +97,12 @@ void BuatBalasan(int idKicau, int idBalasan)
 
     // Balas
     balasKicauan(kicauan, balasan);
+
+    // Cetak pesan
+    printf("Selamat, balasan telah diterbitkan!\n");
+    printf("Detil balasan:\n");
+    CetakDetailBalasan(balasan, false, 0);
+    printf("\n");
   }
   else
   {
@@ -151,6 +157,12 @@ void BuatBalasan(int idKicau, int idBalasan)
 
     // Balas
     balasBalasan(balasan, infoBalasan);
+
+    // Cetak pesan
+    printf("Selamat, balasan telah diterbitkan!\n");
+    printf("Detil balasan:\n");
+    CetakDetailBalasan(infoBalasan, false, 0);
+    printf("\n");
   }
 }
 
@@ -305,14 +317,18 @@ void HapusBalasan(int idKicau, int idBalasan)
   // Validasi sudah masuk atau belum
   if (!isUserLoggedIn())
   {
+    printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    printf("\n");
     return;
   }
 
   // Kicauan tidak ditemukan
   if (!isKicauanExist(idKicau))
   {
+    printf("\n");
     printf("Balasan tidak ditemukan!\n");
+    printf("\n");
     return;
   }
 
@@ -321,7 +337,9 @@ void HapusBalasan(int idKicau, int idBalasan)
   TreeKicauan kicauan = ELMT_LDK(listKicauan, idxKicau);
   if (!isBalasanExist(kicauan, idBalasan))
   {
+    printf("\n");
     printf("Balasan tidak ditemukan!\n");
+    printf("\n");
     return;
   }
 
@@ -331,10 +349,17 @@ void HapusBalasan(int idKicau, int idBalasan)
   // Kasus balasan ditemukan namun bukan punyanya
   if (currentUser != AUTHOR(InfoBalasan(balasan)))
   {
+    printf("\n");
     printf("Hei, ini balasan punya siapa? Jangan dihapus ya!\n");
+    printf("\n");
     return;
   }
 
   // Kasus balasan ditemukan dan punyanya
   hapusNodeBalasan(kicauan, balasan);
+
+  // Cetak pesan
+  printf("\n");
+  printf("Balasan berhasil dihapus\n");
+  printf("\n");
 }

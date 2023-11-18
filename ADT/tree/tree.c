@@ -9,7 +9,7 @@ AddressKicauan newNodeKicauan(Kicauan kicauan)
   Bila alokasi gagal, F.S.=I.S. */
 {
   // Alokasi
-  AddressKicauan newNode = (AddressKicauan)malloc(sizeof(Kicauan));
+  AddressKicauan newNode = (AddressKicauan)malloc(sizeof(NodeKicauan));
 
   // Alokasi berhasil
   if (newNode != NULL)
@@ -28,7 +28,7 @@ AddressBalasan newNodeBalasan(Balasan balasan)
   Bila alokasi gagal, F.S.=I.S. */
 {
   // Alokasi
-  AddressBalasan newNode = (AddressBalasan)malloc(sizeof(Balasan));
+  AddressBalasan newNode = (AddressBalasan)malloc(sizeof(NodeBalasan));
 
   // Alokasi berhasil
   if (newNode != NULL)
@@ -42,10 +42,29 @@ AddressBalasan newNodeBalasan(Balasan balasan)
 }
 
 /* Prosedur untuk mengecek apakah ada balasan */
-boolean isBalasanExist(TreeKicauan nodeKicauan)
+boolean isKicauanHasBalasan(TreeKicauan nodeKicauan)
 /* Mengembalikan true bila ada balasan, mengembalikan false bila tidak ada balasan */
 {
   return (FirstLeftChildBalasan(nodeKicauan) != NULL);
+}
+
+/* Dapatkan id baru untuk membuat balasan baru */
+int getNewBalasanId(TreeKicauan nodeKicauan)
+/* Menghasilkan 1 bila tidak ada balasan pada suatu kicauan */
+/* Menghasilkan idxLatest + 1 dengan idxLatest adalah balasan paling baru */
+{
+  AddressBalasan latestBalasan = getLatestBalasan(nodeKicauan);
+
+  if (latestBalasan == NULL)
+  {
+    // Kasus tidak ada balasan
+    return 1;
+  }
+  else
+  {
+    // Kasus ada balasan
+    return ID(InfoBalasan(latestBalasan)) + 1;
+  }
 }
 
 /* Dapatkan node balasan dengan id terbesar (latest balasan) */
@@ -54,7 +73,7 @@ boolean isBalasanExist(TreeKicauan nodeKicauan)
 AddressBalasan getLatestBalasan(TreeKicauan nodeKicauan)
 {
   // Kasus tidak ada balasan
-  if (!isBalasanExist(nodeKicauan))
+  if (!isKicauanHasBalasan(nodeKicauan))
   {
     return NULL;
   }
@@ -68,65 +87,53 @@ AddressBalasan getLatestBalasanRecursive(AddressBalasan nodeBalasan)
   AddressBalasan leftChild = LeftChildBalasan(nodeBalasan);
   AddressBalasan rightSibling = RightSiblingBalasan(nodeBalasan);
 
-  // Kasus tidak ada left child dan right sibling
-  if (leftChild == NULL && rightSibling == NULL)
+  // Basis
+  // Kasus nodeBalasan merupakan node terakhir
+  if (rightSibling == NULL && leftChild == NULL)
   {
     return nodeBalasan;
   }
 
-  // Kasus ada left child tidak ada right sibling
-  if (leftChild != NULL && rightSibling == NULL)
+  // Rekurens
+  if (leftChild == NULL)
   {
-    AddressBalasan maxLeftChild = getLatestBalasanRecursive(leftChild);
-    if (ID(InfoBalasan(maxLeftChild)) > ID(InfoBalasan(nodeBalasan)))
+    AddressBalasan latestRightSibling = getLatestBalasanRecursive(rightSibling);
+    if (ID(InfoBalasan(nodeBalasan)) > ID(InfoBalasan(latestRightSibling)))
     {
-      return maxLeftChild;
+      return nodeBalasan;
     }
     else
     {
-      return nodeBalasan;
+      return latestRightSibling;
     }
   }
 
-  // Kasus tidak ada left child ada right sibling
-  if (leftChild == NULL && rightSibling != NULL)
+  if (rightSibling == NULL)
   {
-    AddressBalasan maxRightSibling = getLatestBalasanRecursive(rightSibling);
-    if (ID(InfoBalasan(maxRightSibling)) > ID(InfoBalasan(nodeBalasan)))
+    AddressBalasan latestLeftChild = getLatestBalasanRecursive(leftChild);
+    if (ID(InfoBalasan(nodeBalasan)) > ID(InfoBalasan(latestLeftChild)))
     {
-      return maxRightSibling;
+      return nodeBalasan;
     }
     else
     {
-      return nodeBalasan;
+      return latestLeftChild;
     }
   }
 
-  // Kasus ada left child dan right sibling
-  AddressBalasan maxLeftChild = getLatestBalasanRecursive(leftChild);
-  AddressBalasan maxRightSibling = getLatestBalasanRecursive(rightSibling);
-
-  if (ID(InfoBalasan(maxLeftChild)) > ID(InfoBalasan(maxRightSibling)))
+  AddressBalasan latestLeftChild = getLatestBalasanRecursive(leftChild);
+  AddressBalasan latestRightSibling = getLatestBalasanRecursive(rightSibling);
+  if (ID(InfoBalasan(nodeBalasan)) > ID(InfoBalasan(latestLeftChild)) && ID(InfoBalasan(nodeBalasan)) > ID(InfoBalasan(latestRightSibling)))
   {
-    if (ID(InfoBalasan(maxLeftChild)) > ID(InfoBalasan(nodeBalasan)))
-    {
-      return maxLeftChild;
-    }
-    else
-    {
-      return nodeBalasan;
-    }
+    return nodeBalasan;
+  }
+  else if (ID(InfoBalasan(latestLeftChild)) > ID(InfoBalasan(latestRightSibling)))
+  {
+    return latestLeftChild;
   }
   else
   {
-    if (ID(InfoBalasan(maxRightSibling)) > ID(InfoBalasan(nodeBalasan)))
-    {
-      return maxRightSibling;
-    }
-    else
-    {
-      return nodeBalasan;
-    }
+    return latestRightSibling;
   }
 }
 
@@ -136,7 +143,7 @@ AddressBalasan getLatestBalasanRecursive(AddressBalasan nodeBalasan)
 AddressBalasan getBalasan(TreeKicauan nodeKicauan, int idBalasan)
 {
   // Kasus tidak ada balasan
-  if (!isBalasanExist(nodeKicauan))
+  if (!isKicauanHasBalasan(nodeKicauan))
   {
     return NULL;
   }

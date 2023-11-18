@@ -82,8 +82,13 @@ AddressBalasan newNodeBalasan(Balasan balasan);
   Bila alokasi gagal, F.S.=I.S. */
 
 /* Prosedur untuk mengecek apakah ada balasan */
-boolean isBalasanExist(TreeKicauan nodeKicauan);
+boolean isKicauanHasBalasan(TreeKicauan nodeKicauan);
 /* Mengembalikan true bila ada balasan, mengembalikan false bila tidak ada balasan */
+
+/* Dapatkan id baru untuk membuat balasan baru */
+int getNewBalasanId(TreeKicauan nodeKicauan);
+/* Menghasilkan 1 bila tidak ada balasan pada suatu kicauan */
+/* Menghasilkan idxLatest + 1 dengan idxLatest adalah balasan paling baru */
 
 /* Dapatkan node balasan dengan id terbesar (latest balasan) */
 AddressBalasan getLatestBalasan(TreeKicauan nodeKicauan);

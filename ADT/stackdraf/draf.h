@@ -1,7 +1,7 @@
 /* File: charmachine.h */
 /* Definisi Mesin Karakter */
 
-#include "./stack/stack.h"
+#include "./../stack/stack.h"
 #include "./../masukan/masukan.h"
 
 #ifndef __DRAF_H__

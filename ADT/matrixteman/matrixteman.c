@@ -1,5 +1,5 @@
 // import
-#include "./teman.h"
+#include "./matrixteman.h"
 
 void createFriendMatrix(Matrix* RelasiPertemanan){
   createMatrix(20, 20, RelasiPertemanan);

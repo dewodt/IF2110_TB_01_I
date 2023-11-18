@@ -5,9 +5,9 @@
 #ifndef stackt_H
 #define stackt_H
 
-#include "./../../boolean.h"
-#include "./../../pengguna/pengguna.c"
-#include "./../../datetime/datetime.c"
+#include "./../boolean.h"
+#include "./../pengguna/pengguna.h"
+#include "./../datetime/datetime.h"
 
 #define Nil -1
 #define MaxEl 100

@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "./../boolean.h"
-#include "./matrix/matrix.c"
-#include "./../modifiedliststatik/modifiedliststatik.c" // Untuk akses struct User
-#include "./../masukan/masukan.c" // Untuk membandingkan MASUKAN atau string char[]
+#include "./../matrix/matrix.h"
+#include "./../modifiedliststatik/modifiedliststatik.h" // Untuk akses struct User
+#include "./../masukan/masukan.h" // Untuk membandingkan MASUKAN atau string char[]
 
 // variabel global
 extern Matrix RelasiPertemanan;

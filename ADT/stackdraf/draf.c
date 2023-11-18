@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "draf.h"
+#include "./draf.h"
 #include "../masukan/masukan.h"
 #include "../modifiedliststatik/modifiedliststatik.h" // import global variable currentUser, Datetime
 #include "../kicauan/kicauan.h"

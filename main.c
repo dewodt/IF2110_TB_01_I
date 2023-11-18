@@ -9,8 +9,19 @@ listKicauan
 listUser
 continue
 */
+
+/* GLOBAL VARIABLES */
+ListDinKicauan listKicauan;
+ListStatik listUser;
+User *currentUser;
+
 int main()
 {
+    // Inisialisasi global variable
+    CreateListDinKicauan(&listKicauan, 100);
+    CreateListStatik(&listUser);
+    currentUser = NULL;
+
     // Tampilan awal
     printf(".______    __    __  .______      .______    __  .______ \n");
     printf("|   _  \\  |  |  |  | |   _  \\     |   _  \\  |  | |   _  \\\n");

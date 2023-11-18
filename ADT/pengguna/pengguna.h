@@ -6,6 +6,11 @@
 #include "../modifiedliststatik/modifiedliststatik.h"
 #include "../modifiedmatrix/modifiedmatrix.h"
 
+/* Global variable menyimpan state user yang sedang masuk */
+/* Saat program jalan, bernilai null */
+/* Saat user login, bernilai pointer ke user yang sedang login */
+extern User *currentUser;
+
 // Mengembalikan true bila user sudah login dan mengembalikan false bila user belum login
 boolean isUserLoggedIn();
 // Jika global variable currentUser NULL maka belum login

@@ -57,11 +57,6 @@ typedef struct
 /* Global variable menyimpan user dalam list statik */
 extern ListStatik listUser;
 
-/* Global variable menyimpan state user yang sedang masuk */
-/* Saat program jalan, bernilai null */
-/* Saat user login, bernilai pointer ke user yang sedang login */
-extern User *currentUser;
-
 /* ********** SELEKTOR ********** */
 #define ELMT(l, i) (l).contents[(i)]
 #define USERNAME(l, i) (l).contents[(i)].username

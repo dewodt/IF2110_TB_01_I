@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "wordmachine.h"
 #include "liststatik.h"
-int searchID_Pengguna(ListStatik listPengguna, Word Pengguna) // mungkin penggunanya char
+
+int searchID_Pengguna(ListStatik listPengguna, MASUKAN Pengguna) // mungkin penggunanya char
 {
     int hasil;
     hasil = -1;
@@ -9,7 +10,7 @@ int searchID_Pengguna(ListStatik listPengguna, Word Pengguna) // mungkin penggun
     i = 0;
     while (i < listLength(listPengguna) && hasil != -1)
     {
-        if(listStatik[i].Nama_pengguna == Pengguna){
+        if(listStatik[i].username == Pengguna){
             hasil = i;
         }else{
             i++;

@@ -1,4 +1,9 @@
+#include <stdio.h>
 #include "draf.h"
+#include "../masukan/masukan.h"
+#include "../modifiedliststatik/modifiedliststatik.h" // import global variable currentUser, Datetime
+#include "../kicauan/kicauan.h"
+#include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
 
 void createDraf(Draf *Draf, char *text, DATETIME datetime){
   // Datetime
@@ -8,30 +13,49 @@ void createDraf(Draf *Draf, char *text, DATETIME datetime){
   strcpy(TEXT(*Draf), text);
 }
 
-//BLM
-void prosesDraf(Stack* DrafStack, Draf DrafInfo){
+//CEK LAGIIII
+void prosesDraf(Stack* DrafStack, Draf* Draft){
   Draf TempDraf;
-  printf("Apakah anda ingin menghapus, menyimpan, atau menerbitkan draf ini?\n");
+
   // case-sensitive commands
-  if (isSame(currentWord, "HAPUS;")){
+  MASUKAN PerintahMasukan;
+  baca(&PerintahMasukan);
+  if (isSame(PerintahMasukan, "HAPUS;")){
     // jika mengakses Top, dari lihatDraf
-    if (DrafInfo == InfoTop(*DrafStack)) {
+    if (Draft == InfoTop(*DrafStack)) {
       Pop(DrafStack, &TempDraf);
     }
+    free(Draft);
     printf("Draf telah berhasil dihapus!");
-  } else if (isSame(currentWord, "SIMPAN;")){
-    // jika dari buatDraf, butuh fungsi cek kesamaan id
-    if (DrafInfo != InfoTop(*DrafStack)) {
-      Push(DrafStack, DrafInfo);
-    }
+  } else if (isSame(PerintahMasukan, "SIMPAN;" && Draft != &InfoTop(*DrafStack))){
+    Push(DrafStack, *Draft);
     printf("Draf telah berhasil disimpan!");
-  } else if (isSame(currentWord, "TERBIT")){
-    // buatCuitan
-    printf("Selamat! Draf Draf telah diterbitkan!");
-  } else if (isSame(currentWord, "KEMBALI;")){
+  } else if (isSame(PerintahMasukan, "TERBIT;")){
+    // ID Kicauan paling terakhir
+    int idKicauanTerakhir = listDinKicauanLength(listKicauan);
+    int idKicauanBaru = idKicauanTerakhir + 1;
+
+    Kicauan KicauanBaru;
+    CreateKicauan(&KicauanBaru, idKicauanBaru, Draft->text, currentUser, Draft->datetime);
+    TreeKicauan NodeKicauan = newNodeKicauan(KicauanBaru);
+    insertLastListDinKicauan(&listKicauan, NodeKicauan);
+
+    // jika mengakses Top, dari lihatDraf
+    if (Draft == InfoTop(*DrafStack)) {
+      Pop(DrafStack, &TempDraf);
+    }
+    free(Draft);
+
+    printf("Selamat! Draf kicauan telah diterbitkan!");
+    printf("Detil kicauan:\n");
+    printDetailKicauan(KicauanBaru);
+  } else if (isSame(PerintahMasukan, "KEMBALI;")){
     // do nothing
+  } else if (isSame(PerintahMasukan, "UBAH;" && Draft == &InfoTop(*DrafStack))){
+    // Kasus mengubah setelah lihat info top stack drafnya pengguna
+    ubahDraft(Draft);
   } else {
-    // handle commands tidak sesuai
+    // handle commands tidak sesuai, do nothing
   }
 }
 
@@ -45,9 +69,8 @@ void tampilkanDraf(Draf DrafInfo){
   printf("| %s\n", TEXT(DrafInfo));
 }
 
-//BLM
 void buatDraf(Stack* DrafStack){
-    // Validasi sudah masuk atau belum
+  // Validasi sudah masuk atau belum
   // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
   boolean isUserLoggedIn = true;
   if (!isUserLoggedIn)
@@ -56,16 +79,11 @@ void buatDraf(Stack* DrafStack){
     return;
   }
 
-  // ID Draf paling terakhir
-  int idDrafTerakhir = listDinDrafLength(listDraf);
-  int idDrafBaru = idDrafTerakhir + 1;
-
   // Masukan pesan Draf
   printf("Masukkan Draf:\n");
-  printf(">> ");
   MASUKAN DrafMasukan;
   baca(&DrafMasukan);
-  char *DrafStr = "";
+  char *DrafStr;
   MASUKANToStr(DrafMasukan, DrafStr);
 
   // Validasi masukan Draf
@@ -80,34 +98,24 @@ void buatDraf(Stack* DrafStack){
   GetCurrentLocalDATETIME(&waktuDraf);
 
   // Buat Draf baru
-  Draf DrafBaru;
-
   // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
-  CreateDraf(&DrafBaru, idDrafBaru, DrafStr, currentUser, waktuDraf);
-  TreeDraf nodeDraf = newNodeDraf(DrafBaru);
-  insertLastListDinDraf(&listDraf, nodeDraf);
-
-  // Cetak pesan
-  printf("Selamat! Draf telah diterbitkan!\n");
-  printf("Detil Draf:\n");
-  printDetailDraf(DrafBaru);
-
-
-  printf("Masukkan draf:\n");
-  ADVWORD();
-  // Draf.id = incrementor;
-  Draf DrafInfo;
-  // DrafInfo.id = incrementor;
-  DrafInfo.text = currentWord;
-  DrafInfo.like = 0;
-  // DrafInfo.author = CurrentPengguna;
-  // DrafInfo.time = ... // include datetime;
-  prosesDraf(DrafStack, DrafInfo);
+  Draf DrafBaru;
+  createDraf(&DrafBaru, DrafStr, waktuDraf);
+ 
+  printf("Apakah anda ingin menghapus, menyimpan, atau menerbitkan draf ini?\n");
+  prosesDraf(DrafStack, &DrafBaru);
 }
 
-//BLM
 void lihatDraf(Stack* DrafStack){
-  // Kasus belum login apakah mending dihandle pada program utama
+  // Validasi sudah masuk atau belum
+  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
+  boolean isUserLoggedIn = true;
+  if (!isUserLoggedIn)
+  {
+    printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    return;
+  }
+
   if (IsEmpty(*DrafStack)){
     // Kasus tidak ada draf
     printf("Yah, anda belum memiliki draf apapun! Buat dulu ya :D");
@@ -117,7 +125,33 @@ void lihatDraf(Stack* DrafStack){
     printf("Ini draf terakhir anda:\n");
     infoDraf(DrafOnTop);
 
-    // blum ada ubah, jangan pakai ini
-    prosesDraf(DrafStack, DrafOnTop);
+    pritnf("Apakah anda ingin mengubah, menghapus, atau menerbitkan draf ini? (KEMBALI jika ingin kembali)\n");
+    prosesDraf(DrafStack, &DrafOnTop);
   }
+}
+
+void ubahDraf(Stack* DrafStack, Draf* Draft){
+  // Masukan pesan Draf
+  printf("Masukkan Draf:\n");
+  MASUKAN DrafMasukan;
+  baca(&DrafMasukan);
+  char *DrafStr;
+  MASUKANToStr(DrafMasukan, DrafStr);
+
+  // Validasi masukan Draf
+  if (isAllSpace(DrafMasukan))
+  {
+    printf("Draf tidak boleh hanya berisi spasi!\n");
+    return;
+  }
+
+  strcpy(TEXT(*Draft), DrafStr);
+
+  // Dapatkan waktu dari library time.h
+  DATETIME waktuDraf;
+  GetCurrentLocalDATETIME(&waktuDraf);
+  DATETIME(*Draft) = waktuDraf;
+ 
+  printf("Apakah anda ingin menghapus, menyimpan, atau menerbitkan draf ini?\n");
+  prosesDraf(DrafStack, Draft);
 }

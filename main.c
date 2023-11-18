@@ -3,6 +3,12 @@
 #include "ADT/listdinkicauan/listdinkicauan.h"
 #include "ADT/modifiedliststatik/modifiedliststatik.h"
 
+/* GLOBAL VARIABLES:
+currentUser
+listKicauan
+listUser
+continue
+*/
 int main()
 {
     // Tampilan awal

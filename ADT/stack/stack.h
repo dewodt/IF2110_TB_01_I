@@ -5,34 +5,14 @@
 #ifndef stackt_H
 #define stackt_H
 
-#include "./../boolean.h"
-#include "./../pengguna/pengguna.h"
-#include "./../datetime/datetime.h"
+#include "../boolean.h"
 
 #define Nil -1
 #define MaxEl 100
 /* Nil adalah stack dengan elemen kosong . */
 
-typedef Draf infotype; // UTK SOAL TERAKHIR
+typedef int infotype; // UTK SOAL TERAKHIR
 typedef int address;  /* indeks tabel */
-
-// Datatype Draf untuk diunggah ke ADT Kicauan
-typedef struct {
-  int id; // auto-increment mulai 1
-  char text[280];
-  // int like; // draf reload to 0 or sesuai kicauan sebelumnya? kicauan gbs jdi draf
-  User *author; // use pointer
-  DATETIME datetime;
-} Draf;
-/**
- * Definisi Draf Kicauan
-*/
-
-/* Definisi akses dengan Selektor : Set dan Get */
-#define ID(S) (S).id
-#define TEXT(S) (S).text
-#define AUTHOR(S) (S).author
-#define DATETIME(S) (S).datetime
 
 /* Contoh deklarasi variabel bertype stack dengan ciri TOP : */
 /* Versi I : dengan menyimpan tabel dan alamat top secara eksplisit*/

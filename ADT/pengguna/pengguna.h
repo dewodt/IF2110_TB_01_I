@@ -6,6 +6,11 @@
 #include "../modifiedliststatik/modifiedliststatik.h"
 #include "../modifiedmatrix/modifiedmatrix.h"
 
+// Mengembalikan true bila user sudah login dan mengembalikan false bila user belum login
+boolean isUserLoggedIn();
+// Jika global variable currentUser NULL maka belum login
+// Jika global variable currentUser tidak NULL maka sudah login (pointer ke user yang sedang login)
+
 // mendaftarkan pengguna
 void DAFTAR(ListStatik *pengguna, boolean *isLoggedin);
 // I.S.

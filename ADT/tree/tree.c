@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../tree/tree.h"
 
 /* Prosedur membuat kicauan baru */
@@ -102,32 +103,29 @@ AddressBalasan getLatestBalasanRecursive(AddressBalasan nodeBalasan)
   }
 
   // Kasus ada left child dan right sibling
-  if (leftChild != NULL && rightSibling != NULL)
-  {
-    AddressBalasan maxLeftChild = getLatestBalasanRecursive(leftChild);
-    AddressBalasan maxRightSibling = getLatestBalasanRecursive(rightSibling);
+  AddressBalasan maxLeftChild = getLatestBalasanRecursive(leftChild);
+  AddressBalasan maxRightSibling = getLatestBalasanRecursive(rightSibling);
 
-    if (ID(InfoBalasan(maxLeftChild)) > ID(InfoBalasan(maxRightSibling)))
+  if (ID(InfoBalasan(maxLeftChild)) > ID(InfoBalasan(maxRightSibling)))
+  {
+    if (ID(InfoBalasan(maxLeftChild)) > ID(InfoBalasan(nodeBalasan)))
     {
-      if (ID(InfoBalasan(maxLeftChild)) > ID(InfoBalasan(nodeBalasan)))
-      {
-        return maxLeftChild;
-      }
-      else
-      {
-        return nodeBalasan;
-      }
+      return maxLeftChild;
     }
     else
     {
-      if (ID(InfoBalasan(maxRightSibling)) > ID(InfoBalasan(nodeBalasan)))
-      {
-        return maxRightSibling;
-      }
-      else
-      {
-        return nodeBalasan;
-      }
+      return nodeBalasan;
+    }
+  }
+  else
+  {
+    if (ID(InfoBalasan(maxRightSibling)) > ID(InfoBalasan(nodeBalasan)))
+    {
+      return maxRightSibling;
+    }
+    else
+    {
+      return nodeBalasan;
     }
   }
 }

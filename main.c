@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "ADT/masukan/masukan.h"
+#include "ADT/listdinkicauan/listdinkicauan.h"
+#include "ADT/modifiedliststatik/modifiedliststatik.h"
 
 int main()
 {

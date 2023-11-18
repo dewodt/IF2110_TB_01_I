@@ -84,6 +84,14 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
     }
 }
 
+// Mengembalikan true bila user sudah login dan mengembalikan false bila user belum login
+boolean isUserLoggedIn()
+// Jika global variable currentUser NULL maka belum login
+// Jika global variable currentUser tidak NULL maka sudah login (pointer ke user yang sedang login)
+{
+    return currentUser != NULL;
+}
+
 // masuk sebagai pengguna
 boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
 {

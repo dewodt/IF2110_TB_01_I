@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "../masukan/masukan.h"
 #include "../balasan/balasan.h"
-#include "../listdinkicauan/listdinkicauan.h"
-#include "../modifiedliststatik/modifiedliststatik.h"
+#include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
+#include "../pengguna/pengguna.h"             // Global variable currentUser
 
 /* Buat balasan baru */
 void CreateBalasan(Balasan *b, int id, char *text, User *author, DATETIME datetime)
@@ -32,9 +32,7 @@ void BuatBalasan(int idKicau, int idBalasan)
   Bila idKicau valid namun idBalasan tidak valid, output pesan tidak terdapat balasan */
 {
   // VALIDASI USER SUDAH MASUK ATAU BELUM
-  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
-  boolean isUserLoggedIn = true;
-  if (!isUserLoggedIn)
+  if (!isUserLoggedIn())
   {
     printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
@@ -93,10 +91,9 @@ void BuatBalasan(int idKicau, int idBalasan)
     GetCurrentLocalDATETIME(&datetime);
 
     // Buat balasan baru
-    // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
-    // ADT MASIH BERMASALAH, SET TO NULL DULU
+    // Note: currentUser global variable
     Balasan balasan;
-    CreateBalasan(&balasan, nextId, balasanStr, NULL, datetime);
+    CreateBalasan(&balasan, nextId, balasanStr, currentUser, datetime);
 
     // Balas
     balasKicauan(kicauan, balasan);
@@ -148,10 +145,9 @@ void BuatBalasan(int idKicau, int idBalasan)
     GetCurrentLocalDATETIME(&datetime);
 
     // Buat balasan baru
-    // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
-    // ADT MASIH BERMASALAH, SET TO NULL DULU
+    // Note: currentUser global variable
     Balasan infoBalasan;
-    CreateBalasan(&infoBalasan, nextId, balasanStr, NULL, datetime);
+    CreateBalasan(&infoBalasan, nextId, balasanStr, currentUser, datetime);
 
     // Balas
     balasBalasan(balasan, infoBalasan);
@@ -228,9 +224,7 @@ void TampilkanBalasan(int idKicau)
   Bila pada balasan ada balasan yang privat dan belum berteman, tampilkan balasan PRIVAT */
 {
   // Validasi sudah masuk atau belum
-  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
-  boolean isUserLoggedIn = true;
-  if (!isUserLoggedIn)
+  if (!isUserLoggedIn())
   {
     printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
@@ -309,9 +303,7 @@ void HapusBalasan(int idKicau, int idBalasan)
   Bila ditemukan dan bukan miliknya output pesan error */
 {
   // Validasi sudah masuk atau belum
-  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
-  boolean isUserLoggedIn = true;
-  if (!isUserLoggedIn)
+  if (!isUserLoggedIn())
   {
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
     return;
@@ -333,17 +325,15 @@ void HapusBalasan(int idKicau, int idBalasan)
     return;
   }
 
+  // Dapatkan balasan
+  AddressBalasan balasan = getBalasan(kicauan, idBalasan);
+
   // Kasus balasan ditemukan namun bukan punyanya
-  // TO DO: CONNECT DGN ADT CEK PENGGUNA
-  boolean isPunyaUser = true;
-  if (!isPunyaUser)
+  if (currentUser != AUTHOR(InfoBalasan(balasan)))
   {
     printf("Hei, ini balasan punya siapa? Jangan dihapus ya!\n");
     return;
   }
-
-  // Dapatkan balasan
-  AddressBalasan balasan = getBalasan(kicauan, idBalasan);
 
   // Kasus balasan ditemukan dan punyanya
   hapusNodeBalasan(kicauan, balasan);

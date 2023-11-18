@@ -1,6 +1,6 @@
 #include "listlinierForUtas.h"
-#include "stdio.h"
-#include "stdlib.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 // Mengembalikan waktu lokal dalam tipe bentukan DATETIME
@@ -159,7 +159,6 @@ void deleteAtThreads(threads *l, int idx) // Works
       i++;
       loc = NextThread(loc);
     }
-    
 
     Address p = NextThread(loc);
     NextThread(loc) = NextThread(p);

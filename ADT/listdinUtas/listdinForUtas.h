@@ -1,5 +1,5 @@
 #include "../tree/tree.h"
-#include "../listlinier/listlinierForUtas.h"
+#include "../listlinierUtas/listlinierForUtas.h"
 
 #ifndef LISTUTAS_H
 #define LISTUTAS_H
@@ -53,5 +53,7 @@ void insertUtas(ListUtas *lu, UTAS U);
 
 void deleteSambungan(UTAS *u, int idx);
 // Menghapus Kicauan Sambungan pada utas dengan index tertentu
+
+void displayUtas(UTAS u);
 
 #endif

@@ -1,33 +1,27 @@
-#include "ADTUsed/time/time.h"
-#include "ADTUsed/datetime/datetime.h"
-#include "ADTUsed/listlinier/listlinierForUtas.h"
-#include "ADTUsed/kicauan/kicauan.h"
-
 #ifndef UTAS_H
 #define UTAS_H
 
-// Bentukan Utas
-typedef struct
-{
-    Kicauan *tweet;  // Pointer menuju kicauan utama
-    int IDUtas;      // ID Utas
-    Address threads; // Alamat menuju kicauan sambungan pertama
-} UTAS;
+#include "../listdinkicauan/listdinkicauan.h"
+#include "../../../main.c"
+#include "../masukan/masukan.h"
+#include "../listlinierUtas/listlinierForUtas.h"
+#include "../listdinUtas/listdinForUtas.h"
+#include "../boolean.h"
 
-#define Threads(u) (u)->threads
-#define IDUtas(u) (u).IDUtas
-#define Sambungan(u) (u).threads
+int isIdUtasValid(ListUtas li, int idx);
 
-// Membuat sebuah Utas baru dari kicauan yang sudah ada, Akan di-set ID Utas dan pointer kicauan
-void CreateUtas(UTAS *u, Kicauan *tweet);
+boolean isIndexSambunganValid(threads u, int index);
 
-// Menyambung Utas
-void SAMBUNG_UTAS(UTAS *u, char text[MAX_CHAR], int index);
+boolean isUtasUser(UTAS u);
 
-// Mencetak Utas
-void CETAK_UTAS(UTAS u);
+boolean isKicauanUser(Kicauan k);
 
-// Menghapus kicauan sambungan pada ID Utas tertentu, dan index kicauan sambungan tertentu
-void HAPUS_UTAS(UTAS *u, int idx);
+void BUAT_UTAS(int idk);
+
+void SAMBUNG_UTAS(int idU, int index, ListUtas *li);
+
+void HAPUS_UTAS(int idU, int index, ListUtas *li);
+
+void CETAK_UTAS(int idU, ListUtas li);
 
 #endif

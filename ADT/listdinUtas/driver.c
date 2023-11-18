@@ -1,5 +1,5 @@
 #include "listdinForUtas.c"
-#include "../listlinier/listlinierForUtas.c"
+#include "../listlinierUtas/listlinierForUtas.c"
 
 int main()
 {

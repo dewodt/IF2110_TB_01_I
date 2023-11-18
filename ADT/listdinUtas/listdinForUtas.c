@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "listdinForUtas.h"
-#include "../listlinier/listlinierForUtas.h" // Janlup ganti jadi.h
+#include "../listlinierUtas/listlinierForUtas.h" // Janlup ganti jadi.h
 
 /* Fungsi/Posedur untuk Tipe Bentukan Utas  */
 void CreateUtas(UTAS *u, Kicauan *kicauan, int id)

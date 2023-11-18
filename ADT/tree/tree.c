@@ -198,16 +198,15 @@ AddressBalasan getBalasanRecursive(AddressBalasan nodeBalasan, int idBalasan)
       return rightSiblingResult;
     }
   }
-
-  // Hanya left child yang tidak null
+  // Salah satu nya null
   if (leftChild != NULL)
   {
+    // Hanya left child yang tidak null
     return getBalasanRecursive(leftChild, idBalasan);
   }
-
-  // Hanya right sibling yang tidak null
-  if (rightSibling != NULL)
+  else
   {
+    // Hanya right sibling yang tidak null
     return getBalasanRecursive(rightSibling, idBalasan);
   }
 }

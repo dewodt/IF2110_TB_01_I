@@ -31,108 +31,131 @@ void BuatBalasan(int idKicau, int idBalasan)
   Bila idKicau tidak valid, output pesan tidak terdapat kicauan
   Bila idKicau valid namun idBalasan tidak valid, output pesan tidak terdapat balasan */
 {
-  // Validasi sudah masuk atau belum
+  // VALIDASI USER SUDAH MASUK ATAU BELUM
   // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
   boolean isUserLoggedIn = true;
   if (!isUserLoggedIn)
   {
+    printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    printf("\n");
     return;
   }
 
-  // Kasus idKicau tidak valid (kicauan tidak ditemukan)
+  // VALIDASI ID KICAUAN ADA ATAU TIDAK
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
-  if (!isKicauanExist(listKicauan, idKicau))
+  if (!isKicauanExist(idKicau))
   {
+    printf("\n");
     printf("Wah, tidak terdapat kicauan yang ingin Anda balas!\n");
+    printf("\n");
     return;
   }
 
-  // Kasus idKicau valid, idBalasan = -1 (membalas kicauan)
-  TreeKicauan kicauan = ELMT_LDK(listKicauan, idKicau);
+  // Dapatkan kicauan
+  int idxKicauan = idKicau - 1;
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idxKicauan);
+
   if (idBalasan == -1)
   {
+    // KASUS MEMBALAS KICAUAN
+    // idKicau valid
+
+    // VALIDASI AKUN PRIVAT DAN BELUM BERTEMAN
     // TO DO: CONNECT DGN ADT CEK TEMAN & CEK PRIVAT PENGGUNA
     boolean isCurrentUserCanSee = true;
     if (!isCurrentUserCanSee)
     {
       // Kasus tidak bisa membalas kicauan
-      // idKicau valid, idBalasan = -1, akun privat dan belum berteman
-      printf("Wah, akun tersebut merupakan akun privat dan anda belum berteman akun tersebu!\n");
-    }
-    else
-    {
-      // Kasus bisa membalas kicauan
-      // idKicau valid, idBalasan = -1, akun tidak privat atau sudah berteman
-
-      // Dapatkan input balasan
-      printf("Masukkan balasan:\n");
-      MASUKAN balasanMasukan;
-      baca(&balasanMasukan);
-      char *balasanStr = "";
-      MASUKANToStr(balasanMasukan, balasanStr);
       printf("\n");
-
-      // Dapatkan node balasan paling terakhir
-      AddressBalasan latestBalasan = getLatestBalasan(kicauan);
-      int nextId = ID(InfoBalasan(latestBalasan)) + 1;
-
-      // Dapatkan waktu sekarang
-      DATETIME datetime;
-      GetCurrentLocalDATETIME(&datetime);
-
-      // Buat balasan baru
-      Balasan balasan;
-      CreateBalasan(&balasan, nextId, balasanStr, currentUser, datetime);
-
-      // Balas
-      balasKicauan(kicauan, balasan);
+      printf("Wah, akun tersebut merupakan akun privat dan anda belum berteman akun tersebut!\n");
+      printf("\n");
+      return;
     }
-    return;
-  }
 
-  AddressBalasan balasan = getBalasan(kicauan, idBalasan);
-  // Kasus balasan tidak ketemu
-  if (balasan == NULL)
+    // Kasus bisa membalas kicauan
+    // Dapatkan input balasan
+    printf("\n");
+    printf("Masukkan balasan:\n");
+    // Masukan
+    MASUKAN balasanMasukan;
+    baca(&balasanMasukan);
+    // String
+    char *balasanStr = MASUKANToStr(balasanMasukan);
+    printf("\n");
+
+    // Dapatkan id selanjutnya
+    int nextId = getNewBalasanId(kicauan);
+    // printf("nextId = %d\n", nextId);
+
+    // Dapatkan waktu sekarang
+    DATETIME datetime;
+    GetCurrentLocalDATETIME(&datetime);
+
+    // Buat balasan baru
+    // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
+    // ADT MASIH BERMASALAH, SET TO NULL DULU
+    Balasan balasan;
+    CreateBalasan(&balasan, nextId, balasanStr, NULL, datetime);
+
+    // Balas
+    balasKicauan(kicauan, balasan);
+  }
+  else
   {
-    printf("Wah, tidak terdapat balasan yang ingin Anda balas!\n");
-    return;
+    // KASUS MEMBALAS BALASAN
+    // idKicau valid
+
+    // VALIDASI ID BALASAN ADA ATAU TIDAK
+    if (!isBalasanExist(kicauan, idBalasan))
+    {
+      printf("\n");
+      printf("Wah, tidak terdapat balasan yang ingin Anda balas!\n");
+      printf("\n");
+      return;
+    }
+
+    // VALIDASI AKUN PRIVAT DAN BELUM BERTEMAN
+    boolean isCurrentUserCanSee = true;
+    if (!isCurrentUserCanSee)
+    {
+      printf("\n");
+      printf("Wah, akun tersebut merupakan akun privat dan anda belum berteman akun tersebu!\n");
+      printf("\n");
+      return;
+    }
+
+    // Kasus idKicau valid, idBalasan valid (membalas balasan)
+
+    // Dapatkan balasan yang ingin dibalas
+    AddressBalasan balasan = getBalasan(kicauan, idBalasan);
+
+    // Dapatkan input balasan
+    printf("\n");
+    printf("Masukkan balasan:\n");
+    // Masukan
+    MASUKAN balasanMasukan;
+    baca(&balasanMasukan);
+    // String
+    char *balasanStr = MASUKANToStr(balasanMasukan);
+    printf("\n");
+
+    // Dapatkan node balasan paling terakhir
+    int nextId = getNewBalasanId(kicauan);
+
+    // Dapatkan waktu sekarang
+    DATETIME datetime;
+    GetCurrentLocalDATETIME(&datetime);
+
+    // Buat balasan baru
+    // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
+    // ADT MASIH BERMASALAH, SET TO NULL DULU
+    Balasan infoBalasan;
+    CreateBalasan(&infoBalasan, nextId, balasanStr, NULL, datetime);
+
+    // Balas
+    balasBalasan(balasan, infoBalasan);
   }
-
-  // Kasus balasan privat
-  boolean isCurrentUserCanSee = true;
-  if (!isCurrentUserCanSee)
-  {
-    // Kasus tidak bisa membalas kicauan
-    // idKicau valid, idBalasan = -1, akun privat dan belum berteman
-    printf("Wah, akun tersebut merupakan akun privat dan anda belum berteman akun tersebu!\n");
-    return;
-  }
-
-  // Kasus idKicau valid, idBalasan valid (membalas balasan)
-  // Dapatkan input balasan
-  printf("Masukkan balasan:\n");
-  MASUKAN balasanMasukan;
-  baca(&balasanMasukan);
-
-  char *balasanStr = "";
-  MASUKANToStr(balasanMasukan, balasanStr);
-  printf("\n");
-
-  // Dapatkan node balasan paling terakhir
-  AddressBalasan latestBalasan = getLatestBalasan(kicauan);
-  int nextId = ID(InfoBalasan(latestBalasan)) + 1;
-
-  // Dapatkan waktu sekarang
-  DATETIME datetime;
-  GetCurrentLocalDATETIME(&datetime);
-
-  // Buat balasan baru
-  Balasan infoBalasan;
-  CreateBalasan(&infoBalasan, nextId, balasanStr, currentUser, datetime);
-
-  // Balas
-  balasBalasan(balasan, infoBalasan);
 }
 
 // Mencetak kedalaman suatu baris dalam balasan
@@ -155,33 +178,43 @@ void CetakDetailBalasan(Balasan b, boolean isPrivat, int depth)
 {
   if (!isPrivat)
   {
+    // Kasus bukan privat
+    // ID
     CetakKedalaman(depth);
     printf("| ID = %d\n", ID(b));
-    printf("\n");
+
+    // Author
     CetakKedalaman(depth);
-    printf("| Author = %s\n", AUTHOR(b)->username);
-    printf("\n");
+    printf("| %s\n", AUTHOR(b)->username);
+
+    // DateTime
     CetakKedalaman(depth);
+    printf("| ");
     TulisDATETIME(DATETIME(b));
     printf("\n");
+
+    // Text
     CetakKedalaman(depth);
-    printf("| Text = %s\n", TEXT(b));
-    printf("\n");
+    printf("| %s\n", TEXT(b));
   }
   else
   {
+    // Kasus privat
+    // ID
+    CetakKedalaman(depth);
+    printf("| ID = %d\n", ID(b));
+
+    // Author
     CetakKedalaman(depth);
     printf("| PRIVAT\n");
-    printf("\n");
+
+    // DateTime
     CetakKedalaman(depth);
     printf("| PRIVAT\n");
-    printf("\n");
+
+    // Text
     CetakKedalaman(depth);
     printf("| PRIVAT\n");
-    printf("\n");
-    CetakKedalaman(depth);
-    printf("| PRIVAT\n");
-    printf("\n");
   }
 }
 
@@ -199,24 +232,31 @@ void TampilkanBalasan(int idKicau)
   boolean isUserLoggedIn = true;
   if (!isUserLoggedIn)
   {
+    printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+    printf("\n");
     return;
   }
 
   // Kasus kicauan tidak ada
-  if (!isKicauanExist(listKicauan, idKicau))
+  if (!isKicauanExist(idKicau))
   {
+    printf("\n");
     printf("Tidak terdapat kicauan dengan id tersebut!\n");
+    printf("\n");
     return;
   }
 
   // Get kicauan
-  TreeKicauan kicauan = ELMT_LDK(listKicauan, idKicau);
+  int idxKicauan = idKicau - 1;
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idxKicauan);
 
   // Kasus kicauan ada namun tidak ada balasan
-  if (!isBalasanExist(kicauan))
+  if (!isKicauanHasBalasan(kicauan))
   {
+    printf("\n");
     printf("Belum terdapat balasan apapun pada kicauan tersebut. Yuk balas kicauan tersebut!\n");
+    printf("\n");
   }
 
   // Kasus pemilik kicauan akun privat
@@ -224,36 +264,41 @@ void TampilkanBalasan(int idKicau)
   boolean isCurrentUserCanSee = true;
   if (!isCurrentUserCanSee)
   {
+    printf("\n");
     printf("Wah, kicauan tersebut dibuat oleh pengguna dengan akun privat!\n");
+    printf("\n");
     return;
   }
 
+  // Kasus ada balasan (setidaknya satu) dan kicauan tidak privat
   // Cetak balasan-balasan dalam kicauan
   AddressBalasan firstChildBalasan = FirstLeftChildBalasan(kicauan);
+  printf("\n");
   TampilkanBalasanRekursif(firstChildBalasan, 0);
 }
 void TampilkanBalasanRekursif(AddressBalasan nodeBalasan, int depth)
 {
-  // Kasus kosong
-  if (nodeBalasan == NULL)
-  {
-    return;
-  }
-
   // Kasus tidak kosong
   // Cetak node sekarang
-  boolean isBalasanBisaDilihatCurrentUser = true;
-  CetakDetailBalasan(InfoBalasan(nodeBalasan), isBalasanBisaDilihatCurrentUser, depth);
+  boolean isPrivat = false;
+  CetakDetailBalasan(InfoBalasan(nodeBalasan), isPrivat, depth);
+  printf("\n");
 
   // Selesaikan leftchild dulu, baru right child
   AddressBalasan leftChild = LeftChildBalasan(nodeBalasan);
   AddressBalasan rightSibling = RightSiblingBalasan(nodeBalasan);
 
   // Cetak left child
-  TampilkanBalasanRekursif(leftChild, depth + 1);
+  if (leftChild != NULL)
+  {
+    TampilkanBalasanRekursif(leftChild, depth + 1);
+  }
 
   // Cetak right sibling
-  TampilkanBalasanRekursif(rightSibling, depth);
+  if (rightSibling != NULL)
+  {
+    TampilkanBalasanRekursif(rightSibling, depth);
+  }
 }
 
 /* Prosedur Menghapus Balasan */
@@ -273,16 +318,16 @@ void HapusBalasan(int idKicau, int idBalasan)
   }
 
   // Kicauan tidak ditemukan
-  if (!isKicauanExist(listKicauan, idKicau))
+  if (!isKicauanExist(idKicau))
   {
     printf("Balasan tidak ditemukan!\n");
     return;
   }
 
   // Kicauan ditemukan namun balasan tidak ditemukan
-  TreeKicauan kicauan = ELMT_LDK(listKicauan, idKicau);
-  AddressBalasan balasan = getBalasan(kicauan, idBalasan);
-  if (balasan == NULL)
+  int idxKicau = idKicau - 1;
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idxKicau);
+  if (!isBalasanExist(kicauan, idBalasan))
   {
     printf("Balasan tidak ditemukan!\n");
     return;
@@ -297,6 +342,9 @@ void HapusBalasan(int idKicau, int idBalasan)
     return;
   }
 
+  // Dapatkan balasan
+  AddressBalasan balasan = getBalasan(kicauan, idBalasan);
+
   // Kasus balasan ditemukan dan punyanya
-  hapusBalasan(kicauan, balasan);
+  hapusNodeBalasan(kicauan, balasan);
 }

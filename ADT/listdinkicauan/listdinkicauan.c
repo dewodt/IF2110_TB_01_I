@@ -69,11 +69,11 @@ boolean isIdxEffListDinKicauan(ListDinKicauan l, IdxType i)
 }
 
 /* Prosedur mengecek apakah ada kicauan dengan idKicauan */
-boolean isKicauanExist(ListDinKicauan l, int idKicauan)
+boolean isKicauanExist(int idKicauan)
 /* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
 {
   // Kicauan tidak bisa di delete sehingga idKicau yang valid adalah >= 1 <= listLength(listKicauan)
-  return (idKicauan >= 1 && idKicauan <= listDinKicauanLength(l));
+  return (idKicauan >= 1 && idKicauan <= listDinKicauanLength(listKicauan));
 }
 
 /* ********** TEST KOSONG/PENUH ********** */
@@ -106,7 +106,7 @@ ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc)
   {
     for (j = getFirstIdxListDinKicauan(lNew); j <= getLastIdxListDinKicauan(lNew); j++)
     {
-      DATETIME d1 = DATETIME(InfoKicauan(ELMT_LDK(l, i)));
+      DATETIME d1 = DATETIME(InfoKicauan(ELMT_LDK(lNew, i)));
       DATETIME d2 = DATETIME(InfoKicauan(ELMT_LDK(lNew, j)));
       if (asc)
       {

@@ -1,41 +1,26 @@
 #include "draf.h"
-#include "wordmachine.h"
 
-// Datatype Draf = ADT Kicauan
-typedef struct {
-  int id; // auto-increment mulai 1
-  Word text; // max: 280 char
-  int like; // draf reload to 0 or sesuai kicauan sebelumnya?
-  // Pengguna author;
-  // Time datetime;
-} Draf;
 
 void prosesDraf(Stack* DrafStack, Draf DrafInfo){
   Draf TempDraf;
   printf("Apakah anda ingin menghapus, menyimpan, atau menerbitkan draf ini?\n");
-  // switch (currentWord)
   // case-sensitive commands
-  // paksain dulu
-  Word Hapus; Hapus.Length = 5;
-  Word Simpan; Simpan.Length = 6;
-  Word Terbit; Terbit.Length = 6;
-  Word Kembali; Kembali.Length = 7;
-  if (areSameWords(currentWord, Hapus)){
+  if (isSame(currentWord, "HAPUS;")){
     // jika mengakses Top, dari lihatDraf
     if (DrafInfo == InfoTop(*DrafStack)) {
       Pop(DrafStack, &TempDraf);
     }
     printf("Draf telah berhasil dihapus!");
-  } else if (areSameWords(currentWord, Simpan)){
+  } else if (isSame(currentWord, "SIMPAN;")){
     // jika dari buatDraf, butuh fungsi cek kesamaan id
     if (DrafInfo != InfoTop(*DrafStack)) {
       Push(DrafStack, DrafInfo);
     }
     printf("Draf telah berhasil disimpan!");
-  } else if (areSameWords(currentWord, Terbit)){
+  } else if (isSame(currentWord, "TERBIT")){
     // buatCuitan
     printf("Selamat! Draf kicauan telah diterbitkan!");
-  } else if (areSameWords(currentWord, Kembali)){
+  } else if (isSame(currentWord, "KEMBALI;")){
     // do nothing
   } else {
     // handle commands tidak sesuai

@@ -12,7 +12,7 @@ void SimpanPengguna();
 /* F.S. Data pengguna tersimpan dalam folder config/foo/pengguna */
 
 /* Prosedur untuk menyimpan data kicauan dalam folder config/foo */
-void SimpanKicauan();
+void SimpanKicauan(char *folderDir);
 /* I.S. Sembarang */
 /* F.S. Data kicauan tersimpan dalam folder config/foo/kicauan */
 

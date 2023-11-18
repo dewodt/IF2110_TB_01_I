@@ -3,8 +3,10 @@
 #include <stdio.h>
 #include "simpan.h"
 #include "../masukan/masukan.h"
-#include "../listdinkicauan/listdinkicauan.h" // global variable listKicauan
-// #include "../modifiedliststatik/modifiedliststatik.h" // global variable listPengguna
+#include "../tree/tree.h"
+#include "../listdinkicauan/listdinkicauan.h"         // global variable listKicauan
+#include "../modifiedliststatik/modifiedliststatik.h" // global variable listPengguna
+#include "../pengguna/pengguna.h"                     // global variable currentUser
 
 /* Prosedur untuk menyimpan seluruh data program dalam folder config/foo */
 void Simpan()
@@ -18,15 +20,17 @@ void Simpan()
   MASUKAN folderMasukan;
   baca(&folderMasukan);
   // String
+  // ex: folder1
   char *folderStr = MASUKANToStr(folderMasukan);
   printf("\n");
 
   // Get config directory
-  char *configDir = concatStr("config/", folderStr);
+  // ex: config/folder1
+  char *folderDir = concatStr("config/", folderStr);
 
   // Kasus belum ada directory, maka buat directorynya
   struct stat st = {0};
-  if (stat(configDir, &st) != 0 || !S_ISDIR(st.st_mode))
+  if (stat(folderDir, &st) != 0 || !S_ISDIR(st.st_mode))
   {
     // Cetak pesan
     printf("Belum terdapat %s. Akan dilakukan pembuatan %s terlebih dahulu.\n", folderStr, folderStr);
@@ -39,7 +43,7 @@ void Simpan()
 
     // Make Directory
     // 2ND ARGUMENT WAJIB 0700 DI LINUX / WSL.
-    mkdir(configDir, 0700);
+    mkdir(folderDir, 0700);
 
     // Cetak pesan berhasil
     printf("%s sudah berhasil dibuat.\n", folderStr);
@@ -57,7 +61,7 @@ void Simpan()
 
   // Simpan semua config
   // SimpanPengguna();
-  // SimpanKicauan();
+  SimpanKicauan(folderDir);
   // SimpanBalasan();
   // SimpanDraf();
   // SimpanUtas();
@@ -71,8 +75,52 @@ void SimpanPengguna()
 {
 }
 
-void SimpanKicauan()
+void SimpanKicauan(char *folderDir)
 {
+  // Get full file directory with name
+  // ex: config/folder1/kicauan.config
+  char *fileDir = concatStr(folderDir, "/kicauan.config");
+
+  // File
+  FILE *fptr;
+
+  // Open file
+  fptr = fopen(fileDir, "w");
+
+  // Get listKicauan length
+  int countKicauan = listDinKicauanLength(listKicauan);
+  fprintf(fptr, "%d", countKicauan);
+
+  // Print listKicauan to file
+  int i;
+  for (i = 0; i < countKicauan; i++)
+  {
+    // Get kicauan
+    Kicauan kicauan = InfoKicauan(ELMT_LDK(listKicauan, i));
+
+    // Get kicauan id
+    int id = ID(kicauan);
+    fprintf(fptr, "\n%d", id);
+
+    // Get kicauan text
+    char *text = TEXT(kicauan);
+    fprintf(fptr, "\n%s", text);
+
+    // Get like counts
+    int like = LIKE(kicauan);
+    fprintf(fptr, "\n%d", like);
+
+    // Get kicauan author username
+    char *username = AUTHOR(kicauan)->username;
+    fprintf(fptr, "\n%s", username);
+
+    // Get kicauan tanggal
+    DATETIME DT = DATETIME(kicauan);
+    fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+  }
+
+  // Close file
+  fclose(fptr);
 }
 
 void SimpanBalasan()
@@ -85,9 +133,4 @@ void SimpanDraf()
 
 void SimpanUtas()
 {
-}
-
-int main()
-{
-  Simpan();
 }

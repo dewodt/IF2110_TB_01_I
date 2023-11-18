@@ -119,13 +119,13 @@ void balasBalasan(AddressBalasan nodeBalasan, Balasan balasan);
         bila berhasil, balasan ditambahkan pada balasan */
 
 /* Prosedur untuk menghapus balasan */
-void hapusBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete);
-void hapusBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete);
+void hapusNodeBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete);
+void hapusNodeBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete);
 /* I.S. Address balasan terdefinisi */
 /* F.S. Address balasan dan semua anak-anaknya terbebaskan */
 
-/* Prosedur untuk menghapus balasan dan juga seluruh child dari node */
-void freeNodeAndChilds(AddressBalasan nodeBalasan);
+/* Menghapus dan mendealokasi node dan semua node leftChild dan rightSiblingnya */
+void freeNodes(AddressBalasan nodeBalasan);
 /* I.S. node balasan terdefinisi */
 /* F.S. node balasan dan seluruh childnya dihapus dari node */
 

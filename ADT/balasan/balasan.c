@@ -325,9 +325,9 @@ void HapusBalasan(int idKicau, int idBalasan)
   }
 
   // Kicauan ditemukan namun balasan tidak ditemukan
-  TreeKicauan kicauan = ELMT_LDK(listKicauan, idKicau);
-  AddressBalasan balasan = getBalasan(kicauan, idBalasan);
-  if (balasan == NULL)
+  int idxKicau = idKicau - 1;
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idxKicau);
+  if (!isBalasanExist(kicauan, idBalasan))
   {
     printf("Balasan tidak ditemukan!\n");
     return;
@@ -342,6 +342,9 @@ void HapusBalasan(int idKicau, int idBalasan)
     return;
   }
 
+  // Dapatkan balasan
+  AddressBalasan balasan = getBalasan(kicauan, idBalasan);
+
   // Kasus balasan ditemukan dan punyanya
-  hapusBalasan(kicauan, balasan);
+  hapusNodeBalasan(kicauan, balasan);
 }

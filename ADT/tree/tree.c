@@ -283,24 +283,28 @@ void balasBalasan(AddressBalasan nodeBalasan, Balasan balasan)
 }
 
 /* Prosedur untuk menghapus balasan */
-void hapusBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete)
-/* I.S. Address balasan terdefinisi & valid */
-/* F.S. Address balasan dan semua anak-anaknya (jika ada) terbebaskan */
+void hapusNodeBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete)
+/* I.S. nodeBalasanDelete dan nodeKicauan terdefinisi & valid*/
+/* F.S. nodeBalasanDelete dan semua anak-anaknya (jika ada) terbebaskan */
 {
   AddressBalasan firstLeftChild = FirstLeftChildBalasan(nodeKicauan);
   if (firstLeftChild == nodeBalasanDelete)
   {
-    // Kasus balasan yang ingin dihapus merupakan first child dari root
-    // Ganti firstLeftChild right siblingnya
-    firstLeftChild = RightSiblingBalasan(nodeBalasanDelete);
-    freeNodeAndChilds(nodeBalasanDelete);
+    // Sambungkan dengan node yang baru
+    FirstLeftChildBalasan(nodeKicauan) = RightSiblingBalasan(nodeBalasanDelete);
+
+    // Putuskan node
+    RightSiblingBalasan(nodeBalasanDelete) = NULL;
+
+    // Bebaskan node
+    freeNodes(nodeBalasanDelete);
     return;
   }
 
   // Kasus balasan yang ingin dihapus bukan merupakan first child dari root
-  hapusBalasanRekursif(firstLeftChild, nodeBalasanDelete);
+  hapusNodeBalasanRekursif(firstLeftChild, nodeBalasanDelete);
 }
-void hapusBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete)
+void hapusNodeBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete)
 {
   // Kasus nodeBalasan kosong
   if (currentNode == NULL)
@@ -314,26 +318,42 @@ void hapusBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasan
   // Kasus rightSibling dari current node merupakan node yang ingin dihapus
   if (rightSibling == nodeBalasanDelete)
   {
+    // Sambungkan node dgn yg baru
     RightSiblingBalasan(currentNode) = RightSiblingBalasan(nodeBalasanDelete);
-    freeNodeAndChilds(nodeBalasanDelete);
+
+    // Putuskan node
+    RightSiblingBalasan(nodeBalasanDelete) = NULL;
+
+    // Bebaskan node
+    freeNodes(nodeBalasanDelete);
     return;
   }
 
   // Kasus leftChild dari current node merupakan node yang ingin dihapus
   if (leftChild == nodeBalasanDelete)
   {
+    // Sambungkan node dgn yg baru
     LeftChildBalasan(currentNode) = RightSiblingBalasan(nodeBalasanDelete);
-    freeNodeAndChilds(nodeBalasanDelete);
+
+    // Putuskan node
+    RightSiblingBalasan(nodeBalasanDelete) = NULL;
+
+    // Bebaskan node
+    freeNodes(nodeBalasanDelete);
     return;
   }
 
   // Kasus rightSibling dari current node bukan merupakan node yang ingin dihapus
-  hapusBalasanRekursif(rightSibling, nodeBalasanDelete);
+  hapusNodeBalasanRekursif(rightSibling, nodeBalasanDelete);
 
   // Kasus leftChild dari current node bukan merupakan node yang ingin dihapus
-  hapusBalasanRekursif(leftChild, nodeBalasanDelete);
+  hapusNodeBalasanRekursif(leftChild, nodeBalasanDelete);
 }
-void freeNodeAndChilds(AddressBalasan nodeBalasan)
+
+/* Menghapus dan mendealokasi node dan semua node leftChild dan rightSiblingnya */
+void freeNodes(AddressBalasan nodeBalasan)
+/* I.S. node balasan terdefinisi */
+/* F.S. node balasan dan seluruh leftchild atau right siblingnya dihapus dan didealokasi */
 {
   // Kasus nodeBalasan kosong
   if (nodeBalasan == NULL)
@@ -341,16 +361,16 @@ void freeNodeAndChilds(AddressBalasan nodeBalasan)
     return;
   }
 
-  // Kasus nodeBalasan memiliki left
+  // Kasus node memiliki left
   if (LeftChildBalasan(nodeBalasan) != NULL)
   {
-    freeNodeAndChilds(LeftChildBalasan(nodeBalasan));
+    freeNodes(LeftChildBalasan(nodeBalasan));
   }
 
-  // Kasus nodeBalasan memiliki right
+  // Kasus node memiliki right
   if (RightSiblingBalasan(nodeBalasan) != NULL)
   {
-    freeNodeAndChilds(RightSiblingBalasan(nodeBalasan));
+    freeNodes(RightSiblingBalasan(nodeBalasan));
   }
 
   // Bebaskan current Node

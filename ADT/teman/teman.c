@@ -93,7 +93,7 @@ void deleteFriend(Matrix *RelasiPertemanan, ListStatik ListPengguna, User Curren
     printf("Apakah anda yakin ingin menghapus Bob dari daftar teman anda?(YA/TIDAK) ");
     baca(&Yakin);
     // Jika tidak mengetik "YA;" diasumsikan tidak ingin menghapus
-    if (isMASUKANEqual(Yakin, strToMASUKAN("YA", 2))){
+    if (isSame(Yakin, "YA;")){
       IdxType i = IndexCurrentUser, j = IndexUsername;
       ELMT(*RelasiPertemanan, i, j) == 0;
       ELMT(*RelasiPertemanan, j, i) == 0;

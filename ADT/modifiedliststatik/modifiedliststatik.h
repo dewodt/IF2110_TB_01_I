@@ -12,6 +12,7 @@
 #include "../modifiedmatrix/modifiedmatrix.h"
 #include "../masukan/masukan.h"
 #include "../pcolor/pcolor.h"
+#include "../draf/stack/stack.h"
 
 /*  Kamus Umum */
 #define CAPACITY 20
@@ -39,6 +40,7 @@ typedef struct
    char acc_type[MAX_ACC_TYPE_LENGTH];
    Matrix profile;
    char jenis_akun[6];
+   Stack draf;
 } User; /* type elemen List */
 typedef int IdxType;
 typedef struct
@@ -67,6 +69,7 @@ extern ListStatik listUser;
 #define ACC_TYPE(l, i) (l).contents[(i)].acc_type
 #define PROFILE(l, i) (l).contents[(i)].profile
 #define JENIS_AKUN(l, i) (l).contents[(i)].jenis_akun
+#define DRAF(l, i) (l).contents[(i)].draf
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create List kosong  */

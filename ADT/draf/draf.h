@@ -7,16 +7,29 @@
 #ifndef __DRAF_H__
 #define __DRAF_H__
 
-void prosesDraf(Stack* DrafStack, Draf DrafInfo);
+// Pointer to draf of CurrentUser
 
-void infoDraf(Draf DrafInfo);
+void createDraf(Draf *Draf, char *text, DATETIME datetime);
+/* I.S. Draf sembarang, id, text, author, datetime terdefinisi */
+/* Draf terdefinisi */
+/* F.S. Draf terdefinisi sesuai parameter */
+
+void prosesDraf(Stack* DrafStack, Draf DrafInfo);
+/**
+ * Prosedur untuk 4 perintah MASUKAN yang memproses Draf
+*/
+
+void tampilkanDraf(Draf DrafInfo);
+/**
+ * Prosedur untuk menampilkan informasi draf
+*/
 
 void buatDraf(Stack* DrafStack);
 /**
  * Prosedur untuk MASUKAN BUAT_DRAF
 */
 
-void lihatDraf(Stack DrafStack);
+void lihatDraf(Stack* DrafStack);
 /**
  * Prosedur untuk MASUKAN LIHAT_DRAF
 */

@@ -50,8 +50,7 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
             }
         }
 
-        char username[MAX_USERNAME_LENGTH];
-        MASUKANToStr(username_temp, username);
+        char *username = MASUKANToStr(username_temp);
         strcpy(ELMT(*pengguna, idx).username, username);
         printf("username: %s\n", ELMT(*pengguna, idx).username);
 
@@ -74,8 +73,7 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
             }
         }
 
-        char password[MAX_PASSWORD_LENGTH];
-        MASUKANToStr(password_temp, password);
+        char *password = MASUKANToStr(password_temp);
         printf("idx skrg: %d\n", idx);
         strcpy(ELMT(*pengguna, idx).password, password);
         printf("password: %s\n", ELMT(*pengguna, idx).password);
@@ -110,14 +108,12 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
 
     do
     {
-        boolean found = false;
         int i = 0;
         while (i < listLength(*pengguna))
         {
             if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, i).username, stringLength(ELMT(*pengguna, i).username)), username))
             {
                 userIndex = i;
-                found = true;
                 break;
             }
             i++;
@@ -141,8 +137,7 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
         if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, userIndex).password, stringLength(ELMT(*pengguna, userIndex).password)), password))
         {
             *isLoggedin = true;
-            char username_str[MAX_USERNAME_LENGTH];
-            MASUKANToStr(username, username_str);
+            char *username_str = MASUKANToStr(username);
             printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username_str);
             passwordvalid = true;
         }
@@ -184,7 +179,6 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
     else
     {
         // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
-        boolean found = false;
         int i = 0;
         int userIndex;
         MASUKAN username;
@@ -201,18 +195,16 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
 
         printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
         printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
-        char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
-        MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
+        char *phonenum = MASUKANToStr(ELMT(*pengguna, userIndex).phone_num);
         printf("| No HP: %s\n", phonenum);
         printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
 
         MASUKAN bio_temp;
-        char bio;
         printf("Masukkan Bio Akun: ");
         baca(&bio_temp);
-        MASUKANToStr(bio_temp, &bio);
+        char *bio = MASUKANToStr(bio_temp);
 
-        SetBio(pengguna, userIndex, &bio);
+        SetBio(pengguna, userIndex, bio);
 
         MASUKAN nohp;
         int z;
@@ -249,7 +241,7 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
 
         do
         {
-            MASUKANToStr(weton_temp, weton);
+            char *weton = MASUKANToStr(weton_temp);
             if (compareString(weton, "\0", 1) == 0)
             {
                 validweton = true;
@@ -280,7 +272,6 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
 void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
 {
     // cari dulu di list dia idx ke berapa
-    boolean found = false;
     int i = 0;
     int userIndex = -1;
     while (i < listLength(*pengguna))
@@ -299,8 +290,7 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
         {
             printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
             printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
-            char phonenum[ELMT(*pengguna, userIndex).phone_num.Length];
-            MASUKANToStr(ELMT(*pengguna, userIndex).phone_num, phonenum);
+            char *phonenum = MASUKANToStr(ELMT(*pengguna, userIndex).phone_num);
             printf("| No HP: %s\n", phonenum);
             printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
             printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
@@ -327,7 +317,6 @@ void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUs
     else
     {
         // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
-        boolean found = false;
         int i = 0;
         int userIndex;
         MASUKAN username;
@@ -362,7 +351,6 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUse
     else
     {
         // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
-        boolean found = false;
         int i = 0;
         int userIndex;
         MASUKAN username;

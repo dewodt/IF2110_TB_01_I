@@ -56,10 +56,8 @@ typedef struct
    List kosong: semua elemen bernilai MARK
    Definisi elemen pertama: ELMT(l,i) dengan i=0 */
 
-/* Global variable menyimpan state user yang sedang masuk */
-/* Saat program jalan, bernilai null */
-/* Saat user login, bernilai pointer ke user yang sedang login */
-extern User *currentUser;
+/* Global variable menyimpan user dalam list statik */
+extern ListStatik listUser;
 
 /* ********** SELEKTOR ********** */
 #define ELMT(l, i) (l).contents[(i)]

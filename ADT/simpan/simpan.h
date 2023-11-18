@@ -1,6 +1,8 @@
 #ifndef SIMPAN
 #define SIMPAN
 
+#include "../tree/tree.h"
+
 /* Prosedur untuk menyimpan seluruh data program dalam folder config/foo */
 void Simpan();
 /* I.S. Sembarang */
@@ -17,9 +19,14 @@ void SimpanKicauan(char *folderDir);
 /* F.S. Data kicauan tersimpan dalam folder config/foo/kicauan */
 
 /* Prosedur untuk menyimpan data balasan dalam folder config/foo */
-void SimpanBalasan();
+void SimpanBalasan(char *folderDir);
 /* I.S. Sembarang */
 /* F.S. Data balasan tersimpan dalam folder config/foo/balasan */
+
+/* Menuliskan balasan pada file ptr secara rekursif */
+void writeBalasanDetailFile(FILE *ptr, int parentId, AddressBalasan nodeBalasan);
+/* I.S. ptr file terdefinisi */
+/* F.S. seluruh balasan tertulis pada file */
 
 /* Prosedur untuk menyimpan data draf dalam folder config/foo */
 void SimpanDraf();

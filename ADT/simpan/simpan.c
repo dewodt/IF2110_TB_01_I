@@ -62,7 +62,7 @@ void Simpan()
   // Simpan semua config
   // SimpanPengguna();
   SimpanKicauan(folderDir);
-  // SimpanBalasan();
+  SimpanBalasan(folderDir);
   // SimpanDraf();
   // SimpanUtas();
 
@@ -75,7 +75,10 @@ void SimpanPengguna()
 {
 }
 
+/* Prosedur untuk menyimpan data kicauan dalam folder config/foo */
 void SimpanKicauan(char *folderDir)
+/* I.S. Sembarang */
+/* F.S. Data kicauan tersimpan dalam folder config/foo/kicauan */
 {
   // Get full file directory with name
   // ex: config/folder1/kicauan.config
@@ -123,12 +126,89 @@ void SimpanKicauan(char *folderDir)
   fclose(fptr);
 }
 
-void SimpanBalasan()
+/* Prosedur untuk menyimpan data balasan dalam folder config/foo */
+void SimpanBalasan(char *folderDir)
+/* I.S. Sembarang */
+/* F.S. Data balasan tersimpan dalam folder config/foo/balasan */
 {
-}
+  // Get full file directory with name
+  // ex: config/folder1/kicauan.config
+  char *fileDir = concatStr(folderDir, "/balasan.config");
 
-void SimpanDraf()
+  // File
+  FILE *fptr;
+
+  // Open file
+  fptr = fopen(fileDir, "w");
+
+  // Get kicauan count that has balasan
+  int countKicauanHasBalasan = countKicauanWithBalasan(listKicauan);
+  fprintf(fptr, "%d", countKicauanHasBalasan);
+
+  // Iterate through listKicauan
+  int i;
+  for (i = getFirstIdxListDinKicauan(listKicauan); i <= getLastIdxListDinKicauan(listKicauan); i++)
+  {
+    // Get kicauan
+    TreeKicauan kicauan = ELMT_LDK(listKicauan, i);
+
+    // Check if kicauan has balasan
+    if (!isKicauanHasBalasan(kicauan))
+    {
+      continue;
+    }
+
+    // Setidaknya punya satu balasan yang membalas kicauan
+
+    // Get kicauan id
+    int id = ID(InfoKicauan(kicauan));
+    fprintf(fptr, "\n%d", id);
+
+    // Get balasan count
+    int countBalasanOfKicauan = countBalasan(kicauan);
+    fprintf(fptr, "\n%d", countBalasanOfKicauan);
+
+    // Iterate through balasan
+    writeBalasanDetailFile(fptr, -1, FirstLeftChildBalasan(kicauan));
+  }
+
+  // Close file
+  fclose(fptr);
+}
+/* Menuliskan balasan pada file ptr secara rekursif */
+void writeBalasanDetailFile(FILE *ptr, int parentId, AddressBalasan nodeBalasan)
+/* I.S. ptr file terdefinisi */
+/* F.S. seluruh balasan tertulis pada file */
 {
+  // Base case
+  if (nodeBalasan == NULL)
+  {
+    return;
+  }
+
+  // Get balasan id
+  int currentId = ID(InfoBalasan(nodeBalasan));
+  fprintf(ptr, "\n%d %d", parentId, currentId);
+
+  // Get balasan text
+  char *text = TEXT(InfoBalasan(nodeBalasan));
+  fprintf(ptr, "\n%s", text);
+
+  // Get balasan author username
+  char *username = AUTHOR(InfoBalasan(nodeBalasan))->username;
+  fprintf(ptr, "\n%s", username);
+
+  // Get balasan tanggal
+  DATETIME DT = DATETIME(InfoBalasan(nodeBalasan));
+  fprintf(ptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+
+  // Iterate through right sibling balasan
+  AddressBalasan rightSiblingBalasan = RightSiblingBalasan(nodeBalasan);
+  writeBalasanDetailFile(ptr, parentId, rightSiblingBalasan);
+
+  // Iterate through left child balasan
+  AddressBalasan LeftChildBalasan = LeftChildBalasan(nodeBalasan);
+  writeBalasanDetailFile(ptr, currentId, LeftChildBalasan);
 }
 
 void SimpanUtas()

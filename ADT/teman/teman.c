@@ -1,78 +1,111 @@
-// style ngodingnya maaf ga sesuai standar, ntar dibeautify aja
-// ga sempet kalo harus merhatiin detil, yg penting beres jadi bisa dirun
-
 // import
-// perlu perbaiki path untuk import export char & word machine, atau satukan saja jdi 1 dir
-#include "../ADT/charmachine/charmachine.h"
-#include "../ADT/wordmachine/wordmachine.h"
-#include "../ADT/boolean.h"
-#include "../ADT/matrix/matrix.h"
-#include "../ADT/liststatik/liststatik.h"
+#include "./teman.h"
 
-typedef struct {
-  Word nama;
-  Word sandi; // kata sandi
-  Profil profil;
-} Pengguna;
-
-typedef struct {
-  // default awal 3 Word di bawah ini = kosong;
-  Word bio;   // bio akun, max char = 135
-  Word nomor; // no HP
-  Word weton; // hanya ada 5 case insensitive
-  boolean akun; // privacy: true berarti privat, false berarti publik
-  Matrix fotoProfil; // bikin tiap ElType nya tuple (warna, simbol)
-} Profil;
-
-//  bikin tipe adjMatrix untuk representasi graf teman;
-void createFriendMatrix(Matrix* FriendMatrix){
-  // only used whenever configurations loaded
-  createMatrix(20, 20, FriendMatrix); // statik, karena maksimal 20 pengguna
-  // tiap ada pengguna baru dalam list, tambah 1 di sisi diagonalnya.
-  // ngedit detil kek gini bakalan agak ribet krn ga to de poin di spek
-  // semoga kita diberi petunjuk dan kemudahan :D
+void createFriendMatrix(Matrix* RelasiPertemanan){
+  createMatrix(20, 20, RelasiPertemanan);
 }
 
-/**
- * BUTUH NGEPRINT PROFIL2 PENGGUNA
- * BUTUH NGEBANDINGIN PROFIL2 PENGGUNA JUGA
-*/
-
-void listFriend(ListStatik DaftarTeman){
-  IdxType i;
-  printf("Daftar teman <CurrentPenguna.nama>\n");
-  for (int i; i < listLength(DaftarTeman); i++){
-    printf("| <DaftarTeman[i].nama>\n ");
-  }
+IdxType searchIndexPengguna(ListStatik ListPengguna, User Pengguna){
+  return searchIndexPenggunaByName(ListPengguna, Pengguna.username);
 }
 
-void showFriendList(Matrix FriendMatrix, ListStatik ListPengguna, ElType CurrentPengguna){
-  // ElType nanti ganti pengguna
-  // track semua dulu, kompleksitasnya tetep T(20) = O(1)
-  IdxType IdxCurrentPengguna = 0, i;
-
-  ListStatik DaftarTeman;
-  CreateListStatik(&DaftarTeman);
-
-  while (ELMT(ListPengguna, i) != CurrentPengguna){
-    i++;
-  }
-
-  for (i = 0; i < listLength(ListPengguna); i++){
-    if (ELMT(FriendMatrix, IdxCurrentPengguna, i) == 1){
-      insertLast(&DaftarTeman, ELMT(FriendMatrix, IdxCurrentPengguna, i));
+IdxType searchIndexPenggunaByName(ListStatik ListPengguna, char *Username){
+  IdxType IdxPengguna = -1, i = 0;
+  boolean found = false;
+  // Harusnya compare string aman dari '\0', semoga ga ngebug TT
+  while (i < listLength(ListPengguna) && !found) {
+    if (compareString(Username, USERNAME(ListPengguna, i), stringLength(Username)) == 0) {
+      found = true;
+      IdxPengguna = i;
+    } else {
+      i++;
     }
   }
+  return IdxPengguna;
+}
 
-  if (listLength(DaftarTeman) == 0){
-    printf("<CurrentPengguna.nama> belum mempunyai teman\n");
+boolean areFriendsEachOthers(Matrix RelasiPertemanan, ListStatik ListPengguna, User Pengguna1, User Pengguna2){
+  return areFriendsByName(RelasiPertemanan, ListPengguna, Pengguna1.username, Pengguna2.username);
+}
+
+boolean areFriendsByName(Matrix RelasiPertemanan, ListStatik ListPengguna, char *Username1, char *Username2){
+  IdxType IdxPengguna1 = searchIndexPenggunaByName(ListPengguna, Username1);
+  IdxType IdxPengguna2 = searchIndexPenggunaByName(ListPengguna, Username2);
+  IdxType i = IdxPengguna1, j = IdxPengguna2;
+  return (ELMT(RelasiPertemanan, i, j) == 1 && ELMT(RelasiPertemanan, j, i) == 1);
+}
+
+void displayListFriend(ListStatik DaftarTeman, User CurrentPengguna){
+  IdxType i;
+  printf("Daftar teman %s\n", CurrentPenguna.username);
+  for (i = 0; i < listLength(DaftarTeman); i++){
+    printf("| %s\n", USERNAME(DaftarTeman, i));
+  }
+}
+
+void showFriendList(Matrix RelasiPertemanan, ListStatik ListPengguna, User CurrentPengguna){
+  // track semua dulu, kompleksitasnya tetep T(20) = O(1)
+  // Kasus jika belum ada User login
+  if (CurrentPengguna = NULL) { // import global variable || !*isLoggedIn
+      printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+      return;
   } else {
-    printf("<CurrentPengguna.nama> memiliki %d teman\n", listLength(DaftarTeman));
+    IdxType IdxCurrentPengguna = searchIndexPengguna(ListPengguna, CurrentPengguna);
+
+    // Buat list temannya CurrentPengguna
+    ListStatik DaftarTeman;
+    CreateListStatik(&DaftarTeman);
+    for (i = 0; i < listLength(ListPengguna); i++){
+      if (ELMT(RelasiPertemanan, IdxCurrentPengguna, i) == 1){
+        insertLast(&DaftarTeman, ELMT(RelasiPertemanan, IdxCurrentPengguna, i));
+      }
+    }
+
+    if (listLength(DaftarTeman) == 0){
+      printf("%s belum mempunyai teman\n", CurrentPengguna.username);
+    } else {
+      printf("%s memiliki %d teman\n", CurrentPengguna.username, listLength(DaftarTeman));
+      displayListFriend(DaftarTeman, CurrentPengguna);
+    }
+  }
+}
+
+void deleteFriend(Matrix *RelasiPertemanan, ListStatik ListPengguna, User CurrentUser) {
+  MASUKAN UsernameMasukan;
+  printf("Masukkan nama pengguna:\n");
+  baca(&UsernameMasukan);
+
+  char* UsernameStr;
+  MASUKANToStr(UsernameMasukan, UsernameStr);
+
+  IdxType IndexCurrentUser = searchIndexPengguna(ListPengguna, CurrentUser);
+  IdxType IndexUsername = searchIndexPenggunaByName(ListPengguna, UsernameStr);
+
+  if (IndexUsername == -1) {
+    // Kasus tidak ditemukan
+    printf("Tidak ditemukan pengguna bernama %s.\n", UsernameStr);
+  } else if (!areFriendsByName(*RelasiPertemanan, ListPengguna, CurrentUser.username, UsernameStr)) {
+    // Kasus belum berteman
+    printf("%s bukan teman Anda.\n", UsernameStr);
+  } else {
+    // Kasus lain, jika sudah berteman ataupun sudah mengirim req teman
+    MASUKAN Yakin;
+    printf("Apakah anda yakin ingin menghapus Bob dari daftar teman anda?(YA/TIDAK) ");
+    baca(&Yakin);
+    // Jika tidak mengetik "YA;" diasumsikan tidak ingin menghapus
+    if (isMASUKANEqual(Yakin, strToMASUKAN("YA", 2))){
+      IdxType i = IndexCurrentUser, j = IndexUsername;
+      ELMT(*RelasiPertemanan, i, j) == 0;
+      ELMT(*RelasiPertemanan, j, i) == 0;
+      printf("%s berhasil dihapus dari daftar teman Anda.\n", UsernameStr);
+    } else {
+      printf("Penghapusan teman dibatalkan.\n");
+    }
   }
 }
 
 // unit test driver
-int main {
-  Matrix FriendMatrix;
-  createFriendMatrix(20, 20, &FriendMatrix);
+int main() {
+  Matrix RelasiPertemanan;
+  createRelasiPertemanan(20, 20, &RelasiPertemanan);
 }

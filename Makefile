@@ -1,44 +1,26 @@
 CC = gcc
 CFLAGS = -Wall -Werror -std=c11
 
-SRC_MAIN = main.c
-OBJ_MAIN = $(SRC_MAIN:.c=.o)
+MAIN_FILES = main.c
+ADT_FILES = $(wildcard ADT/**/*.c)
 
-.PHONY: all clean test
+OBJ_FILES = $(ADT_FILES:.c=.o)
 
-all: main_program mfoo
+INCLUDES = $(addprefix -I, $(dir ${wildcard ADT/*/}))
 
-main_program: $(OBJ_MAIN) $(OBJ_FOO)
-	$(CC) $(CFLAGS) -o $@ $^
+all: ${OBJ_FILES}
+	${CC} ${CFLAGS} ${INCLUDES} -o $@ $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) ${INCLUDES }-c -o $@ $<
+
+# todo: test
+# test:
+
+main: $(ADT_FILES)
+	${CC} ${CFLAGS} ${INCLUDES} -o tubesalstrukdat $(filter-out %_driver.c,$(ADT_FILES)) main.c
 
 clean:
-	rm -f main_program mfoo $(OBJ_MAIN) $(OBJ_FOO) $(OBJ_TEST) $(TEST_RESULTS)
+	rm -f $(OBJ_FILES) $(TARGET)
 
-# UNIT TESTS
-
-SRC_FOO = ADT/Foo/foo.c
-SRC_TEST = ADT/Foo/tests/mfoo.c
-OBJ_FOO = $(SRC_FOO:.c=.o)
-OBJ_TEST = $(SRC_TEST:.c=.o)
-
-TESTS_DIR = ADT/Foo/tests
-TEST_CASES = $(wildcard $(TESTS_DIR)/*.in)
-TEST_OUTPUTS = $(TEST_CASES:.in=.out)
-TEST_RESULTS = $(TEST_CASES:.in=.result)
-
-mfoo: $(OBJ_FOO) $(OBJ_TEST)
-	$(CC) $(CFLAGS) -o $@ $^
-
-test_foo: mfoo $(TEST_RESULTS)
-	@cat $(TEST_RESULTS)
-
-$(TEST_RESULTS): $(TESTS_DIR)/%.result: $(TESTS_DIR)/%.in $(TESTS_DIR)/%.out mfoo
-	@if ./mfoo < $< | diff - $(word 2,$^) > /dev/null; then \
-		echo "$< $(word 2,$^): TRUE"; \
-	else \
-		echo "$< $(word 2,$^): WRONG"; \
-	fi > $@
-
+.PHONY: all clean test

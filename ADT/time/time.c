@@ -28,12 +28,13 @@ void CreateTime(TIME *T, int HH, int MM, int SS)
 void BacaTIME(TIME *T)
 {
   int HH, MM, SS;
-  do
+  scanf("%d %d %d", &HH, &MM, &SS);
+  while (!IsTIMEValid(HH, MM, SS))
   {
-    scanf("%d %d %d", &HH, &MM, &SS);
     // Print message if not valid
-    !IsTIMEValid(HH, MM, SS) && printf("Jam tidak valid\n");
-  } while (!IsTIMEValid(HH, MM, SS));
+    printf("Jam tidak valid\n");
+    scanf("%d %d %d", &HH, &MM, &SS);
+  }
 
   // Time is valid
   CreateTime(T, HH, MM, SS);

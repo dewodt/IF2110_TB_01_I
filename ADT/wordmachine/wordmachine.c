@@ -1,5 +1,5 @@
 #include "wordmachine.h"
-#include "charmachine.h"
+#include "../charmachine/charmachine.h"
 
 /* State Mesin Word */
 boolean EndWord;

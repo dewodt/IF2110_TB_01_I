@@ -1,8 +1,8 @@
 /* File: charmachine.c */
 /* Implementasi Mesin Karakter */
 
-#include "charmachine.h"
 #include <stdio.h>
+#include "charmachine.h"
 
 char currentChar;
 boolean EOP;
@@ -37,6 +37,6 @@ void ADV()
   EOP = (currentChar == MARK);
   if (EOP)
   {
-    fclose(pita);
+    // fclose(pita);
   }
 }

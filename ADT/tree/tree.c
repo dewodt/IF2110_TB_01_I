@@ -48,6 +48,15 @@ boolean isKicauanHasBalasan(TreeKicauan nodeKicauan)
   return (FirstLeftChildBalasan(nodeKicauan) != NULL);
 }
 
+/* Prosedur untuk mengecek apakah balasan exists (valid) */
+boolean isBalasanExist(TreeKicauan nodeKicauan, int idBalasan)
+/* Mengembalikan true bila balasan dengan idBalasan ada pada kicauan dengan idKicauan, mengembalikan false bila sebaliknya */
+{
+  AddressBalasan balasan = getBalasan(nodeKicauan, idBalasan);
+
+  return (balasan != NULL);
+}
+
 /* Dapatkan id baru untuk membuat balasan baru */
 int getNewBalasanId(TreeKicauan nodeKicauan)
 /* Menghasilkan 1 bila tidak ada balasan pada suatu kicauan */
@@ -142,14 +151,8 @@ AddressBalasan getLatestBalasanRecursive(AddressBalasan nodeBalasan)
 /* Untuk mengecek seluruh node, input: firstLeftChild dari kicauan */
 AddressBalasan getBalasan(TreeKicauan nodeKicauan, int idBalasan)
 {
-  // Kasus tidak ada balasan
-  if (!isKicauanHasBalasan(nodeKicauan))
-  {
-    return NULL;
-  }
-
-  // Kasus idBalasan tidak valid
-  if (idBalasan < 1)
+  // Kasus tidak ada balasan atau idBalasan tidak valid
+  if (!isKicauanHasBalasan(nodeKicauan) || idBalasan < 1)
   {
     return NULL;
   }
@@ -160,6 +163,7 @@ AddressBalasan getBalasan(TreeKicauan nodeKicauan, int idBalasan)
 }
 AddressBalasan getBalasanRecursive(AddressBalasan nodeBalasan, int idBalasan)
 {
+  // Basis 1
   // Kasus nodeBalasan merupakan node yang dicari
   if (ID(InfoBalasan(nodeBalasan)) == idBalasan)
   {
@@ -170,30 +174,42 @@ AddressBalasan getBalasanRecursive(AddressBalasan nodeBalasan, int idBalasan)
   AddressBalasan leftChild = LeftChildBalasan(nodeBalasan);
   AddressBalasan rightSibling = RightSiblingBalasan(nodeBalasan);
 
-  // Kasus currentNode bukan value yang dicair,
-  // dan tidak ada left child dan right sibling
+  // Basis 2 left & right null tp tidak memenuhi basis 1
   if (leftChild == NULL && rightSibling == NULL)
   {
     return NULL;
   }
 
-  AddressBalasan nodeBalasanLeftChild = getBalasanRecursive(leftChild, idBalasan);
-  AddressBalasan nodeBalasanRightSibling = getBalasanRecursive(rightSibling, idBalasan);
-
-  // Ketemu di left child
-  if (nodeBalasanLeftChild != NULL)
+  // Rekurens
+  // Dua dua nya tidak null
+  if (leftChild != NULL && rightSibling != NULL)
   {
-    return nodeBalasanLeftChild;
+    AddressBalasan leftChildResult = getBalasanRecursive(leftChild, idBalasan);
+    AddressBalasan rightSiblingResult = getBalasanRecursive(rightSibling, idBalasan);
+
+    if (leftChildResult != NULL)
+    {
+      // Kasus ada di leftchild
+      return leftChildResult;
+    }
+    else
+    {
+      // Kasus ada di right sibling atau tidak ketemu (otomatis null)
+      return rightSiblingResult;
+    }
   }
 
-  // Ketemu di right
-  if (nodeBalasanRightSibling != NULL)
+  // Hanya left child yang tidak null
+  if (leftChild != NULL)
   {
-    return nodeBalasanRightSibling;
+    return getBalasanRecursive(leftChild, idBalasan);
   }
 
-  // Tidak ketemu
-  return NULL;
+  // Hanya right sibling yang tidak null
+  if (rightSibling != NULL)
+  {
+    return getBalasanRecursive(rightSibling, idBalasan);
+  }
 }
 
 /* Prosedur untuk append balasan pada sebuah kicauan */

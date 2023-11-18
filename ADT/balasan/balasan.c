@@ -105,10 +105,9 @@ void BuatBalasan(int idKicau, int idBalasan)
   {
     // KASUS MEMBALAS BALASAN
     // idKicau valid
-    AddressBalasan balasan = getBalasan(kicauan, idBalasan);
 
     // VALIDASI ID BALASAN ADA ATAU TIDAK
-    if (balasan == NULL)
+    if (!isBalasanExist(kicauan, idBalasan))
     {
       printf("\n");
       printf("Wah, tidak terdapat balasan yang ingin Anda balas!\n");
@@ -127,6 +126,10 @@ void BuatBalasan(int idKicau, int idBalasan)
     }
 
     // Kasus idKicau valid, idBalasan valid (membalas balasan)
+
+    // Dapatkan balasan yang ingin dibalas
+    AddressBalasan balasan = getBalasan(kicauan, idBalasan);
+
     // Dapatkan input balasan
     printf("\n");
     printf("Masukkan balasan:\n");

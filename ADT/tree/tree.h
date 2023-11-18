@@ -85,6 +85,10 @@ AddressBalasan newNodeBalasan(Balasan balasan);
 boolean isKicauanHasBalasan(TreeKicauan nodeKicauan);
 /* Mengembalikan true bila ada balasan, mengembalikan false bila tidak ada balasan */
 
+/* Prosedur untuk mengecek apakah balasan exists (valid) */
+boolean isBalasanExist(TreeKicauan nodeKicauan, int idBalasan);
+/* Mengembalikan true bila balasan dengan idBalasan ada pada kicauan dengan idKicauan, mengembalikan false bila sebaliknya */
+
 /* Dapatkan id baru untuk membuat balasan baru */
 int getNewBalasanId(TreeKicauan nodeKicauan);
 /* Menghasilkan 1 bila tidak ada balasan pada suatu kicauan */

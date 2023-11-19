@@ -26,9 +26,6 @@ typedef Address threads; // thread -> thread -> thread
 #define IDX_UNDEF (-1)
 #define FIRST(l) (l)
 
-// Membuat kicauan sambungan
-Address newThreadNode(char text[MAX_CHAR]);
-
 // Mengembalikan waktu lokal dalam tipe bentukan DATETIME
 DATETIME getCurrTime();
 
@@ -37,6 +34,9 @@ void displayTime(DATETIME time);
 
 // Meng-copy word
 void copyText(char textIn[MAX_CHAR], char textOut[MAX_CHAR]);
+
+// Membuat kicauan sambungan
+Address newThreadNode(char text[MAX_CHAR]);
 
 // Membuat UTAS baru
 void CreateThreads(threads *l);
@@ -56,7 +56,7 @@ void insertAtThreads(threads *l, char text[MAX_CHAR], int idx);
 // Menghapus Elemen pertama pada utas
 void deleteFirstThreads(threads *l);
 
-// Menghapus Elemen dengan index pertama dimulai dari 1
+// Menghapus Elemen dengan index pertama dimulai dari 1, dipastikan indeks valid
 void deleteAtThreads(threads *l, int idx);
 
 // Mengembalikan jumlah kicauan sambungan pada threads

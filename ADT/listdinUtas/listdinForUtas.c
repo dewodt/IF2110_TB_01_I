@@ -15,8 +15,8 @@ void CreateUtas(UTAS *u, Kicauan *kicauan, int id)
   }
 }
 
-void SambungUtas(UTAS *u, char text[MAX_CHAR], int index)
 // Menyambung utas, dipastikan index valid
+void SambungUtas(UTAS *u, char text[MAX_CHAR], int index)
 {
 
   Address P = KicauanSambungan(*u); // P merupakan alamat kicauan sambungan pertama
@@ -40,34 +40,35 @@ void CreateListUtas(ListUtas *u, int capacity)
   CAPACITYListDinUtas(*u) = capacity;
 }
 
-boolean isEmptyListDinUtas(ListUtas u)
 // Mengirimkan kosong jika listUtas Kosong (Belum ada Utas)
+boolean isEmptyListDinUtas(ListUtas u)
 {
   return (NEFFListDinUtas(u) == 0);
 }
 
-boolean isFullListDinUtas(ListUtas u)
 // Mengirimkan true jika Utas Efektif = capacity
+boolean isFullListDinUtas(ListUtas u)
 {
   return (NEFFListDinUtas(u) == CAPACITYListDinUtas(u));
 }
 
-int listLength(ListUtas u)
 // Mengirimkan banyaknya Kicaun utama pada ListUtas
+int listLength(ListUtas u)
 {
   return (NEFFListDinUtas(u));
 }
 
-void expandListDinUtas(ListUtas *u, int num)
 // Menambah capacity u sebesar num
+void expandListDinUtas(ListUtas *u, int num)
+
 {
   int capacity = num + CAPACITYListDinUtas(*u);
   BUFFERListDinUtas(*u) = realloc(BUFFERListDinUtas(*u), capacity * sizeof(UTAS));
   CAPACITYListDinUtas(*u) += num;
 }
 
-void displayUtas(UTAS u)
 // Menampilkan Utas dengan format pada spek
+void displayUtas(UTAS u)
 {
   // Cetak kicauan utama
   printf(" |%d\n", ID(*(KicauanUtama(u))));
@@ -82,8 +83,8 @@ void displayUtas(UTAS u)
   displayThreads(KicauanSambungan(u), AuthorUtas(u));
 }
 
-void insertUtas(ListUtas *lu, UTAS U)
 // Memasukkan Utas baru kedalam list utas
+void insertUtas(ListUtas *lu, UTAS U)
 {
   if (isFullListDinUtas(*lu))
   {
@@ -102,8 +103,8 @@ void insertUtas(ListUtas *lu, UTAS U)
   NEFFListDinUtas(*lu) += 1;
 }
 
-void deleteSambungan(UTAS *u, int idx)
 // Menghapus Kicauan Sambungan pada utas dengan index tertentu
+void deleteSambungan(UTAS *u, int idx)
 {
   if (idx == 1)
   {

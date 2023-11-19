@@ -21,26 +21,32 @@ boolean isIndexSambunganValid(threads u, int index)
     return (index > 0 && index <= lengthThreads(u));
 }
 
-boolean isUtasUser(UTAS u)
+boolean isUtasUser(UTAS u, User userloggedin)
 {
-    return (compareString((*currentUser).username, AuthorUtas(u), 20));
+    return (compareString(userloggedin.username, AuthorUtas(u), 20));
 }
 
-boolean isKicauanUser(Kicauan k)
+boolean isKicauanUser(Kicauan k, User userloggedin)
 {
-    return (compareString((*currentUser).username, AUTHOR(k).username, 20))
+    return (compareString((userloggedin.username), (*AUTHOR(k)).username, 20))
 }
 
-void BUAT_UTAS(int idk)
+void BUAT_UTAS(int idk, ListDinKicauan listKicau, User userloggedIn, ListUtas listUtas) // Indeks Kicauan dimulai dari 1
 {
-    if (isIdxEffListDinKicauan(listKicauan, idk)) // ID Kicauan Valid
+    if (isIdxEffListDinKicauan(listKicau, idk - 1)) // ID Kicauan Valid, fungsinya ngecek dari 0..
     {
-        if (isKicauanUser(BUFFER_LDK(idk - 1))) // ID Kicauan Milik sendiri
+        if (isKicauanUser(BUFFER_LDK(idk - 1), userloggedIn)) // ID Kicauan Milik sendiri
         {
             MASUKAN teks;
+            UTAS utas;
+            CreateUtas(&utas, &BUFFER_LDK(idk - 1), listLength(listUtas));
+
             printf("Utas berhasil dibuat!\n\n");
             printf("Masukkan kicauan:");
             baca(&teks);
+
+            Address N = newThreadNode(MASUKANToStr(teks));
+            KicauanSambungan(&utas) = N;
 
             printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
             baca(&teks);
@@ -48,6 +54,7 @@ void BUAT_UTAS(int idk)
             {
                 printf("Masukkan kicauan:");
                 baca(&teks);
+                insertLastThreads(&KicauanSambungan(utas), MASUKANToStr(teks));
                 printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
                 baca(&teks);
             }

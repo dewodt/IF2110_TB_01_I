@@ -7,7 +7,7 @@
 char currentChar;
 boolean EOP;
 
-static FILE *pita;
+static FILE *pitakey;
 static int retval;
 
 void START()
@@ -19,7 +19,7 @@ void START()
             Jika currentChar = MARK maka EOP akan menyala (true) */
 
   /* Algoritma */
-  pita = stdin;
+  pitakey = stdin;
   ADV();
 }
 
@@ -33,7 +33,7 @@ void ADV()
                   Jika  currentChar = MARK maka EOP akan menyala (true) */
 
   /* Algoritma */
-  retval = fscanf(pita, "%c", &currentChar);
+  retval = fscanf(pitakey, "%c", &currentChar);
   EOP = (currentChar == MARK);
   if (EOP)
   {

@@ -12,7 +12,7 @@
 #include "../modifiedmatrix/modifiedmatrix.h"
 #include "../masukan/masukan.h"
 #include "../pcolor/pcolor.h"
-#include "../draf/stack/stack.h"
+//#include "../draf/stack/stack.h"
 
 /*  Kamus Umum */
 #define CAPACITY 20
@@ -40,7 +40,7 @@ typedef struct
    char acc_type[MAX_ACC_TYPE_LENGTH];
    Matrix profile;
    char jenis_akun[6];
-   Stack draf;
+   //Stack draf;
 } User; /* type elemen List */
 typedef int IdxType;
 typedef struct

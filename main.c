@@ -1,12 +1,27 @@
 #include <stdio.h>
 #include "ADT/masukan/masukan.h"
+#include "ADT/listdinkicauan/listdinkicauan.h"
 #include "ADT/modifiedliststatik/modifiedliststatik.h"
 
+/* GLOBAL VARIABLES:
+currentUser
+listKicauan
+listUser
+continue
+*/
+
+/* GLOBAL VARIABLES */
+ListDinKicauan listKicauan;
+ListStatik listUser;
+User *currentUser;
+
 int main()
-{   
-    ListStatik listPengguna;
-    CreateListStatik(&listPengguna);
-    
+{
+    // Inisialisasi global variable
+    CreateListDinKicauan(&listKicauan, 100);
+    CreateListStatik(&listUser);
+    currentUser = NULL;
+
     // Tampilan awal
     printf(".______    __    __  .______      .______    __  .______ \n");
     printf("|   _  \\  |  |  |  | |   _  \\     |   _  \\  |  | |   _  \\\n");

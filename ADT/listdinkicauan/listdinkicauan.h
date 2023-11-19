@@ -10,22 +10,21 @@
 #include "../boolean.h"
 #include "../tree/tree.h"
 
-/* Definisi Tree */
-
 /*  Kamus Umum */
-#define IDX_MIN 0
+#define IDX_MIN_LDK 0
 /* Indeks minimum list */
-#define IDX_UNDEF -1
+#define IDX_UNDEF_LDK -1
 /* Indeks tak terdefinisi*/
 
 /* Definisi elemen dan koleksi objek */
-typedef TreeKicauan ElTypeListDin;
+// LDK: List Dinamis Kicauan
+typedef TreeKicauan ElTypeListDinKicauan;
 typedef int IdxType;
 typedef struct listDinKicauan
 {
-  ElTypeListDin *buffer; /* memori tempat penyimpan elemen (container) */
-  int nEff;              /* >=0, banyaknya elemen efektif */
-  int capacity;          /* ukuran elemen */
+  ElTypeListDinKicauan *buffer; /* memori tempat penyimpan elemen (container) */
+  int nEff;                     /* >=0, banyaknya elemen efektif */
+  int capacity;                 /* ukuran elemen */
 } ListDinKicauan;
 /* Indeks yang digunakan [0..capacity-1] */
 /* Jika l adalah : ListDinKicauan, cara deklarasi dan akses: */
@@ -43,10 +42,10 @@ typedef struct listDinKicauan
 extern ListDinKicauan listKicauan;
 
 /* ********** SELEKTOR ********** */
-#define NEFF(l) (l).nEff
-#define BUFFER(l) (l).buffer
-#define ELMT(l, i) (l).buffer[i]
-#define CAPACITY(l) (l).capacity
+#define NEFF_LDK(l) (l).nEff
+#define BUFFER_LDK(l) (l).buffer
+#define ELMT_LDK(l, i) (l).buffer[i]
+#define CAPACITY_LDK(l) (l).capacity
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create list kosong  */
@@ -54,42 +53,42 @@ void CreateListDinKicauan(ListDinKicauan *l, int capacity);
 /* I.S. l sembarang, capacity > 0 */
 /* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity */
 
-void dealocateList(ListDinKicauan *l);
+void dealocateListDinKicauan(ListDinKicauan *l);
 /* I.S. l terdefinisi; */
-/* F.S. (l) dikembalikan ke system, CAPACITY(l)=0; NEFF(l)=0 */
+/* F.S. (l) dikembalikan ke system, CAPACITY_LD(l)=0; NEFF(l)=0 */
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
 /* *** Banyaknya elemen *** */
-int listLength(ListDinKicauan l);
+int listDinKicauanLength(ListDinKicauan l);
 /* Mengirimkan banyaknya elemen efektif list */
 /* Mengirimkan nol jika list l kosong */
 /* *** Daya tampung container *** */
 
 /* *** Selektor INDEKS *** */
-IdxType getFirstIdx(ListDinKicauan l);
+IdxType getFirstIdxListDinKicauan(ListDinKicauan l);
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l pertama */
-IdxType getLastIdx(ListDinKicauan l);
+IdxType getLastIdxListDinKicauan(ListDinKicauan l);
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l terakhir */
 
 /* ********** Test Indeks yang valid ********** */
-boolean isIdxValid(ListDinKicauan l, IdxType i);
+boolean isIdxValidListDinKicauan(ListDinKicauan l, IdxType i);
 /* Mengirimkan true jika i adalah indeks yang valid utk kapasitas list l */
 /* yaitu antara indeks yang terdefinisi utk container*/
-boolean isIdxEff(ListDinKicauan l, IdxType i);
+boolean isIdxEffListDinKicauan(ListDinKicauan l, IdxType i);
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
 /* yaitu antara 0..NEFF(l) */
 /* Prosedur mengecek apakah ada kicauan dengan idKicauan */
-boolean isKicauanExist(ListDinKicauan l, int idKicauan);
+boolean isKicauanExist(int idKicauan);
 /* Mengembalikan true bila kicauan ada, mengembalikan false bila tidak. */
 
 /* ********** TEST KOSONG/PENUH ********** */
 /* *** Test list kosong *** */
-boolean isEmpty(ListDinKicauan l);
+boolean isEmptyListDinKicauan(ListDinKicauan l);
 /* Mengirimkan true jika list l kosong, mengirimkan false jika tidak */
 /* *** Test list penuh *** */
-boolean isFull(ListDinKicauan l);
+boolean isFullListDinKicauan(ListDinKicauan l);
 /* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 
 /* ********** OPERASI LAIN ********** */
@@ -97,19 +96,19 @@ boolean isFull(ListDinKicauan l);
 ListDinKicauan sortKicauanByDateTime(ListDinKicauan l, boolean asc);
 /* Menghasilkan list baru list dinamis kicauan yang sudah disortir berdasarkan tanggalnya */
 
-void copyList(ListDinKicauan lIn, ListDinKicauan *lOut);
+void copyListDinKicauan(ListDinKicauan lIn, ListDinKicauan *lOut);
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
 /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
 /* Proses : Menyalin isi lIn ke lOut */
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void insertLast(ListDinKicauan *l, ElTypeListDin val);
+void insertLastListDinKicauan(ListDinKicauan *l, ElTypeListDinKicauan val);
 /* Proses: Menambahkan val sebagai elemen terakhir list */
 /* I.S. List l boleh kosong, tetapi tidak penuh */
 /* F.S. val adalah elemen terakhir l yang baru */
 /* ********** MENGHAPUS ELEMEN ********** */
-void deleteLast(ListDinKicauan *l, ElTypeListDin *val);
+void deleteLastListDinKicauan(ListDinKicauan *l, ElTypeListDinKicauan *val);
 /* Proses : Menghapus elemen terakhir list */
 /* I.S. List tidak kosong */
 /* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
@@ -117,17 +116,17 @@ void deleteLast(ListDinKicauan *l, ElTypeListDin *val);
 /*      List l mungkin menjadi kosong */
 
 /* ********* MENGUBAH UKURAN ARRAY ********* */
-void expandList(ListDinKicauan *l, int num);
+void expandListDinKicauan(ListDinKicauan *l, int num);
 /* Proses : Menambahkan capacity l sebanyak num */
 /* I.S. List sudah terdefinisi */
 /* F.S. Ukuran list bertambah sebanyak num */
 
-void shrinkList(ListDinKicauan *l, int num);
+void shrinkListDinKicauan(ListDinKicauan *l, int num);
 /* Proses : Mengurangi capacity sebanyak num */
 /* I.S. List sudah terdefinisi, ukuran capacity > num, dan nEff < capacity - num. */
 /* F.S. Ukuran list berkurang sebanyak num. */
 
-void compressList(ListDinKicauan *l);
+void compressListDinKicauan(ListDinKicauan *l);
 /* Proses : Mengubah capacity sehingga capacity = nEff */
 /* I.S. List tidak kosong */
 /* F.S. Ukuran capacity = nEff */

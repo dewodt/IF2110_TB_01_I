@@ -8,10 +8,10 @@
 
 #define MARK '.'
 /* State Mesin */
-extern char currentChar;
+extern char currentCharFILE;
 extern boolean EOP;
 
-void START(char nameFile[]);
+void STARTFILE(char nameFile[]);
 /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
    Karakter pertama yang ada pada pita posisinya adalah pada jendela.
    I.S. : sembarang
@@ -19,7 +19,7 @@ void START(char nameFile[]);
           Jika currentChar != MARK maka EOP akan padam (false)
           Jika currentChar = MARK maka EOP akan menyala (true) */
 
-void ADV();
+void ADVFILE();
 /* Pita dimajukan satu karakter.
    I.S. : Karakter pada jendela = currentChar, currentChar != MARK
    F.S. : currentChar adalah karakter berikutnya dari currentChar yang lama,

@@ -52,8 +52,9 @@ void displayMASUKAN(MASUKAN masuk);
 MASUKAN strToMASUKAN(char str[], int len);
 // mengubah string menjadi masukan
 
-void MASUKANToStr(MASUKAN masukan, char *str);
-// mengubah masukan menjadi string
+// Mengubah tipe masukan menjadi tipe string
+char *MASUKANToStr(MASUKAN masukan);
+// Menerima masukan bertipe MASUKAN dan mengembalikan bertipe string (array of char).
 
 int stringLength(const char *str);
 // menghitung panjang string

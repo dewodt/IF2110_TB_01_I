@@ -2,6 +2,8 @@
 #define TREE_H
 
 #include "../boolean.h"
+#include "../datetime/datetime.h"
+#include "../modifiedliststatik/modifiedliststatik.h"
 
 /* Struktur Kicauan */
 /* Kicauan memiliki id, teks, like, author, datetime */
@@ -11,16 +13,9 @@ typedef struct kicauan
   int id;
   char text[280];
   int like;
-  char author[20]; /* TO DO: CONNECT KE ADT PENGGUNA */
+  User *author;
   DATETIME datetime;
 } Kicauan;
-
-/* Selektor Kicauan */
-#define ID(k) (k).id
-#define TEXT(k) (k).text
-#define LIKE(k) (k).like
-#define AUTHOR(k) (k).author
-#define DATETIME(k) (k).datetime
 
 /* Struktur Info Balasan */
 /* Balasan memiliki id, teks, author, datetime */
@@ -28,13 +23,14 @@ typedef struct balasan
 {
   int id;
   char text[280];
-  char author[20]; /* TO DO: CONNECT KE ADT PENGGUNA */
+  User *author;
   DATETIME datetime;
 } Balasan;
 
-/* Selektor Balasan */
+/* Selektor Kicauan & Balasan */
 #define ID(k) (k).id
 #define TEXT(k) (k).text
+#define LIKE(k) (k).like
 #define AUTHOR(k) (k).author
 #define DATETIME(k) (k).datetime
 
@@ -86,8 +82,17 @@ AddressBalasan newNodeBalasan(Balasan balasan);
   Bila alokasi gagal, F.S.=I.S. */
 
 /* Prosedur untuk mengecek apakah ada balasan */
-boolean isBalasanExist(TreeKicauan nodeKicauan);
+boolean isKicauanHasBalasan(TreeKicauan nodeKicauan);
 /* Mengembalikan true bila ada balasan, mengembalikan false bila tidak ada balasan */
+
+/* Prosedur untuk mengecek apakah balasan exists (valid) */
+boolean isBalasanExist(TreeKicauan nodeKicauan, int idBalasan);
+/* Mengembalikan true bila balasan dengan idBalasan ada pada kicauan dengan idKicauan, mengembalikan false bila sebaliknya */
+
+/* Dapatkan id baru untuk membuat balasan baru */
+int getNewBalasanId(TreeKicauan nodeKicauan);
+/* Menghasilkan 1 bila tidak ada balasan pada suatu kicauan */
+/* Menghasilkan idxLatest + 1 dengan idxLatest adalah balasan paling baru */
 
 /* Dapatkan node balasan dengan id terbesar (latest balasan) */
 AddressBalasan getLatestBalasan(TreeKicauan nodeKicauan);
@@ -114,13 +119,13 @@ void balasBalasan(AddressBalasan nodeBalasan, Balasan balasan);
         bila berhasil, balasan ditambahkan pada balasan */
 
 /* Prosedur untuk menghapus balasan */
-void hapusBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete);
-void hapusBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete);
+void hapusNodeBalasan(TreeKicauan nodeKicauan, AddressBalasan nodeBalasanDelete);
+void hapusNodeBalasanRekursif(AddressBalasan currentNode, AddressBalasan nodeBalasanDelete);
 /* I.S. Address balasan terdefinisi */
 /* F.S. Address balasan dan semua anak-anaknya terbebaskan */
 
-/* Prosedur untuk menghapus balasan dan juga seluruh child dari node */
-void freeNodeAndChilds(AddressBalasan nodeBalasan);
+/* Menghapus dan mendealokasi node dan semua node leftChild dan rightSiblingnya */
+void freeNodes(AddressBalasan nodeBalasan);
 /* I.S. node balasan terdefinisi */
 /* F.S. node balasan dan seluruh childnya dihapus dari node */
 

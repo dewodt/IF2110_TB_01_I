@@ -5,7 +5,7 @@
 #include "../tree/tree.h"
 
 /* Konstruktor kicauan */
-void CreateKicauan(Kicauan *k, int id, char *text, char author, DATETIME datetime);
+void CreateKicauan(Kicauan *k, int id, char *text, int like, User *author, DATETIME datetime);
 /* I.S. kicauan sembarang, id, text, author, datetime terdefinisi */
 /* Kicauan terdefinisi */
 /* F.S. kicauan terdefinisi sesuai parameter */

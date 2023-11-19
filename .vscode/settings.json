@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "listlinier.h": "c",
+    "boolean.h": "c",
+    "wordmachine.h": "c",
+    "time.h": "c",
+    "datetime.h": "c",
+    "listlinierforutas.h": "c",
+    "stdio.h": "c"
+  },
+  "C_Cpp.dimInactiveRegions": true
+}

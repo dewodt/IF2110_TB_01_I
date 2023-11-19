@@ -126,11 +126,12 @@ boolean isSame(MASUKAN masuk, char string[])
   return hasil;
 }
 
+// Memeriksa apakah masuk hanya berisi spasi
+// Mengembalikan true bila semuanya spasi
+// Mengembalikan false bila ada yang bukan spasi
 boolean isAllSpace(MASUKAN masuk)
 {
-  // Memeriksa apakah masuk hanya berisi spasi
-  boolean allSpace;
-  allSpace = true;
+  boolean allSpace = true;
   int i = 0;
   while ((i < masuk.Length) && allSpace)
   {
@@ -167,17 +168,19 @@ MASUKAN strToMASUKAN(char str[], int len)
   return kata;
 }
 
-void MASUKANToStr(MASUKAN masukan, char *str)
+// Mengubah tipe masukan menjadi tipe string
+char *MASUKANToStr(MASUKAN masukan)
+// Menerima masukan bertipe MASUKAN dan mengembalikan bertipe string (array of char).
 {
-  int len = masukan.Length;
+  char *str = (char *)malloc(sizeof(char) * (masukan.Length + 1));
   int i;
-
-  for (i = 0; i < len; i++)
+  for (i = 0; i < masukan.Length; i++)
   {
-    // printf("%c\n", masukan.TabMASUKAN[i]);
     str[i] = masukan.TabMASUKAN[i];
   }
-  str[len] = '\0';
+  str[masukan.Length] = '\0';
+
+  return str;
 }
 
 int stringLength(const char *str)

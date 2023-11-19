@@ -17,8 +17,8 @@ void STARTMASUKANFILE(char nameFile[])
           atau EndMASUKANFILE = false, currentMASUKANFILE adalah MASUKANFILE yang sudah diakuisisi,
           currentChar karakter pertama sesudah karakter terakhir MASUKANFILE */
 {
-  START(nameFile);
-  if (currentChar == 10)
+  STARTFILE(nameFile);
+  if (currentCharFILE == 10)
   {
     EndMASUKANFILE = true;
   }
@@ -36,7 +36,7 @@ void ADVMASUKANFILE()
           Jika currentChar = MARK, EndMASUKANFILE = true.
    Proses : Akuisisi kata menggunakan procedure SalinMASUKANFILE */
 {
-  if (currentChar == MARK)
+  if (currentCharFILE == MARK)
   {
     EndMASUKANFILE = true;
   }
@@ -57,10 +57,10 @@ void CopyMASUKANFILE()
   int i = 0;
   do
   {
-    currentMASUKANFILE.TabMASUKANFILE[i] = currentChar;
-    ADV();
+    currentMASUKANFILE.TabMASUKANFILE[i] = currentCharFILE;
+    ADVFILE();
     i += 1;
-  } while (currentChar != 10 && i < NMax);
+  } while (currentCharFILE != 10 && i < NMax);
   currentMASUKANFILE.Length = i;
 }
 

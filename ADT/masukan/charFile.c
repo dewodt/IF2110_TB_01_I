@@ -4,13 +4,13 @@
 #include <stdio.h>
 #include "charFile.h"
 
-char currentChar;
-boolean EOP;
+char currentCharFILE;
+//boolean EOP;
 
 static FILE *pita;
 static int retval;
 
-void START(char nameFile[])
+void STARTFILE(char nameFile[])
 {
   /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
      Karakter pertama yang ada pada pita posisinya adalah pada jendela.
@@ -20,10 +20,10 @@ void START(char nameFile[])
 
   /* Algoritma */
   pita = fopen(nameFile, "r");
-  ADV();
+  ADVFILE();
 }
 
-void ADV()
+void ADVFILE()
 {
   /* Pita dimajukan satu karakter.
      I.S. : Karakter pada jendela =
@@ -33,8 +33,8 @@ void ADV()
                   Jika  currentChar = MARK maka EOP akan menyala (true) */
 
   /* Algoritma */
-  retval = fscanf(pita, "%c", &currentChar);
-  EOP = (currentChar == MARK);
+  retval = fscanf(pita, "%c", &currentCharFILE);
+  EOP = (currentCharFILE == MARK);
   if (EOP)
   {
     // fclose(pita);

@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include "masukanFile.h"
+#include "masukan.h"
 int main() {
-
+    MASUKAN masukan;
+    baca(&masukan);
+    displayMASUKAN(masukan);
     MASUKANFILE masukanFile;
     bacaAwalFile(&masukanFile);
     displayMASUKANFILE(masukanFile);

@@ -1,5 +1,6 @@
-#include <stdio.h>
-#include "matrix.h"
+/* Implementasi ADT Matrix */
+
+#include "./matrix.h"
 
 /* ********** DEFINISI PROTOTIPE PRIMITIF ********** */
 /* *** Konstruktor membentuk Matrix *** */

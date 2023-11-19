@@ -7,8 +7,8 @@
 /* State Mesin MASUKAN */
 boolean EndMASUKAN;
 MASUKAN currentMASUKAN;
-boolean EOP;
-char currentChar;
+//boolean EOP;
+//char currentChar;
 
 void STARTMASUKAN()
 /* I.S. : currentChar sembarang
@@ -220,7 +220,7 @@ char *strcpy(char *destination, const char *source)
   return dest_start;
 }
 
-int compareString(const char *str1, const char *str2, size_t n)
+int compareString(const char *str1, const char *str2, int n)
 {
   while (n > 0 && *str1 && (*str1 == *str2))
   {

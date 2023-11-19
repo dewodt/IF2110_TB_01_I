@@ -1,13 +1,37 @@
 #include <stdio.h>
-#include "masukanint.h"
+#include "masukanFile.h"
+int main() {
 
-int main(){
-    int a,b,c;
-    bacaInt(&a);
-    printf("%d\n",a);
-    bacaInt(&b);
-    printf("%d\n",b);
-    bacaInt(&c);
-    printf("%d\n",c);
+    MASUKANFILE masukanFile;
+    bacaAwalFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+
+    int n;
+    n = masukanFileToInt(masukanFile);
+    printf("%d\n", n);
+    // looping
+
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
     return 0;
 }

@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include "ADT/masukan/masukan.h"
+#include "ADT/modifiedliststatik/modifiedliststatik.h"
 
 int main()
-{
+{   
+    ListStatik listPengguna;
+    CreateListStatik(&listPengguna);
+    
     // Tampilan awal
     printf(".______    __    __  .______      .______    __  .______ \n");
     printf("|   _  \\  |  |  |  | |   _  \\     |   _  \\  |  | |   _  \\\n");

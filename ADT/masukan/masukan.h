@@ -64,7 +64,7 @@ boolean isMASUKANEqual(MASUKAN word1, MASUKAN word2);
 char *strcpy(char *destination, const char *source);
 // menyalin string
 
-int compareString(const char *str1, const char *str2, size_t n);
+int compareString(const char *str1, const char *str2, int n);
 // membandingkan dua string
 
 void toLowerCase(char *str);

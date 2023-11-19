@@ -8,6 +8,10 @@
 #include "charFile.h"
 #include "../masukan/masukanint.h"
 #include "masukan.h"
+#include "../modifiedliststatik/modifiedliststatik.h"
+#include "../listdinkicauan/listdinkicauan.h"
+#include "../prioQueue/reqPertemanan.c"
+#include "../kicauan/kicauan.h"
 
 #define NMax 281
 #define BLANK ' '
@@ -38,9 +42,11 @@ void CopyMASUKANFILE();
 
 int masukanFileToInt(MASUKANFILE masukanFile);
 
+int charToInt(char sebenarnyaInt);
+
 void ADVMASUKANFILE();
 
-void bacaAwalFile(MASUKANFILE *MASUKANFILE);
+void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile);
 
 void bacaLanjutFile(MASUKANFILE *MASUKANFILE);
 
@@ -49,9 +55,15 @@ boolean isSameFile(MASUKANFILE masuk, char string[]);
 
 void displayMASUKANFILE(MASUKANFILE masuk);
 // menampilkan isi dari array masuk
-void bacaPengguna();
+
+MASUKAN masukanFileToMasukan(MASUKANFILE MASUKANFILE);
+
+void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile);
+
+void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile);
+
+
 
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);
 
-MASUKAN masukanFileToMasukan(MASUKANFILE MASUKANFILE);
 #endif

@@ -1,7 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "../boolean.h"
-
 #include "../modifiedliststatik/modifiedliststatik.h"
 #include "masukanFile.h"
 
@@ -76,10 +75,20 @@ int masukanFileToInt(MASUKANFILE masukanFile){
   return hasil;
 }
 
-void bacaAwalFile(MASUKANFILE *MASUKANFILE)
+int charToInt(char sebenarnyaInt){
+  return sebenarnyaInt - 48;
+}
+
+void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile)
 {
-  // Menerima input untuk nama, sandi, bio, dll
-  STARTMASUKANFILE("file.txt");
+  char str[namaFile.Length];
+  displayMASUKAN(namaFile); // idk what happen this line must be in here or the program will be error
+  int n;
+  for ( n = 0; n < namaFile.Length; n++)
+  {
+    str[n] = namaFile.TabMASUKAN[n];
+  }
+  STARTMASUKANFILE(str); // sekarang gini dulu untuk testing, nanti bakal di ubah jadi STARTMASUKANFILE("../../?" + str + ?.config);
   *MASUKANFILE = currentMASUKANFILE;
   if ((*MASUKANFILE).TabMASUKANFILE[0] == 10)
   {
@@ -93,12 +102,10 @@ void bacaAwalFile(MASUKANFILE *MASUKANFILE)
   else
   {
   }
-  
 }
 
 void bacaLanjutFile(MASUKANFILE *MASUKANFILE)
 {
-  // Menerima input untuk nama, sandi, bio, dll
   ADVMASUKANFILE();
   *MASUKANFILE = currentMASUKANFILE;
   if ((*MASUKANFILE).TabMASUKANFILE[0] == 10)
@@ -171,9 +178,9 @@ MASUKAN masukanFileToMasukan(MASUKANFILE masukanFile){
 //   str[len] = '\0';
 // }
 
-void bacaPengguna(ListStatik* listPengguna){
+void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile);
+  bacaAwalFile(&masukanFile,namaFile);
   int n;
   n = masukanFileToInt(masukanFile);
   int i;
@@ -234,5 +241,61 @@ void bacaPengguna(ListStatik* listPengguna){
         ELMT_MTX(listPengguna->contents[i].profile,c,d) = masukanFile.TabMASUKANFILE[2*(d)];
       }
     }
+  }
+}
+
+void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
+  MASUKANFILE masukanFile;
+  bacaAwalFile(&masukanFile,namaFile);
+  int n;
+  n = masukanFileToInt(masukanFile);
+  int i;
+  for ( i = 0; i < n; i++)
+  {
+    Kicauan tempKicauan;
+    // id
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    int id;
+    id = masukanFileToInt(masukanFile);
+    tempKicauan.id = id;
+    // text
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    int a;
+    char text[masukanFile.Length];
+    for ( a = 0; a < masukanFile.Length; a++)
+    {
+      text[a] = masukanFile.TabMASUKANFILE[a];
+    }
+    // like
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    int like;
+    like = masukanFileToInt(masukanFile);
+    tempKicauan.like = like;
+    // author
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    MASUKAN tempMasukan;
+    tempMasukan = masukanFileToMasukan(masukanFile);
+    int idx;
+    idx = searchID_Pengguna(listPengguna,tempMasukan);
+    User author;
+    author = listPengguna.contents[idx];
+    // datetime
+    bacaLanjutFile(&masukanFile);
+    displayMASUKANFILE(masukanFile);
+    int HH = charToInt(masukanFile.TabMASUKANFILE[11])*10 + charToInt(masukanFile.TabMASUKANFILE[12]);
+    int MM = charToInt(masukanFile.TabMASUKANFILE[14])*10 + charToInt(masukanFile.TabMASUKANFILE[15]);
+    int SS = charToInt(masukanFile.TabMASUKANFILE[17])*10 + charToInt(masukanFile.TabMASUKANFILE[18]);
+    int DD = charToInt(masukanFile.TabMASUKANFILE[0])*10 + charToInt(masukanFile.TabMASUKANFILE[1]);
+    int BB = charToInt(masukanFile.TabMASUKANFILE[3])*10 + charToInt(masukanFile.TabMASUKANFILE[4]);
+    int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
+    DATETIME datetime;
+    CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
+    CreateKicauan(&tempKicauan,id,&text,like,&author,datetime);
+    AddressKicauan addKicauan;
+    addKicauan = newNodeKicauan(tempKicauan);
   }
 }

@@ -6,35 +6,39 @@ int main() {
     baca(&masukan);
     displayMASUKAN(masukan);
     MASUKANFILE masukanFile;
-    bacaAwalFile(&masukanFile);
+    bacaAwalFile(&masukanFile,masukan);
     displayMASUKANFILE(masukanFile);
 
     int n;
     n = masukanFileToInt(masukanFile);
     printf("%d\n", n);
     // looping
-
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
-    bacaLanjutFile(&masukanFile);
-    displayMASUKANFILE(masukanFile);
+    int i;
+    for ( i = 0; i < n; i++)
+    {
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+        bacaLanjutFile(&masukanFile);
+        displayMASUKANFILE(masukanFile);
+    }
+    
     return 0;
 }

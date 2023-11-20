@@ -67,6 +67,7 @@ void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKAN
 
 void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 
+void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);
 
 #endif

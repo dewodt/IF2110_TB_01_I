@@ -3,6 +3,9 @@
 #include "../charmachine/charmachine.c"
 #include "../listlinierUtas/listlinierForUtas.c"
 #include "../listdinUtas/listdinForUtas.c"
+#include "../listdinkicauan/listdinkicauan.c"
+#include "../datetime/datetime.c"
+#include "../time/time.c"
 #include "utas.c"
 
 /* GLOBAL VARIABLES */
@@ -13,27 +16,70 @@ User *currentUser;
 
 int main()
 {
-    // Inisialisasi global variable
-    CreateListDinKicauan(&listKicauan, 100);
-    CreateListUtas(&listUtas, 100);
-    CreateListStatik(&listUser);
-    currentUser = NULL;
-
+    // Construct User secara manual
     User Messi;
-    strcpy(Messi.username, "Messiiuuu");
-    strcpy(Messi.password, "ROnaldoccd");
-    strcpy(Messi.bio, "8 Ballon d'or babyy");
-    strcpy(Messi.weton, "Kliwon");
+    strcpy(Messi.username, "Bang Leo");
 
+    printf("%s", Messi.username);
+
+    // construct thread
+    // threads tweet;
+    // CreateThreads(&tweet);
+    // printf("Sukses ccreate threads\n");
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     insertLastThreads(&tweet, "Haloo");
+    // }
+    // displayThreads(tweet, Messi.username);
+
+    // Construct Kicauan
     Kicauan kicau;
-    ID(kicau) = 1;
-    AUTHOR(kicau) = &Messi;
-    strcpy(TEXT(kicau), "Stamina mina ee");
-    DATETIME(kicau) = getCurrTime();
+    kicau.id = 1;
+    strcpy(kicau.text, "Lelahh tubes");
+    kicau.like = 99;
+    kicau.author = &Messi;
+    kicau.datetime = getCurrTime();
 
-    ListDinKicauan listkicau;
-    CreateListDinKicauan(&listkicau, 10);
-    insertLastListDinKicauan(&listkicau, &kicau);
+    // Construct utas
+    UTAS utas;
+    CreateUtas(&utas, &kicau, 1);
+    printf("\n");
+    displayUtas(utas);
 
-    BUAT_UTAS(1, listkicau, Messi);
+    SambungUtasLast(&utas, "skidipapap 1");
+    SambungUtasLast(&utas, "skidipapap 2");
+    SambungUtasLast(&utas, "skidipapap 3");
+    SambungUtasLast(&utas, "skidipapap 4");
+
+    // printf("\n");
+    // displayUtas(utas);
+
+    // HapusUtasAt(&utas, 1);
+    // displayUtas(utas);
+
+    // printf("Sambung utas at 2\n");
+    // baca(&teks);
+    // SambungUtasAt(&utas, MASUKANToStr(teks), 1);
+    // displayUtas(utas);
+
+    // Construct list Utas
+    ListUtas lu;
+    CreateListUtas(&lu, 5);
+    insertUtas(&lu, utas);
+    insertUtas(&lu, utas);
+    insertUtas(&lu, utas);
+
+    displayUtas(BUFFERListDinUtas(lu)[0]);
+    // displayUtas(utas);
+
+    // HapusUtasAt(&BUFFERListDinUtas(lu)[0], 1);
+    // displayUtas(BUFFERListDinUtas(lu)[0]);
+
+    // displayUtas(BUFFERListDinUtas(lu)[0]);
+
+    HapusUtasAt(&utas, 1);
+    insertUtas(&lu, utas);
+    displayUtas(BUFFERListDinUtas(lu)[1]);
+
+    // displayUtas(BUFFERListDinUtas(lu)[0]);
 }

@@ -1,35 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "listdinForUtas.h"
-#include "../listlinierUtas/listlinierForUtas.h" // Janlup ganti jadi.h
-
-/* Fungsi/Posedur untuk Tipe Bentukan Utas  */
-void CreateUtas(UTAS *u, Kicauan *kicauan, int id)
-{
-  KicauanUtama(*u) = kicauan;
-  IDUtas(*u) = id;
-  KicauanSambungan(*u) = NULL;
-  for (int i = 0; i < 20; i++)
-  {
-    (AuthorUtas(*u))[i] = (AUTHOR(*kicauan))[i];
-  }
-}
-
-// Menyambung utas, dipastikan index valid
-void SambungUtas(UTAS *u, char text[MAX_CHAR], int index)
-{
-
-  Address P = KicauanSambungan(*u); // P merupakan alamat kicauan sambungan pertama
-  if (P == NULL)
-  {
-    Address N = newThreadNode(text);
-    KicauanSambungan(*u) = N;
-  }
-  else
-  {
-    insertAtThreads(&KicauanSambungan(*u), text, index);
-  }
-}
+#include "../listlinierUtas/listlinierForUtas.h"
 
 /* Fungsi/Posedur untuk List Dinamis Utas  */
 void CreateListUtas(ListUtas *u, int capacity)
@@ -53,7 +25,7 @@ boolean isFullListDinUtas(ListUtas u)
 }
 
 // Mengirimkan banyaknya Kicaun utama pada ListUtas
-int listLength(ListUtas u)
+int listUtasLength(ListUtas u)
 {
   return (NEFFListDinUtas(u));
 }
@@ -65,22 +37,6 @@ void expandListDinUtas(ListUtas *u, int num)
   int capacity = num + CAPACITYListDinUtas(*u);
   BUFFERListDinUtas(*u) = realloc(BUFFERListDinUtas(*u), capacity * sizeof(UTAS));
   CAPACITYListDinUtas(*u) += num;
-}
-
-// Menampilkan Utas dengan format pada spek
-void displayUtas(UTAS u)
-{
-  // Cetak kicauan utama
-  printf(" |%d\n", ID(*(KicauanUtama(u))));
-  printf(" |%s\n", AuthorUtas(u));
-  printf(" |");
-  displayTime(DATETIME(*(KicauanUtama(u))));
-  printf("\n");
-  printf(" |%s\n", TEXT(*(KicauanUtama(u))));
-  printf("\n");
-
-  // Cetak kicauan sambungan
-  displayThreads(KicauanSambungan(u), AuthorUtas(u));
 }
 
 // Memasukkan Utas baru kedalam list utas
@@ -108,7 +64,7 @@ void deleteSambungan(UTAS *u, int idx)
 {
   if (idx == 1)
   {
-    Address P = KicauanSambungan(*u);
+    AddressUtas P = KicauanSambungan(*u);
     if (lengthThreads(KicauanSambungan(*u)) == 1)
     {
       KicauanSambungan(*u) = NULL;
@@ -122,7 +78,7 @@ void deleteSambungan(UTAS *u, int idx)
   }
   else
   {
-    Address P = KicauanSambungan(*u), prevP = NULL;
+    AddressUtas P = KicauanSambungan(*u), prevP = NULL;
     for (int i = 1; i < idx; i++)
     {
       prevP = P;

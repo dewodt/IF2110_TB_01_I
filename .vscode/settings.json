@@ -6,7 +6,9 @@
     "time.h": "c",
     "datetime.h": "c",
     "listlinierforutas.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "matrixteman.h": "c",
+    "utas.h": "c"
   },
   "C_Cpp.dimInactiveRegions": true,
   "C_Cpp.errorSquiggles": "disabled"

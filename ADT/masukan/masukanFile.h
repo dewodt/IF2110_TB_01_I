@@ -10,8 +10,9 @@
 #include "masukan.h"
 #include "../modifiedliststatik/modifiedliststatik.h"
 #include "../listdinkicauan/listdinkicauan.h"
-#include "../prioQueue/reqPertemanan.c"
+//#include "../prioQueue/reqPertemanan.c"
 #include "../kicauan/kicauan.h"
+#include "../balasan/balasan.h"
 
 #define NMax 281
 #define BLANK ' '
@@ -60,9 +61,11 @@ MASUKAN masukanFileToMasukan(MASUKANFILE MASUKANFILE);
 
 void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile);
 
-void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile);
+void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 
+void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKANFILE* hasil2);
 
+void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);
 

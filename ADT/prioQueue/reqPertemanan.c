@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "MASUKAN.h"
-#include "liststatik.h"
-#include "matrix.h"
+#include "../masukan/masukan.h"
+#include "../modifiedliststatik/modifiedliststatik.h"
+//#include "../matrixteman/matrixteman.h"
 #include "prioQueueint.h"
 
 int jumlahTeman(ListStatik listPengguna, MASUKAN user, Matrix relasiPertemanan){

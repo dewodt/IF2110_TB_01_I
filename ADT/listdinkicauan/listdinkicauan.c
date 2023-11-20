@@ -44,7 +44,7 @@ IdxType getFirstIdxListDinKicauan(ListDinKicauan l)
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l pertama */
 {
-  return IDX_MIN;
+  return IDX_MIN_LDK;
 }
 IdxType getLastIdxListDinKicauan(ListDinKicauan l)
 /* Prekondisi : List l tidak kosong */
@@ -155,7 +155,7 @@ void insertLastListDinKicauan(ListDinKicauan *l, ElTypeListDinKicauan val)
 {
   if (isEmptyListDinKicauan(*l))
   {
-    ELMT_LDK(*l, IDX_MIN) = val;
+    ELMT_LDK(*l, IDX_MIN_LDK) = val;
   }
   else
   {

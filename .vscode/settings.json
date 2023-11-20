@@ -6,7 +6,16 @@
     "time.h": "c",
     "datetime.h": "c",
     "listlinierforutas.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "modifiedmatrix.h": "c",
+    "modifiedliststatik.h": "c",
+    "masukan.h": "c",
+    "kicauan.h": "c",
+    "listdinkicauan.h": "c",
+    "listdinforutas.h": "c",
+    "tree.h": "c",
+    "TREE.H": "cpp",
+    "utas.h": "c"
   },
   "C_Cpp.dimInactiveRegions": true
 }

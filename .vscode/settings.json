@@ -6,7 +6,11 @@
     "time.h": "c",
     "datetime.h": "c",
     "listlinierforutas.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "stack.h": "c",
+    "modifiedliststatik.h": "c",
+    "masukan.h": "c",
+    "pengguna.h": "c"
   },
   "C_Cpp.dimInactiveRegions": true,
   "C_Cpp_Runner.msvcBatchPath": "",

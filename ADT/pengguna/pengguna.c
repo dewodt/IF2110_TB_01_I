@@ -3,10 +3,18 @@
 #include "../masukan/masukan.h"
 #include "pengguna.h"
 
-// mendaftarkan pengguna
-void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
+// Mengembalikan true bila user sudah login dan mengembalikan false bila user belum login
+boolean isUserLoggedIn()
+// Jika global variable currentUser NULL maka belum login
+// Jika global variable currentUser tidak NULL maka sudah login (pointer ke user yang sedang login)
 {
-    if (*isLoggedin)
+    return currentUser != NULL;
+}
+
+// mendaftarkan pengguna
+void DAFTAR(ListStatik *pengguna)
+{
+    if (isUserLoggedIn())
     {
         printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
     }
@@ -19,7 +27,7 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
         }
 
         int idx = listLength(*pengguna);
-        printf("listlength: %d\n", idx);
+        // printf("listlength: %d\n", idx);
 
         boolean uservalid = false;
         MASUKAN username_temp;
@@ -52,7 +60,7 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
 
         char *username = MASUKANToStr(username_temp);
         strcpy(ELMT(*pengguna, idx).username, username);
-        printf("username: %s\n", ELMT(*pengguna, idx).username);
+        // printf("username: %s\n", ELMT(*pengguna, idx).username);
 
         boolean passwordvalid = false;
         MASUKAN password_temp;
@@ -74,29 +82,21 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
         }
 
         char *password = MASUKANToStr(password_temp);
-        printf("idx skrg: %d\n", idx);
+        // printf("idx skrg: %d\n", idx);
         strcpy(ELMT(*pengguna, idx).password, password);
-        printf("password: %s\n", ELMT(*pengguna, idx).password);
+        // printf("password: %s\n", ELMT(*pengguna, idx).password);
 
         printf("Pengguna telah berhasil terdaftar. Masuk untuk menikmati fitur-fitur BurBir.\n");
     }
 }
 
-// Mengembalikan true bila user sudah login dan mengembalikan false bila user belum login
-boolean isUserLoggedIn()
-// Jika global variable currentUser NULL maka belum login
-// Jika global variable currentUser tidak NULL maka sudah login (pointer ke user yang sedang login)
-{
-    return currentUser != NULL;
-}
-
 // masuk sebagai pengguna
-boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
+void MASUK(ListStatik *pengguna, User **currentUser)
 {
-    if (*isLoggedin)
+    if (isUserLoggedIn())
     {
         printf("Wah Anda sudah masuk. Keluar dulu yuk!\n");
-        return *isLoggedin;
+        return;
     }
 
     MASUKAN username;
@@ -136,7 +136,6 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
     {
         if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, userIndex).password, stringLength(ELMT(*pengguna, userIndex).password)), password))
         {
-            *isLoggedin = true;
             char *username_str = MASUKANToStr(username);
             printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username_str);
             passwordvalid = true;
@@ -149,30 +148,39 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
         }
     } while (!passwordvalid);
 
-    *currentUser = ELMT(*pengguna, userIndex);
+    if (*currentUser != NULL) 
+    {
+        **currentUser = ELMT(*pengguna, userIndex);
+    } 
+    else 
+    {
+        *currentUser = malloc(sizeof(User));
+        **currentUser = ELMT(*pengguna, userIndex);
+    }
 
-    return *isLoggedin;
+    return;
 }
 
 // keluar dari akun pengguna
-boolean KELUAR(boolean *isLoggedin)
+void KELUAR(User **currentUser)
 {
-    if (!*isLoggedin)
+    if (!isUserLoggedIn())
     {
         printf("Anda belum login! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
     }
     else
     {
-        *isLoggedin = false;
+        free(*currentUser);
+        *currentUser = NULL;
         printf("Anda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n");
     }
-    return *isLoggedin;
+    return;
 }
 
 // ganti profil (nama, bio akun, no HP, weton)
-void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
 {
-    if (!*isLoggedIn)
+    if (!isUserLoggedIn())
     {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
     }
@@ -308,9 +316,9 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
 }
 
 // ganti profile
-void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+void UBAH_FOTO_PROFIL(ListStatik *pengguna, User *currentUser)
 {
-    if (!*isLoggedIn)
+    if (!isUserLoggedIn())
     {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
     }
@@ -342,9 +350,9 @@ void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUs
 }
 
 // atur jenis akun
-void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser)
 {
-    if (!*isLoggedIn)
+    if (!isUserLoggedIn())
     {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
     }
@@ -406,13 +414,13 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUse
     }
 }
 
+User *currentUser = NULL;
+
 int main()
 {
     MASUKAN command;
-    boolean isLoggedin = false;
     ListStatik pengguna;
     CreateListStatik(&pengguna);
-    User currentUser;
     char commandStr[50];
     char commandAwal[50];
     MASUKAN namapengguna;
@@ -424,19 +432,19 @@ int main()
     {
         if (isSame(command, "DAFTAR;"))
         {
-            DAFTAR(&pengguna, &isLoggedin);
+            DAFTAR(&pengguna);
         }
         else if (isSame(command, "MASUK;"))
         {
-            isLoggedin = MASUK(&pengguna, &isLoggedin, &currentUser);
+            MASUK(&pengguna, &currentUser);
         }
         else if (isSame(command, "KELUAR;"))
         {
-            isLoggedin = KELUAR(&isLoggedin);
+            KELUAR(&currentUser);
         }
         else if (isSame(command, "GANTI_PROFIL;"))
         {
-            GANTI_PROFIL(&pengguna, &isLoggedin, &currentUser);
+            GANTI_PROFIL(&pengguna, currentUser);
         }
         else if (compareString(command.TabMASUKAN, "LIHAT_PROFIL", 12) == 0)
         {
@@ -476,16 +484,16 @@ int main()
         }
         else if (isSame(command, "UBAH_FOTO_PROFIL;"))
         {
-            UBAH_FOTO_PROFIL(&pengguna, &isLoggedin, &currentUser);
+            UBAH_FOTO_PROFIL(&pengguna, currentUser);
         }
         else if (isSame(command, "ATUR_JENIS_AKUN;"))
         {
-            ATUR_JENIS_AKUN(&pengguna, &isLoggedin, &currentUser);
+            ATUR_JENIS_AKUN(&pengguna, currentUser);
         }
 
-        printList(&pengguna);
-        printf("\n");
-        printf("%d\n", listLength(pengguna));
+        // printList(&pengguna);
+        // printf("\n");
+        // printf("%d\n", listLength(pengguna));
 
         printf(">> ");
         baca(&command);
@@ -498,3 +506,5 @@ int main()
 
     return 0;
 }
+
+// gcc pengguna.c ../modifiedliststatik/modifiedliststatik.c  ../modifiedmatrix/modifiedmatrix.c ../masukan/masukan.c ../charmachine/charmachine.c ../pcolor/pcolor.c

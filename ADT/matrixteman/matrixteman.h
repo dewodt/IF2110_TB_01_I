@@ -13,9 +13,9 @@ typedef int IdxTypeMTXTeman; /* Index baris, kolom */
 typedef int ElTypeMTXTeman;
 typedef struct
 {
-  ElTypeMTXTeman mem[ROW_CAP_MTXTEMAN][COL_CAP_MTXTEMAN];
-  int rowEff; /* banyaknya/ukuran baris yg terdefinisi */
-  int colEff; /* banyaknya/ukuran kolom yg terdefinisi */
+   ElTypeMTXTeman mem[ROW_CAP_MTXTEMAN][COL_CAP_MTXTEMAN];
+   int rowEff; /* banyaknya/ukuran baris yg terdefinisi */
+   int colEff; /* banyaknya/ukuran kolom yg terdefinisi */
 } MatrixTeman;
 /* rowEff >= 1 dan colEff >= 1 */
 /* Indeks matriks yang digunakan: [0..ROW_CAP_MTXTEMAN-1][0..COL_CAP_MTXTEMAN-1] */
@@ -55,16 +55,6 @@ void copyMatrixTeman(MatrixTeman mIn, MatrixTeman *mOut);
 /* Melakukan assignment mOut <- mIn */
 
 /* ********** KELOMPOK BACA/TULIS ********** */
-void readMatrixTeman(MatrixTeman *m, int nRow, int nCol);
-/* I.S. isIdxValid(nRow,nCol) */
-/* F.S. m terdefinisi nilai elemen efektifnya, berukuran nRow x nCol */
-/* Proses: Melakukan CreateMatrix(m,nRow,nCol) dan mengisi nilai efektifnya */
-/* Selanjutnya membaca nilai elemen per baris dan kolom */
-/* Contoh: Jika nRow = 3 dan nCol = 3, maka contoh cara membaca isi matriks :
-1 2 3
-4 5 6
-8 9 10
-*/
 void displayMatrixTeman(MatrixTeman m);
 /* I.S. m terdefinisi */
 /* F.S. Nilai m(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris

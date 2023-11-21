@@ -1,5 +1,6 @@
 /* Implementasi ADT MatrixTeman */
 
+#include <stdio.h>
 #include "matrixteman.h"
 
 /* ********** DEFINISI PROTOTIPE PRIMITIF ********** */
@@ -35,7 +36,7 @@ IdxTypeMTXTeman getLastIdxColMatrixTeman(MatrixTeman m)
 boolean isIdxEffMatrixTeman(MatrixTeman m, IdxTypeMTXTeman i, IdxTypeMTXTeman j)
 /* Mengirimkan true jika i, j adalah Index efektif bagi m */
 {
-  return (i >= 0) && (i <= getLastIdxRow(m)) && (j >= 0) && (j <= getLastIdxCol(m));
+  return (i >= 0) && (i <= getLastIdxRowMatrixTeman(m)) && (j >= 0) && (j <= getLastIdxColMatrixTeman(m));
 }
 ElTypeMTXTeman getElmtDiagonalMatrixTeman(MatrixTeman m, IdxTypeMTXTeman i)
 /* Mengirimkan elemen m(i,i) */
@@ -48,7 +49,7 @@ void copyMatrixTeman(MatrixTeman mIn, MatrixTeman *mOut)
 /* Melakukan assignment mOut <- mIn */
 {
   int i, j;
-  createMatrix(ROW_EFF_MTXTEMAN(mIn), COL_EFF_MTXTEMAN(mIn), mOut);
+  createMatrixTeman(ROW_EFF_MTXTEMAN(mIn), COL_EFF_MTXTEMAN(mIn), mOut);
   for (i = 0; i < ROW_EFF_MTXTEMAN(mIn); i++)
   {
     for (j = 0; j < COL_EFF_MTXTEMAN(mIn); j++)
@@ -59,28 +60,6 @@ void copyMatrixTeman(MatrixTeman mIn, MatrixTeman *mOut)
 }
 
 /* ********** KELOMPOK BACA/TULIS ********** */
-void readMatrixTeman(MatrixTeman *m, int nRow, int nCol)
-/* I.S. isIdxValid(nRow,nCol) */
-/* F.S. m terdefinisi nilai elemen efektifnya, berukuran nRow x nCol */
-/* Proses: Melakukan CreateMatrix(m,nRow,nCol) dan mengisi nilai efektifnya */
-/* Selanjutnya membaca nilai elemen per baris dan kolom */
-/* Contoh: Jika nRow = 3 dan nCol = 3, maka contoh cara membaca isi matriks :
-1 2 3
-4 5 6
-8 9 10
-*/
-{
-  int i, j;
-  createMatrix(nRow, nCol, m);
-  for (i = 0; i < nRow; i++)
-  {
-    for (j = 0; j < nCol; j++)
-    {
-      scanf("%d", &ELMT_MTXTEMAN(*m, i, j));
-    }
-  }
-}
-
 void displayMatrixTeman(MatrixTeman m)
 /* I.S. m terdefinisi */
 /* F.S. Nilai m(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris
@@ -116,7 +95,7 @@ boolean isMatrixTemanEqual(MatrixTeman m1, MatrixTeman m2)
   int i, j;
   boolean equal;
   // Jmlh elemen beda
-  if (countElmt(m1) != countElmt(m2))
+  if (countElmtMatrixTeman(m1) != countElmtMatrixTeman(m2))
   {
     return false;
   }
@@ -138,7 +117,7 @@ boolean isMatrixTemanEqual(MatrixTeman m1, MatrixTeman m2)
 boolean isMatrixTemanNotEqual(MatrixTeman m1, MatrixTeman m2)
 /* Mengirimkan true jika m1 tidak sama dengan m2 */
 {
-  return !isMatrixEqual(m1, m2);
+  return !isMatrixTemanEqual(m1, m2);
 }
 boolean isMatrixTemanSizeEqual(MatrixTeman m1, MatrixTeman m2)
 /* Mengirimkan true jika ukuran efektif matriks m1 sama dengan ukuran efektif m2 */
@@ -165,7 +144,7 @@ boolean isSymmetricMatrixTeman(MatrixTeman m)
 {
   int i, j;
   boolean symmetric;
-  if (!isSquare(m))
+  if (!isSquareMatrixTeman(m))
   {
     return false;
   }
@@ -191,7 +170,7 @@ boolean isIdentityMatrixTeman(MatrixTeman m)
   int i, j;
   boolean identity;
 
-  if (!isSquare(m))
+  if (!isSquareMatrixTeman(m))
   {
     return false;
   }
@@ -227,5 +206,5 @@ boolean isSparseMatrixTeman(MatrixTeman m)
     }
   }
 
-  return 100 * countNonZero <= 5 * countElmt(m);
+  return 100 * countNonZero <= 5 * countElmtMatrixTeman(m);
 }

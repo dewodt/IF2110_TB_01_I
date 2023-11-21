@@ -5,7 +5,7 @@
 #ifndef DATETIME_H
 #define DATETIME_H
 
-#include "boolean.h"
+#include "../boolean.h"
 #include "time.h"
 #include <stdio.h>
 
@@ -309,7 +309,7 @@ int CountLeapYears(DATETIME D)
 
 long int DATETIMEDurasi(DATETIME DAw, DATETIME DAkh)
 {
-    long int i, hari1, hari2, selisihhari, detikhari1, detikhari2;
+    long int i, hari1, hari2, detikhari1, detikhari2;
 
     // jumlah hari DAw
     hari1 = (Year(DAw) - 1) * 365 + Day(DAw);

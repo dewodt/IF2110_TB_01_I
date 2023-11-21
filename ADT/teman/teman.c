@@ -63,8 +63,6 @@ int getCountFriend(User user)
 /* Prekondisi: User valid */
 {
   int count = 0;
-  IdxType IdxUser = searchIndexPengguna(user);
-  User user = ELMT(listUser, IdxUser);
 
   int i;
   for (i = 0; i < listLength(listUser); i++)
@@ -111,7 +109,7 @@ void showFriendList()
     User tempUser = ELMT(listUser, i);
     if (areFriendsEachOthers(*currentUser, tempUser))
     {
-      printf("| %s\n", i + 1, tempUser.username);
+      printf("| %s\n", tempUser.username);
     }
   }
 }
@@ -135,7 +133,7 @@ void deleteFriend()
   printf("Masukkan nama pengguna:\n");
   baca(&usernameMasukan);
 
-  char usernameStr = MASUKANToStr(usernameMasukan);
+  char *usernameStr = MASUKANToStr(usernameMasukan);
   IdxType idxDelUser = searchIndexPenggunaByName(usernameStr);
 
   // Kasus user tidak ditemukan
@@ -165,8 +163,8 @@ void deleteFriend()
   if (isSame(Yakin, "YA"))
   {
     int idxCurrentUser = searchIndexPengguna(*currentUser);
-    ELMT_MTXTEMAN(RelasiPertemanan, idxCurrentUser, idxDelUser) == 0;
-    ELMT_MTXTEMAN(RelasiPertemanan, idxDelUser, idxCurrentUser) == 0;
+    ELMT_MTXTEMAN(RelasiPertemanan, idxCurrentUser, idxDelUser) = 0;
+    ELMT_MTXTEMAN(RelasiPertemanan, idxDelUser, idxCurrentUser) = 0;
     printf("%s berhasil dihapus dari daftar teman Anda.\n", usernameStr);
   }
   else

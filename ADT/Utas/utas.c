@@ -1,6 +1,20 @@
 #include "utas.h"
 #include <stdio.h>
 
+boolean isKicauExistinUtas(Kicauan kicau, ListUtas lu)
+{
+    boolean exist = false;
+    for (int i = 0; i < listUtasLength(lu); i++)
+    {
+        if (KicauanSambungan(BUFFERListDinUtas(lu)[i]) == &kicau)
+        {
+            exist = true;
+            break;
+        }
+    }
+    return exist;
+}
+
 int isIdUtasValid(ListUtas li, int idx)
 // Mengembalikan indeks pada array  jika valid, dan -1 jika tidak valid
 {
@@ -37,37 +51,44 @@ void BUAT_UTAS(ListDinKicauan lk, ListUtas lu, User userloggedIn, int idk) // In
     UTAS utas;
     if (isIdxEffListDinKicauan(lk, idk - 1)) // ID Kicauan Valid, fungsinya ngecek dari 0..
     {
-        if (isKicauanUser((InfoKicauan((BUFFER_LDK(lk))[idk - 1])), userloggedIn)) // ID Kicauan Milik sendiri
+        if (isKicauExistinUtas((InfoKicauan((BUFFER_LDK(lk))[idk - 1])), lu))
         {
-
-            CreateUtas(&utas, &(InfoKicauan((BUFFER_LDK(lk))[idk - 1])), listUtasLength(lu) + 1);
-
-            printf("Utas berhasil dibuat!\n\n");
-            printf("Masukkan kicauan:\n");
-            baca(&teks);
-
-            SambungUtasLast(&utas, MASUKANToStr(teks));
-
-            printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
-            baca(&teks);
-            while (isSame(teks, "YA"))
+            if (isKicauanUser((InfoKicauan((BUFFER_LDK(lk))[idk - 1])), userloggedIn)) // ID Kicauan Milik sendiri
             {
+
+                CreateUtas(&utas, &(InfoKicauan((BUFFER_LDK(lk))[idk - 1])), listUtasLength(lu) + 1);
+
+                printf("Utas berhasil dibuat!\n\n");
                 printf("Masukkan kicauan:\n");
                 baca(&teks);
+
                 SambungUtasLast(&utas, MASUKANToStr(teks));
+
                 printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
                 baca(&teks);
+                while (isSame(teks, "YA"))
+                {
+                    printf("Masukkan kicauan:\n");
+                    baca(&teks);
+                    SambungUtasLast(&utas, MASUKANToStr(teks));
+                    printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
+                    baca(&teks);
+                }
+                printf("Utas selesai!\n");
             }
-            printf("Utas selesai!\n");
+            else
+            {
+                printf("Utas ini bukan milik anda!\n");
+            }
         }
         else
         {
-            printf("Utas ini bukan milik anda!\n");
+            printf("Kicauan sudah dibentuk menjadi utas\n");
         }
     }
     else
     {
-        printf("Kicauan tidak ditemukan");
+        printf("Kicauan tidak ditemuka\n");
     }
 }
 

@@ -223,12 +223,17 @@ void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
         do
         {
             validnumber = true;
-            for (z = 0; z < nohp.Length; z++)
-            {
-                if (nohp.TabMASUKAN[z] < '0' || nohp.TabMASUKAN[z] > '9')
+            if (nohp.Length > 15) {
+                validnumber = false;
+            }
+            else {
+                for (z = 0; z < nohp.Length; z++)
                 {
-                    validnumber = false;
-                    break;
+                    if (nohp.TabMASUKAN[z] < '0' || nohp.TabMASUKAN[z] > '9')
+                    {
+                        validnumber = false;
+                        break;
+                    }
                 }
             }
 

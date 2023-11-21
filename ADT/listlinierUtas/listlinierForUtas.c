@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "../masukan/masukan.h"
 
 // Mengembalikan waktu lokal dalam tipe bentukan DATETIME
 DATETIME getCurrTime() // Works
@@ -33,24 +34,16 @@ void displayTime(DATETIME time) // Works
   printf("%d/%d/%d %d:%d:%d", day, month, year, hour, minute, second);
 }
 
-// Meng-copy word
-void copyText(char textIn[MAX_CHAR], char textOut[MAX_CHAR]) // Works
-{
-  for (int i = 0; i < 180; i++)
-  {
-    (textOut)[i] = textIn[i];
-  }
-}
-
+/* List linier */
 // Membuat kicauan sambungan
-Address newThreadNode(char text[MAX_CHAR]) // Works
+AddressUtas newThreadNode(char text[MAX_CHAR]) // Works
 {
   DATETIME time = getCurrTime();
-  Address p = (Address)malloc(sizeof(ThreadNode));
+  AddressUtas p = (AddressUtas)malloc(sizeof(ThreadNode));
   if (p != NULL)
   {
     // Text Thread
-    copyText(text, TextThread(p));
+    strcpy(TextThread(p), text);
 
     // Date Time Thread
     Day(TimeThread(p)) = Day(time);
@@ -81,7 +74,7 @@ boolean isThreadsEmpty(threads l)
 // Memasukkan kicauan sambungan di awal threads
 void insertFirstThreads(threads *l, char text[MAX_CHAR]) // Works
 {
-  Address p = newThreadNode(text);
+  AddressUtas p = newThreadNode(text);
   if (p != NULL)
   {
     NextThread(p) = FIRST(*l);
@@ -98,15 +91,15 @@ void insertLastThreads(threads *l, char text[MAX_CHAR]) // Works
   }
   else
   {
-    Address p = newThreadNode(text);
-    if (p != NULL)
+    AddressUtas N = newThreadNode(text);
+    if (N != NULL)
     {
-      Address temp = FIRST(*l);
+      AddressUtas temp = FIRST(*l);
       while (NextThread(temp) != NULL)
       {
         temp = NextThread(temp);
       }
-      NextThread(temp) = p;
+      NextThread(temp) = N;
     }
   }
 }
@@ -114,8 +107,8 @@ void insertLastThreads(threads *l, char text[MAX_CHAR]) // Works
 // Memasukkan Elemen pada indeks tertentu, indeks dipastikan valid, index dimulai dari 1
 void insertAtThreads(threads *l, char text[MAX_CHAR], int idx)
 {
-  Address P = *l;
-  Address prevP = NULL;
+  AddressUtas P = *l;
+  AddressUtas prevP = NULL;
 
   if (idx == 1)
   {
@@ -123,7 +116,7 @@ void insertAtThreads(threads *l, char text[MAX_CHAR], int idx)
   }
   else
   {
-    Address N = newThreadNode(text);
+    AddressUtas N = newThreadNode(text);
     for (int i = 1; i < idx; i++)
     {
       prevP = P;
@@ -137,7 +130,7 @@ void insertAtThreads(threads *l, char text[MAX_CHAR], int idx)
 // Menghapus Elemen pertama pada utas
 void deleteFirstThreads(threads *l) // Works
 {
-  Address temp = FIRST(*l);
+  AddressUtas temp = FIRST(*l);
   FIRST(*l) = NextThread(temp);
   free(temp);
 }
@@ -153,14 +146,14 @@ void deleteAtThreads(threads *l, int idx) // Works
   else
   {
     int i = 0;
-    Address loc = FIRST(*l);
+    AddressUtas loc = FIRST(*l);
     while (i < idx - 1)
     {
       i++;
       loc = NextThread(loc);
     }
 
-    Address p = NextThread(loc);
+    AddressUtas p = NextThread(loc);
     NextThread(loc) = NextThread(p);
     free(p);
   }
@@ -170,7 +163,7 @@ void deleteAtThreads(threads *l, int idx) // Works
 int lengthThreads(threads l) // Works
 {
   int count = 0;
-  Address p = FIRST(l);
+  AddressUtas p = FIRST(l);
   while (p != NULL)
   {
     count++;
@@ -184,7 +177,7 @@ void displayThreads(threads l, char author[20])
 {
   int index = 1;
 
-  Address P = FIRST(l);
+  AddressUtas P = FIRST(l);
   while (P != NULL)
   {
     printf("   | INDEX = %d\n", index);
@@ -197,4 +190,57 @@ void displayThreads(threads l, char author[20])
     P = NextThread(P);
     index++;
   }
+}
+
+// Konstruktor Utas
+void CreateUtas(UTAS *u, Kicauan *kicauan, int id)
+{
+  threads sambungan;
+  CreateThreads(&sambungan);
+  KicauanUtama(*u) = kicauan;
+  IDUtas(*u) = id;
+  KicauanSambungan(*u) = sambungan;
+}
+
+// Menyambung utas pada elemen terakhir, dipastikan index valid
+void SambungUtasLast(UTAS *u, char text[MAX_CHAR])
+{
+  insertLastThreads(&KicauanSambungan(*u), text);
+}
+
+// Menyambung utas pada index tertentu, dipastikan index valid. INDEX DIMULAI DARI 1
+void SambungUtasAt(UTAS *u, char text[MAX_CHAR], int index)
+{
+  insertAtThreads(&KicauanSambungan(*u), text, index);
+}
+
+// Menyambung utas pada index tertentu, dipastikan index valid. INDEX DIMULAI DARI 1
+void HapusUtasAt(UTAS *u, int index)
+{
+  if (index == 1)
+  {
+    AddressUtas temp = KicauanSambungan(*u);
+    KicauanSambungan(*u) = NextThread(temp);
+    free(temp);
+  }
+  else
+  {
+    deleteAtThreads(&KicauanSambungan(*u), index);
+  }
+}
+
+// Menampilkan Utas dengan format pada spek
+void displayUtas(UTAS u)
+{
+  // Cetak kicauan utama
+  printf(" | ID = %d\n", ID(*(KicauanUtama(u))));
+  printf(" | %s\n", AuthorUtas(u));
+  printf(" | ");
+  displayTime(DATETIME(*(KicauanUtama(u))));
+  printf("\n");
+  printf(" | %s\n", TEXT(*(KicauanUtama(u))));
+  printf("\n");
+
+  // Cetak kicauan sambungan
+  displayThreads(KicauanSambungan(u), AuthorUtas(u));
 }

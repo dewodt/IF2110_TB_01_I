@@ -8,11 +8,9 @@
 
 #include <stdio.h>
 #include "../boolean.h"
-#include "../modifiedliststatik/modifiedliststatik.h"
-#include "../modifiedmatrix/modifiedmatrix.h"
 #include "../masukan/masukan.h"
 #include "../pcolor/pcolor.h"
-//#include "../draf/stack/stack.h"
+#include "../modifiedmatrix/modifiedmatrix.h"
 
 /*  Kamus Umum */
 #define CAPACITY 20
@@ -29,8 +27,11 @@
 #define MAX_WETON_LENGTH 10
 #define MAX_ACC_TYPE_LENGTH 10
 
+// Forward declaration type Stack
+struct Stack;
+
 /* Definisi elemen dan koleksi objek */
-typedef struct
+typedef struct user
 {
    char username[MAX_USERNAME_LENGTH];
    char password[MAX_PASSWORD_LENGTH];
@@ -40,8 +41,8 @@ typedef struct
    char acc_type[MAX_ACC_TYPE_LENGTH];
    Matrix profile;
    char jenis_akun[6];
-   //Stack draf;
-} User; /* type elemen List */
+   struct Stack *draf; // Forward declaration
+} User;                /* type elemen List */
 typedef int IdxType;
 typedef struct
 {

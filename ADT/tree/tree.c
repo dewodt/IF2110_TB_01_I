@@ -76,6 +76,56 @@ int getNewBalasanId(TreeKicauan nodeKicauan)
   }
 }
 
+/* Hitung jumlah balasan yang dimiliki suatu kicauan */
+int countBalasan(TreeKicauan nodeKicauan)
+/* Menghasilkan jumlah balasan yang dimiliki suatu kicauan yang valid */
+{
+  // Kasus tidak ada balasan
+  if (!isKicauanHasBalasan(nodeKicauan))
+  {
+    return 0;
+  }
+
+  // Kasus ada balasan
+  AddressBalasan nodeBalasan = FirstLeftChildBalasan(nodeKicauan);
+  return countBalasanRecursive(nodeBalasan);
+}
+int countBalasanRecursive(AddressBalasan nodeBalasan)
+{
+  // Kasus nodeBalasan kosong
+  if (nodeBalasan == NULL)
+  {
+    return 0;
+  }
+
+  // Kasus nodeBalasan tidak kosong
+  AddressBalasan leftChild = LeftChildBalasan(nodeBalasan);
+  AddressBalasan rightSibling = RightSiblingBalasan(nodeBalasan);
+
+  // Kasus leftChild dan rightSibling kosong
+  if (leftChild == NULL && rightSibling == NULL)
+  {
+    return 1;
+  }
+
+  // Kasus dua dua nya tidak kosong
+  if (leftChild != NULL && rightSibling != NULL)
+  {
+    return 1 + countBalasanRecursive(leftChild) + countBalasanRecursive(rightSibling);
+  }
+
+  if (leftChild == NULL)
+  {
+    // Kasus leftChild kosong
+    return 1 + countBalasanRecursive(rightSibling);
+  }
+  else
+  {
+    // Kasus rightSibling kosong
+    return 1 + countBalasanRecursive(leftChild);
+  }
+}
+
 /* Dapatkan node balasan dengan id terbesar (latest balasan) */
 /* Menghasilkan node balasan dengan id terbesar */
 /* Menghasilkan null bila tidak ada */

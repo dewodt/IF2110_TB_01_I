@@ -64,6 +64,10 @@ int listDinKicauanLength(ListDinKicauan l);
 /* Mengirimkan nol jika list l kosong */
 /* *** Daya tampung container *** */
 
+/* Prosedur Menghitung banyaknya kicauan yang memiliki balasan */
+int countKicauanWithBalasan(ListDinKicauan l);
+/* Mengembalikan banyaknya kicauan yg memiliki balasan */
+
 /* *** Selektor INDEKS *** */
 IdxType getFirstIdxListDinKicauan(ListDinKicauan l);
 /* Prekondisi : List l tidak kosong */

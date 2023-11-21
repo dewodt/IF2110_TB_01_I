@@ -39,6 +39,23 @@ int listDinKicauanLength(ListDinKicauan l)
   return NEFF_LDK(l);
 }
 
+/* Prosedur Menghitung banyaknya kicauan yang memiliki balasan */
+int countKicauanWithBalasan(ListDinKicauan l)
+/* Mengembalikan banyaknya kicauan yg memiliki balasan */
+{
+  int count = 0;
+  int i;
+  for (i = getFirstIdxListDinKicauan(l); i <= getLastIdxListDinKicauan(l); i++)
+  {
+    TreeKicauan kicauan = ELMT_LDK(l, i);
+    if (isKicauanHasBalasan(kicauan))
+    {
+      count++;
+    }
+  }
+  return count;
+}
+
 /* *** Selektor INDEKS *** */
 IdxType getFirstIdxListDinKicauan(ListDinKicauan l)
 /* Prekondisi : List l tidak kosong */

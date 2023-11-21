@@ -7,8 +7,8 @@
 /* State Mesin MASUKAN */
 boolean EndMASUKAN;
 MASUKAN currentMASUKAN;
-//boolean EOP;
-//char currentChar;
+// boolean EOP;
+// char currentChar;
 
 void STARTMASUKAN()
 /* I.S. : currentChar sembarang
@@ -223,7 +223,18 @@ char *strcpy(char *destination, const char *source)
   return dest_start;
 }
 
-int compareString(const char *str1, const char *str2, int n)
+/* Mengembalikan hasil sambungan dari dua string */
+char *concatStr(const char *str1, const char *str2)
+{
+  int len1 = stringLength(str1);
+  int len2 = stringLength(str2);
+  char *str = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
+  strcpy(str, str1);
+  strcpy(str + len1, str2);
+  return str;
+}
+
+int compareString(const char *str1, const char *str2, size_t n)
 {
   while (n > 0 && *str1 && (*str1 == *str2))
   {

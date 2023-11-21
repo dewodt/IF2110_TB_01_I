@@ -16,6 +16,7 @@ ListDinKicauan listKicauan;
 ListStatik listUser;
 ListUtas listUtas;
 User *currentUser;
+int jumlahPengguna;
 
 int main()
 {

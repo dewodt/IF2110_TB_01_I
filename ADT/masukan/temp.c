@@ -4,7 +4,6 @@
 int main() {
     MASUKAN masukan;
     baca(&masukan);
-    displayMASUKAN(masukan);
     MASUKANFILE masukanFile;
     bacaAwalFile(&masukanFile,masukan);
     displayMASUKANFILE(masukanFile);

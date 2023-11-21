@@ -81,13 +81,9 @@ int charToInt(char sebenarnyaInt){
 
 void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile)
 {
-  char str[namaFile.Length];
-  displayMASUKAN(namaFile); // idk what happen this line must be in here or the program will be error
-  int n;
-  for ( n = 0; n < namaFile.Length; n++)
-  {
-    str[n] = namaFile.TabMASUKAN[n];
-  }
+
+  char* str = MASUKANToStr(namaFile);
+  //printf("%s\n", str);
   STARTMASUKANFILE(str); // sekarang gini dulu untuk testing, nanti bakal di ubah jadi STARTMASUKANFILE("../../?" + str + ?.config);
   *MASUKANFILE = currentMASUKANFILE;
   if ((*MASUKANFILE).TabMASUKANFILE[0] == 10)
@@ -335,6 +331,9 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
   for ( i = 0; i < n; i++)
   {
     bacaLanjutFile(&masukanFile);
+    int id;
+    id = masukanFileToInt(masukanFile);
+    bacaLanjutFile(&masukanFile);
     int m;
     m = masukanFileToInt(masukanFile);
     int j;
@@ -378,8 +377,12 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
       Balasan tempBalasan;
       CreateBalasan(&tempBalasan,q, &text,&author,datetime);
+      TreeKicauan tempTree;
+      tempTree = ELMT_LDK(*listKicauan,id-1);
       if(p == -1){
-
+        balasKicauan(tempTree,tempBalasan);
+      }else{
+        balasBalasan(getBalasan(tempTree,p),tempBalasan);
       }
     }
   }
@@ -396,16 +399,18 @@ void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPeng
     bacaLanjutFile(&masukanFile);
     int idKicau;
     idKicau = masukanFileToInt(masukanFile);
+    bacaLanjutFile(&masukanFile);
+    a = masukanFileToInt(masukanFile);
     int a;
     a = 0;
-    Kicauan tempKicauan;
+    AddressKicauan addKicauan;
+    addKicauan = ELMT_LDK(listKicauan,idKicau);
     for ( a = 0; a < listKicauan->nEff; a++)
     {
-      if(listKicauan->buffer[a]->infoKicauan.id = idKicau){
-        tempKicauan = listKicauan->buffer[a];
-      }
+      bacaLanjutFile(&masukanFile);
+      char* 
     }
-    BUAT_UTAS();//
+    
   }
   
 }

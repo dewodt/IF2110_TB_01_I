@@ -13,6 +13,7 @@
 //#include "../prioQueue/reqPertemanan.c"
 #include "../kicauan/kicauan.h"
 #include "../balasan/balasan.h"
+#include "../listdinUtas/listdinForUtas.h"
 
 #define NMax 281
 #define BLANK ' '

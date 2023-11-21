@@ -81,5 +81,5 @@ int main()
     insertUtas(&lu, utas);
     displayUtas(BUFFERListDinUtas(lu)[1]);
 
-    // displayUtas(BUFFERListDinUtas(lu)[0]);
+    // displayUtas(BUFFERListDinUtas(lu)[0])
 }

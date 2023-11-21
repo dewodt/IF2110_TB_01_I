@@ -18,40 +18,45 @@ boolean isKicauanUser(Kicauan k, User userloggedin)
 
 int main()
 {
-    // // Construct User secara manual
-    // User Ronaldo;
-    // strcpy(Ronaldo.username, "Siuuu");
+    // Construct User secara manual
+    User Ronaldo;
+    strcpy(Ronaldo.username, "Siuuu");
 
-    // printf("%s", Ronaldo.username);
+    printf("%s", Ronaldo.username);
 
-    // User Messi;
-    // strcpy(Messi.username, "Bang Leo");
+    User Messi;
+    strcpy(Messi.username, "Bang Leo");
 
-    // printf("%s", Messi.username);
+    printf("%s", Messi.username);
 
-    // // construct thread
-    // // threads tweet;
-    // // CreateThreads(&tweet);
-    // // printf("Sukses ccreate threads\n");
-    // // for (int i = 0; i < 3; i++)
-    // // {
-    // //     insertLastThreads(&tweet, "Haloo");
-    // // }
-    // // displayThreads(tweet, Messi.username);
+    // construct thread
+    threads tweet;
+    CreateThreads(&tweet);
+    printf("Sukses ccreate threads\n");
+    for (int i = 0; i < 3; i++)
+    {
+        insertLastThreads(&tweet, "Haloo");
+    }
+    displayThreads(tweet, Messi.username);
 
-    // // Construct Kicauan
-    // Kicauan kicau;
-    // kicau.id = 1;
-    // strcpy(kicau.text, "Lelahh tubes");
-    // kicau.like = 99;
-    // kicau.author = &Messi;
-    // kicau.datetime = getCurrTime();
+    // Construct Kicauan
+    Kicauan kicau;
+    kicau.id = 1;
+    strcpy(kicau.text, "Lelahh tubes");
+    kicau.like = 99;
+    kicau.author = &Messi;
+    kicau.datetime = getCurrTime();
 
-    // // Construct utas
-    // UTAS utas;
-    // CreateUtas(&utas, &kicau, 1);
-    // printf("\n");
-    // displayUtas(utas);
+    // Construct utas
+    UTAS utas;
+    CreateUtas(&utas, &kicau, 1);
+    printf("\n");
+    displayUtas(utas);
+
+    char test[280] = "Pampramprapmpam";
+    insertLastThreadForConfig(&utas, test, getCurrTime());
+
+    displayUtas(utas);
 
     // MASUKAN teks;
     // for (int i = 0; i < 2; i++)
@@ -68,10 +73,10 @@ int main()
     // boolean testing = isKicauanUser(kicau, Ronaldo);
     // printf("TESTING %d", testing);
 
-    MASUKAN test;
-    baca(&test);
-    printf("%s", MASUKANToStr(test));
+    // MASUKAN test;
+    // baca(&test);
+    // printf("%s", MASUKANToStr(test));
 
-    baca(&test);
-    printf("%s", MASUKANToStr(test));
+    // baca(&test);
+    // printf("%s", MASUKANToStr(test));
 }

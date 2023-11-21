@@ -48,7 +48,7 @@ void displayTime(DATETIME time);
 
 /* List linier */
 // Membuat kicauan sambungan
-AddressUtas newThreadNode(char text[MAX_CHAR]);
+AddressUtas newThreadNode(char text[MAX_CHAR], DATETIME time);
 
 // Membuat UTAS baru
 void CreateThreads(threads *l);

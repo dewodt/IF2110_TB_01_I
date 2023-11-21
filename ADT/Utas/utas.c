@@ -113,10 +113,11 @@ void HAPUS_UTAS(ListUtas *li, int idU, int index, User userloggedin)
             if (isIndexSambunganValid(KicauanSambungan(BUFFERListDinUtas(*li)[id]), index)) // Index Kicauan Sambungan Valid
             {
                 deleteSambungan(&BUFFERListDinUtas(*li)[id], index);
+                printf("Kicauan sambungan berhasil dihapus!\n");
             }
             else
             {
-                printf("Kicauan sambungan dengan index %d tidak ditemukan pada utas!", index);
+                printf("Kicauan sambungan dengan index %d tidak ditemukan pada utas!\n", index);
             }
         }
         else
@@ -130,13 +131,13 @@ void HAPUS_UTAS(ListUtas *li, int idU, int index, User userloggedin)
     }
 }
 
-void CETAK_UTAS(int idU, ListUtas li)
+void CETAK_UTAS(int idU, ListUtas li, Matrix friendship, ListStatik ListPengguna, User user1, User user2)
 {
-    boolean friend; // TO DO : UPDATE HUBUNGAN TEMAN
+    boolean teman = true;
 
     if (isIdUtasValid(li, idU))
     {
-        if (friend)
+        if (teman) // areFriendsEachOthers(friendship, ListPengguna, user1, user2)
         {
             displayUtas((BUFFERListDinUtas(li))[idU - 1]);
         }

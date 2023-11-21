@@ -7,6 +7,7 @@
     "listdinkicauan.h": "c",
     "listdinforutas.h": "c",
     "masukan.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "utas.h": "c"
   }
 }

@@ -8,6 +8,6 @@
 #include "../listdinkicauan/listdinkicauan.h"
 #include "../boolean.h"
 #include "../tree/tree.h"
-
+#include "../matrixteman/matrixteman.h"
 
 #endif

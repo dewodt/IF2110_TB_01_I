@@ -65,6 +65,9 @@ boolean isMASUKANEqual(MASUKAN word1, MASUKAN word2);
 char *strcpy(char *destination, const char *source);
 // menyalin string
 
+/* Mengembalikan hasil sambungan dari dua string */
+char *concatStr(const char *str1, const char *str2);
+
 int compareString(const char *str1, const char *str2, size_t n);
 // membandingkan dua string
 

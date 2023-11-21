@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "listlinierforutas.h": "c",
+    "datetime.h": "c",
+    "tree.h": "c",
+    "kicauan.h": "c",
+    "listdinkicauan.h": "c",
+    "listdinforutas.h": "c",
+    "masukan.h": "c",
+    "stdio.h": "c"
+  }
+}

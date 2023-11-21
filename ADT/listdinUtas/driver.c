@@ -1,65 +1,77 @@
 #include "listdinForUtas.c"
 #include "../listlinierUtas/listlinierForUtas.c"
+#include "../datetime/datetime.c"
+#include "../time/time.c"
+#include "../masukan/masukan.c"
+#include "../charmachine/charmachine.c"
+#include "../tree/tree.h"
 
 int main()
 {
-    // Membuat kicauan utama
-    Kicauan k;
-    ID(k) = 10;
-    char text[280] = "Halooo Burbir";
-    for (int i = 0; i < 280; i++)
-    {
-        (TEXT(k))[i] = text[i];
-    }
-    LIKE(k) = 77;
-    char author[20] = "Messi";
-    for (int i = 0; i < 20; i++)
-    {
-        (AUTHOR(k))[i] = author[i];
-    }
-    DATETIME(k) = getCurrTime();
+    // Construct User secara manual
+    User Messi;
+    strcpy(Messi.username, "Bang Leo");
 
-    // Output sederhana kicauan
-    // printf("Output\n");
-    // printf("ID= %d\n", ID(k));
-    // printf("TEXT= %s\n", TEXT(k));
-    // printf("LIKE= %d\n", LIKE(k));
-    // printf("ID= %s\n", AUTHOR(k));
-    // printf("DATETIME= ");
-    // displayTime(DATETIME(k));
+    printf("%s", Messi.username);
+
+    // construct thread
+    // threads tweet;
+    // CreateThreads(&tweet);
+    // printf("Sukses ccreate threads\n");
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     insertLastThreads(&tweet, "Haloo");
+    // }
+    // displayThreads(tweet, Messi.username);
+
+    // Construct Kicauan
+    Kicauan kicau;
+    kicau.id = 1;
+    strcpy(kicau.text, "Lelahh tubes");
+    kicau.like = 99;
+    kicau.author = &Messi;
+    kicau.datetime = getCurrTime();
+
+    // Construct utas
+    UTAS utas;
+    CreateUtas(&utas, &kicau, 1);
+    printf("\n");
+    displayUtas(utas);
+
+    SambungUtasLast(&utas, "skidipapap 1");
+    SambungUtasLast(&utas, "skidipapap 2");
+    SambungUtasLast(&utas, "skidipapap 3");
+    SambungUtasLast(&utas, "skidipapap 4");
+
     // printf("\n");
+    // displayUtas(utas);
 
-    // Membuat Utas
-    UTAS U;
-    CreateUtas(&U, &k, 1);
-    // displayUtas(U);
+    // HapusUtasAt(&utas, 1);
+    // displayUtas(utas);
 
-    SambungUtas(&U, "Sambungan 1", 1);
-    SambungUtas(&U, "Sambungan 2", 2);
-    SambungUtas(&U, "Sambungan 3", 3);
-    SambungUtas(&U, "Sambungan 4", 4);
-    SambungUtas(&U, "Sambungan 5", 5);
-    SambungUtas(&U, "Sambungan 6", 6);
+    // printf("Sambung utas at 2\n");
+    // baca(&teks);
+    // SambungUtasAt(&utas, MASUKANToStr(teks), 1);
+    // displayUtas(utas);
 
-    // Membuat List Utas
-    ListUtas li;
-    CreateListUtas(&li, 10);
+    // Construct list Utas
+    ListUtas lu;
+    CreateListUtas(&lu, 5);
+    insertUtas(&lu, utas);
+    insertUtas(&lu, utas);
+    insertUtas(&lu, utas);
 
-    deleteSambungan(&U, 1);
-    insertUtas(&li, U);
-    // displayUtas(U);
-    deleteSambungan(&U, 1);
-    insertUtas(&li, U);
-    // displayUtas(U);
-    deleteSambungan(&U, 1);
-    insertUtas(&li, U);
-    // displayUtas(U);
-    deleteSambungan(&U, 1);
-    insertUtas(&li, U);
-    // displayUtas(U);
+    displayUtas(BUFFERListDinUtas(lu)[0]);
+    // displayUtas(utas);
 
-    displayUtas(BUFFERListDinUtas(li)[0]);
-    displayUtas(BUFFERListDinUtas(li)[1]);
-    displayUtas(BUFFERListDinUtas(li)[2]);
-    displayUtas(BUFFERListDinUtas(li)[3]);
+    // HapusUtasAt(&BUFFERListDinUtas(lu)[0], 1);
+    // displayUtas(BUFFERListDinUtas(lu)[0]);
+
+    // displayUtas(BUFFERListDinUtas(lu)[0]);
+
+    HapusUtasAt(&utas, 1);
+    insertUtas(&lu, utas);
+    displayUtas(BUFFERListDinUtas(lu)[1]);
+
+    // displayUtas(BUFFERListDinUtas(lu)[0]);
 }

@@ -79,12 +79,29 @@ int charToInt(char sebenarnyaInt){
   return sebenarnyaInt - 48;
 }
 
-void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile)
+void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile, int x)
 {
 
   char* str = MASUKANToStr(namaFile);
   //printf("%s\n", str);
-  STARTMASUKANFILE(str); // sekarang gini dulu untuk testing, nanti bakal di ubah jadi STARTMASUKANFILE("../../?" + str + ?.config);
+  if(x == 1){
+    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"pengguna.config")); 
+  }
+  else if (x == 2){
+    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"kicauan.config")); 
+  }else if (x == 3)
+  {
+    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"balasan.config")); 
+  }else if (x == 4)
+  {
+    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"draf.config")); 
+  }else if (x == 5)
+  {
+    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"utas.config")); 
+  }
+  
+  
+  
   *MASUKANFILE = currentMASUKANFILE;
   if ((*MASUKANFILE).TabMASUKANFILE[0] == 10)
   {
@@ -237,6 +254,18 @@ void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
         ELMT_MTX(listPengguna->contents[i].profile,c,d) = masukanFile.TabMASUKANFILE[2*(d)];
       }
     }
+    int e;
+    for ( e = 0; e < n; e++)
+    {
+      bacaLanjutFile(&masukanFile);
+      int f;
+      for ( f = 0; f < masukanFile.Length; f++)
+      {
+        ELMT_MTX(,e,f) == masukanFile.TabMASUKANFILE[2*f] - 48;
+      }
+      
+    }
+    
   }
 }
 

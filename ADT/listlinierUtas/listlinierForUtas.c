@@ -36,9 +36,8 @@ void displayTime(DATETIME time) // Works
 
 /* List linier */
 // Membuat kicauan sambungan
-AddressUtas newThreadNode(char text[MAX_CHAR]) // Works
+AddressUtas newThreadNode(char text[MAX_CHAR], DATETIME time) // Works
 {
-  DATETIME time = getCurrTime();
   AddressUtas p = (AddressUtas)malloc(sizeof(ThreadNode));
   if (p != NULL)
   {
@@ -74,7 +73,7 @@ boolean isThreadsEmpty(threads l)
 // Memasukkan kicauan sambungan di awal threads
 void insertFirstThreads(threads *l, char text[MAX_CHAR]) // Works
 {
-  AddressUtas p = newThreadNode(text);
+  AddressUtas p = newThreadNode(text, getCurrTime());
   if (p != NULL)
   {
     NextThread(p) = FIRST(*l);
@@ -91,7 +90,7 @@ void insertLastThreads(threads *l, char text[MAX_CHAR]) // Works
   }
   else
   {
-    AddressUtas N = newThreadNode(text);
+    AddressUtas N = newThreadNode(text, getCurrTime());
     if (N != NULL)
     {
       AddressUtas temp = FIRST(*l);
@@ -116,7 +115,7 @@ void insertAtThreads(threads *l, char text[MAX_CHAR], int idx)
   }
   else
   {
-    AddressUtas N = newThreadNode(text);
+    AddressUtas N = newThreadNode(text, getCurrTime());
     for (int i = 1; i < idx; i++)
     {
       prevP = P;
@@ -124,6 +123,25 @@ void insertAtThreads(threads *l, char text[MAX_CHAR], int idx)
     }
     NextThread(prevP) = N;
     NextThread(N) = P;
+  }
+}
+
+// Fungsi untuk me-load utas dari config
+void insertLastThreadForConfig(UTAS *utas, char text[MAX_CHAR], DATETIME time)
+{
+  AddressUtas P = KicauanSambungan(*utas);
+  AddressUtas N = newThreadNode(text, time);
+  if (P == NULL)
+  {
+    KicauanSambungan(*utas) = N;
+  }
+  else
+  {
+    while (NextThread(P) != NULL)
+    {
+      P = NextThread(P);
+    }
+    NextThread(P) = N;
   }
 }
 

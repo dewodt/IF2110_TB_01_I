@@ -48,7 +48,7 @@ int charToInt(char sebenarnyaInt);
 
 void ADVMASUKANFILE();
 
-void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile);
+void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile, int x);
 
 void bacaLanjutFile(MASUKANFILE *MASUKANFILE);
 

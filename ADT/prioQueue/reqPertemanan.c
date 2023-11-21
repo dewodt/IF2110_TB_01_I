@@ -66,7 +66,7 @@ void isiReqPertemanan(PrioQueueint* listReqPertemanan, Matrix relasiPertemanan, 
         }
     }
     
-}
+// }
 
 void TAMBAH_TEMAN(PrioQueueint listReqPertemanan, Matrix relasiPertemanan, int ID_Pengguna, ListStatik listPengguna){
     if(!isEmpty(listReqPertemanan)){

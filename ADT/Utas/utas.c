@@ -6,7 +6,7 @@ boolean isKicauExistinUtas(Kicauan kicau, ListUtas lu)
     boolean exist = false;
     for (int i = 0; i < listUtasLength(lu); i++)
     {
-        if (KicauanSambungan(BUFFERListDinUtas(lu)[i]) == &kicau)
+        if (ID(*KicauanUtama(BUFFERListDinUtas(lu)[i])) == ID(kicau))
         {
             exist = true;
             break;

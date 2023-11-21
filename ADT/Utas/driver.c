@@ -77,9 +77,15 @@ int main()
 
     // displayUtas(BUFFERListDinUtas(lu)[0]);
 
-    HapusUtasAt(&utas, 1);
-    insertUtas(&lu, utas);
-    displayUtas(BUFFERListDinUtas(lu)[1]);
+    // HapusUtasAt(&utas, 1);
+    // insertUtas(&lu, utas);
+    // displayUtas(BUFFERListDinUtas(lu)[1]);
 
-    // displayUtas(BUFFERListDinUtas(lu)[0])
+    // displayUtas(BUFFERListDinUtas(lu)[0]);
+
+    // Buat List Kicauan
+    ListDinKicauan lk;
+    CreateListDinKicauan(&lk, 10);
+
+    BUAT_UTAS()
 }

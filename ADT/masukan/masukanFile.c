@@ -405,10 +405,28 @@ void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPeng
     a = 0;
     AddressKicauan addKicauan;
     addKicauan = ELMT_LDK(listKicauan,idKicau);
+    Kicauan tempKicauan;
+    tempKicauan = ELMT_LDK(listKicauan,idKicau);
+    UTAS utasUtama;
     for ( a = 0; a < listKicauan->nEff; a++)
     {
       bacaLanjutFile(&masukanFile);
-      char* 
+      char* text;
+      text = MASUKANToStr(masukanFileToMasukan(masukanFile));
+      bacaLanjutFile(&masukanFile);
+      int HH = charToInt(masukanFile.TabMASUKANFILE[11])*10 + charToInt(masukanFile.TabMASUKANFILE[12]);
+      int MM = charToInt(masukanFile.TabMASUKANFILE[14])*10 + charToInt(masukanFile.TabMASUKANFILE[15]);
+      int SS = charToInt(masukanFile.TabMASUKANFILE[17])*10 + charToInt(masukanFile.TabMASUKANFILE[18]);
+      int DD = charToInt(masukanFile.TabMASUKANFILE[0])*10 + charToInt(masukanFile.TabMASUKANFILE[1]);
+      int BB = charToInt(masukanFile.TabMASUKANFILE[3])*10 + charToInt(masukanFile.TabMASUKANFILE[4]);
+      int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
+      DATETIME datetime;
+      CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
+      User author;
+      author = tempKicauan.author;
+      UTAS tempUtas;
+      CreateUtas(&tempUtas,&tempKicauan,a+1);
+      SambungUtasLast(&)
     }
     
   }

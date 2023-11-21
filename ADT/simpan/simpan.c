@@ -7,6 +7,9 @@
 #include "../listdinkicauan/listdinkicauan.h"         // global variable listKicauan
 #include "../modifiedliststatik/modifiedliststatik.h" // global variable listPengguna
 #include "../pengguna/pengguna.h"                     // global variable currentUser
+#include "../masukan/masukanFile.h"
+#include "../masukan/masukanint.h"
+
 
 /* Prosedur untuk menyimpan seluruh data program dalam folder config/foo */
 void Simpan()
@@ -71,8 +74,123 @@ void Simpan()
   printf("\n");
 }
 
-void SimpanPengguna()
+void SimpanPengguna(char* folderDir)
 {
+  char *fileDir = concatStr(folderDir, "/pengguna.config");
+  FILE *fptr;
+
+  // Open file
+  fptr = fopen(fileDir, "w");
+  int countPengguna = listLength(listUser);
+  fprintf(fptr, "%d", countPengguna);
+  
+  int i;
+  for ( i = 0; i < countPengguna; i++)
+  {
+    User pengguna;
+    pengguna = listUser.contents[i];
+    char* nama;
+    nama = pengguna.username;
+    fprintf(fptr, "\n%s", nama);
+    char* pw;
+    pw = pengguna.password;
+    fprintf(fptr, "\n%s", pw);
+    char* bio;
+    bio = pengguna.bio;
+    fprintf(fptr, "\n%s", bio);
+    char* noHp;
+    noHp = pengguna.phone_num.TabMASUKAN;
+    fprintf(fptr, "\n%s", noHp);
+    char* jenisAkun;
+    jenisAkun = pengguna.acc_type;
+    fprintf(fptr, "\n%s", jenisAkun);
+    int a;
+    for ( a = 0; a < 5; a++)
+    {
+      int b;
+      for ( b = 0; b < 19; b++)
+      {
+        fprintf(fptr, "%c", pengguna.profile[a][b]);
+        if(b == 18){
+          fprintf(fptr, "\n");
+        }
+      }
+    }
+  }
+  int c;
+  for ( c = 0; c < listLength(listUser); c++)
+  {
+    int d;
+    for ( d = 0; d < listLength(listUser); d++)
+    {
+      if(ELMT_MTX(,c,d) == 1 && ELMT_MTX(,d,c) == 1){
+        if(d == listLength(listUser)-1){
+          fprintf(fptr, "%d\n", 1);
+        }else{
+          fprintf(fptr, "%d", 1);
+        }
+      }else{
+        if(d == listLength(listUser)-1){
+          fprintf(fptr, "%d\n", 0);
+        }else{
+          fprintf(fptr, "%d", 0);
+        }
+      }
+    }
+  }
+  int countReqPertemanan;
+  countReqPertemanan = 0;
+  int e;
+  for ( e = 0; e < listLength(listUser); e++)
+  {
+    int f;
+    for ( f = 0; f < listLength(listUser); f++)
+    {
+      if(ELMT_MTX(,e,f) == 1 && ELMT_MTX(,e,f) == 0){
+        countReqPertemanan += 1;
+      }else if (ELMT_MTX(,e,f) == 0 && ELMT_MTX(,e,f) == 1)
+      {
+        countReqPertemanan += 1;
+      }
+    }
+  }
+  fprintf(fptr, "%d \n", countReqPertemanan);
+  int m;
+  for ( m = 0; m < listLength(listUser); m++)
+  {
+    int n;
+    for ( n = 0; n < listLength(listUser); n++)
+    {
+      if(ELMT_MTX(,m,n) == 1 && ELMT_MTX(,n,m) == 0){
+        int pop;
+        pop = 0;
+        int o;
+        for ( o = 0; o < listLength(listUser); o++)
+        {
+          if(o != n && o != m){
+            if(ELMT_MTX(,n,o) == 1 && ELMT_MTX(,o,n) == 1 && ELMT_MTX(,m,o) == 1 && ELMT_MTX(,o,m) == 1){
+              pop += 1;
+            }
+         }
+        }
+        fprintf(fptr, "%d %d %d\n", m,n, pop);
+      }else if (ELMT_MTX(,m,n) == 0 && ELMT_MTX(,n,m) == 1)
+      {
+        int pop;
+        pop = 0;
+        int o;
+        for ( o = 0; o < listLength(listUser); o++)
+        {
+          if(o != n && o != m){
+            if(ELMT_MTX(,n,o) == 1 && ELMT_MTX(,o,n) == 1 && ELMT_MTX(,m,o) == 1 && ELMT_MTX(,o,m) == 1){
+              pop += 1;
+            }
+         }
+        }
+        fprintf(fptr, "%d %d %d\n",n,m, pop);
+      }
+    } 
+  }  
 }
 
 /* Prosedur untuk menyimpan data kicauan dalam folder config/foo */
@@ -211,6 +329,7 @@ void writeBalasanDetailFile(FILE *ptr, int parentId, AddressBalasan nodeBalasan)
   writeBalasanDetailFile(ptr, currentId, LeftChildBalasan);
 }
 
-void SimpanUtas()
+void SimpanUtas(File* )
 {
+
 }

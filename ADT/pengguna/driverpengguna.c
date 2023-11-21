@@ -96,4 +96,5 @@ int main()
     return 0;
 }
 
+// RUN DALAM FOLDER PENGGUNA
 // gcc driverpengguna.c pengguna.c ../modifiedliststatik/modifiedliststatik.c  ../modifiedmatrix/modifiedmatrix.c ../masukan/masukan.c ../charmachine/charmachine.c ../pcolor/pcolor.c

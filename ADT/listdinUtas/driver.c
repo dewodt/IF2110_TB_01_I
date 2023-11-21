@@ -38,10 +38,22 @@ int main()
     printf("\n");
     displayUtas(utas);
 
-    SambungUtasLast(&utas, "skidipapap 1");
-    SambungUtasLast(&utas, "skidipapap 2");
-    SambungUtasLast(&utas, "skidipapap 3");
-    SambungUtasLast(&utas, "skidipapap 4");
+    SambungUtasLast(&utas, "Testting 1");
+    SambungUtasLast(&utas, "Testting 2");
+    SambungUtasLast(&utas, "Testting 3");
+    SambungUtasLast(&utas, "Testting 4");
+
+    MASUKAN input;
+
+    // UTAS utas2;
+    // CreateUtas(&utas, &kicau, 1);
+    // printf("\n");
+    // displayUtas(utas);
+
+    // SambungUtasLast(&utas, "Testting 1");
+    // SambungUtasLast(&utas, "Testting 2");
+    // SambungUtasLast(&utas, "Testting 3");
+    // SambungUtasLast(&utas, "Testting 4");
 
     // printf("\n");
     // displayUtas(utas);
@@ -55,23 +67,19 @@ int main()
     // displayUtas(utas);
 
     // Construct list Utas
-    ListUtas lu;
-    CreateListUtas(&lu, 5);
-    insertUtas(&lu, utas);
-    insertUtas(&lu, utas);
-    insertUtas(&lu, utas);
+    // ListUtas lu;
+    // CreateListUtas(&lu, 5);
+    // insertUtas(&lu, utas);
+    // insertUtas(&lu, utas);
+    // insertUtas(&lu, utas);
 
-    displayUtas(BUFFERListDinUtas(lu)[0]);
+    // displayUtas(BUFFERListDinUtas(lu)[0]);
     // displayUtas(utas);
 
     // HapusUtasAt(&BUFFERListDinUtas(lu)[0], 1);
     // displayUtas(BUFFERListDinUtas(lu)[0]);
 
     // displayUtas(BUFFERListDinUtas(lu)[0]);
-
-    HapusUtasAt(&utas, 1);
-    insertUtas(&lu, utas);
-    displayUtas(BUFFERListDinUtas(lu)[1]);
 
     // displayUtas(BUFFERListDinUtas(lu)[0]);
 }

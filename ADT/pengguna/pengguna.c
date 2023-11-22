@@ -299,7 +299,7 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
 
     if (userIndex != -1)
     {
-        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1')
+        if (ELMT(*pengguna, userIndex).isPrivate == false)
         {
             printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
             printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
@@ -309,7 +309,7 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
             printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
             displayProfile(ELMT(*pengguna, userIndex).profile);
         }
-        else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0')
+        else if (ELMT(*pengguna, userIndex).isPrivate == true)
         {
             printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", namapengguna.TabMASUKAN, namapengguna.TabMASUKAN);
         }
@@ -366,6 +366,7 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser)
         // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
         int i = 0;
         int userIndex;
+        boolean status = false;
         MASUKAN username;
         username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
         while (i < listLength(*pengguna))
@@ -378,7 +379,7 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser)
             i++;
         }
 
-        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1')
+        if (ELMT(*pengguna, userIndex).isPrivate == false)
         {
             printf("Saat ini, akun Anda adalah akun Publik.\n");
             printf("Ingin mengubah ke akun Privat? (YA/TIDAK) ");
@@ -388,8 +389,8 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser)
 
             if (isSame(acctype, "YA;"))
             {
-                ELMT(*pengguna, userIndex).jenis_akun[0] = '0';
-                ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
+                status = true;
+                SetIsPrivate(pengguna, userIndex, &status);
                 printf("Akun anda sudah diubah menjadi akun Privat.\n");
             }
             else if (isSame(acctype, "TIDAK;"))
@@ -397,7 +398,7 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser)
                 printf("Akun anda tidak jadi diubah menjadi akun Privat.\n");
             }
         }
-        else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0')
+        else if (ELMT(*pengguna, userIndex).isPrivate == true)
         {
             printf("Saat ini, akun Anda adalah akun Privat.\n");
             printf("Ingin mengubah ke akun Publik? (YA/TIDAK) ");
@@ -407,8 +408,7 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser)
 
             if (isSame(acctype, "YA;"))
             {
-                ELMT(*pengguna, userIndex).jenis_akun[0] = '1';
-                ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
+                SetIsPrivate(pengguna, userIndex, &status);
                 printf("Akun anda sudah diubah menjadi akun Publik.\n");
             }
             else if (isSame(acctype, "TIDAK;"))

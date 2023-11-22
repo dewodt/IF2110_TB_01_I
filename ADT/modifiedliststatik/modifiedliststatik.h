@@ -40,6 +40,7 @@ typedef struct
    char acc_type[MAX_ACC_TYPE_LENGTH];
    Matrix profile;
    char jenis_akun[6];
+   boolean isPrivate;
    // Stack draf;
 } User; /* type elemen List */
 typedef int IdxType;
@@ -112,4 +113,7 @@ void SetProfile(ListStatik *l, int userIndex, Matrix *profile);
 // I.S.
 // F.S.
 
+void SetIsPrivate(ListStatik *l, int userIndex, boolean *status);
+// I.S.
+// F.S.
 #endif

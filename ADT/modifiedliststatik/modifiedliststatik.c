@@ -20,6 +20,7 @@ void CreateListStatik(ListStatik *l)
         strcpy(ELMT(*l, i).acc_type, "");
         createMatrix(5, 10, &(ELMT(*l, i).profile));
         strcpy(ELMT(*l, i).jenis_akun, "1");
+        (ELMT(*l, i).isPrivate = false);
     }
 }
 
@@ -110,6 +111,14 @@ void SetProfile(ListStatik *l, int userIndex, Matrix *profile)
     if (userIndex >= 0 && userIndex < MAX_USERS)
     {
         ELMT(*l, userIndex).profile = *profile;
+    }
+}
+
+void SetIsPrivate(ListStatik *l, int userIndex, boolean *status)
+{
+    if (userIndex >= 0 && userIndex < MAX_USERS)
+    {
+        ELMT(*l, userIndex).isPrivate = *status;
     }
 }
 

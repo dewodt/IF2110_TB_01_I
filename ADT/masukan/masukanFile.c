@@ -191,6 +191,8 @@ MASUKAN masukanFileToMasukan(MASUKANFILE masukanFile){
 //   str[len] = '\0';
 // }
 
+// membaca pengguna.config
+// status: done?
 void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile,namaFile);
@@ -254,21 +256,51 @@ void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
         ELMT_MTX(listPengguna->contents[i].profile,c,d) = masukanFile.TabMASUKANFILE[2*(d)];
       }
     }
-    int e;
-    for ( e = 0; e < n; e++)
-    {
-      bacaLanjutFile(&masukanFile);
-      int f;
-      for ( f = 0; f < masukanFile.Length; f++)
-      {
-        ELMT_MTX(,e,f) == masukanFile.TabMASUKANFILE[2*f] - 48;
-      }
-      
-    }
     
+  }
+  int e;
+  for ( e = 0; e < n; e++)
+  {
+    bacaLanjutFile(&masukanFile);
+    int f;
+    for ( f = 0; f < masukanFile.Length; f++)
+    {
+      ELMT_MTX(,e,f) == masukanFile.TabMASUKANFILE[2*f] - 48;
+    }  
+  }
+  bacaLanjutFile(&masukanFile);
+  int g;
+  g = masukanFileToInt(masukanFile);
+  int h;
+  for ( h = 0; h < g; h++)
+  { 
+    bacaLanjutFile(&masukanFile);
+    int x;
+    int numTemp,num1,num2;
+    numTemp = 0;
+    num1 = -1;
+    num2 = -1;
+    for ( x = 0; x < masukanFile.Length; x++)
+    {
+      if(num1 == -1 && num2 == -1){
+        if(masukanFile.TabMASUKANFILE[x] != 32){
+          numTemp *= 10;
+          numTemp += masukanFile.TabMASUKANFILE[x] - 48;
+        }else{
+          if(num1 == -1){
+            num1 = numTemp;
+          }else{
+            num2 = numTemp
+          }
+      }
+      }
+    }
+    ELMT_MTX(RelasiTeman,num1,num2) = 1;
   }
 }
 
+// membaca kicauan.config
+// status: done?
 void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile,namaFile);
@@ -351,6 +383,8 @@ void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKAN
   
 }
 
+// membaca balasan.config
+// status: done?
 void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile,namaFile);
@@ -417,6 +451,8 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
   }
 }
 
+// membaca pengguna.config
+// status: tinggal connectin thread
 void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile,namaFile);

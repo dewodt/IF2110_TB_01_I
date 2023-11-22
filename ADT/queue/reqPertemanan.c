@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <stdio.h>
 #include "wordmachine.h"
 #include "liststatik.h"
@@ -19,27 +18,6 @@ int searchID_Pengguna(ListStatik listPengguna, MASUKAN Pengguna) // mungkin peng
     }
     return hasil;
 }
-=======
-// #include <stdio.h>
-// #include "wordmachine.h"
-// #include "liststatik.h"
-// int searchID_Pengguna(ListStatik listPengguna, Word Pengguna) // mungkin penggunanya char
-// {
-//     int hasil;
-//     hasil = -1;
-//     int i;
-//     i = 0;
-//     while (i < listLength(listPengguna) && hasil != -1)
-//     {
-//         if(listStatik[i].Nama_pengguna == Pengguna){
-//             hasil = i;
-//         }else{
-//             i++;
-//         }
-//     }
-//     return hasil;
-// }
->>>>>>> 732074773ede4850d90cd85d9b21e97faf8e8c32
 
 // Word searchNamaPengguna(ListStatik listPengguna, int ID_Pengguna);
 

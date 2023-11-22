@@ -74,6 +74,8 @@ void Simpan()
   printf("\n");
 }
 
+// menyimpan pengguna 
+// status: done?
 void SimpanPengguna(char* folderDir)
 {
   char *fileDir = concatStr(folderDir, "/pengguna.config");
@@ -123,7 +125,7 @@ void SimpanPengguna(char* folderDir)
     int d;
     for ( d = 0; d < listLength(listUser); d++)
     {
-      if(ELMT_MTX(,c,d) == 1 && ELMT_MTX(,d,c) == 1){
+      if(ELMT_MTX(RelasiTeman,c,d) == 1 && ELMT_MTX(RelasiTeman,d,c) == 1){
         if(d == listLength(listUser)-1){
           fprintf(fptr, "%d\n", 1);
         }else{
@@ -146,9 +148,9 @@ void SimpanPengguna(char* folderDir)
     int f;
     for ( f = 0; f < listLength(listUser); f++)
     {
-      if(ELMT_MTX(,e,f) == 1 && ELMT_MTX(,e,f) == 0){
+      if(ELMT_MTX(RelasiTeman,e,f) == 1 && ELMT_MTX(RelasiTeman,e,f) == 0){
         countReqPertemanan += 1;
-      }else if (ELMT_MTX(,e,f) == 0 && ELMT_MTX(,e,f) == 1)
+      }else if (ELMT_MTX(RelasiTeman,e,f) == 0 && ELMT_MTX(RelasiTeman,e,f) == 1)
       {
         countReqPertemanan += 1;
       }
@@ -161,20 +163,20 @@ void SimpanPengguna(char* folderDir)
     int n;
     for ( n = 0; n < listLength(listUser); n++)
     {
-      if(ELMT_MTX(,m,n) == 1 && ELMT_MTX(,n,m) == 0){
+      if(ELMT_MTX(RelasiTeman,m,n) == 1 && ELMT_MTX(RelasiTeman,n,m) == 0){
         int pop;
         pop = 0;
         int o;
         for ( o = 0; o < listLength(listUser); o++)
         {
           if(o != n && o != m){
-            if(ELMT_MTX(,n,o) == 1 && ELMT_MTX(,o,n) == 1 && ELMT_MTX(,m,o) == 1 && ELMT_MTX(,o,m) == 1){
+            if(ELMT_MTX(RelasiTeman,n,o) == 1 && ELMT_MTX(RelasiTeman,o,n) == 1 && ELMT_MTX(RelasiTeman,m,o) == 1 && ELMT_MTX(RelasiTeman,o,m) == 1){
               pop += 1;
             }
          }
         }
         fprintf(fptr, "%d %d %d\n", m,n, pop);
-      }else if (ELMT_MTX(,m,n) == 0 && ELMT_MTX(,n,m) == 1)
+      }else if (ELMT_MTX(RelasiTeman,m,n) == 0 && ELMT_MTX(RelasiTeman,n,m) == 1)
       {
         int pop;
         pop = 0;
@@ -182,7 +184,7 @@ void SimpanPengguna(char* folderDir)
         for ( o = 0; o < listLength(listUser); o++)
         {
           if(o != n && o != m){
-            if(ELMT_MTX(,n,o) == 1 && ELMT_MTX(,o,n) == 1 && ELMT_MTX(,m,o) == 1 && ELMT_MTX(,o,m) == 1){
+            if(ELMT_MTX(RelasiTeman,n,o) == 1 && ELMT_MTX(RelasiTeman,o,n) == 1 && ELMT_MTX(RelasiTeman,m,o) == 1 && ELMT_MTX(RelasiTeman,o,m) == 1){
               pop += 1;
             }
          }

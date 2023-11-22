@@ -2,6 +2,8 @@
 #include "../masukan/masukan.h"
 #include "../kicauan/kicauan.h"
 #include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
+#include "../pengguna/pengguna.h"             // Global variable currentUser
+#include "../teman/teman.h"
 
 /* Konstruktor kicauan */
 void CreateKicauan(Kicauan *k, int id, char *text, int like, User *author, DATETIME datetime)
@@ -32,9 +34,7 @@ void BuatKicauan()
    Bila data yang diinput tidak valid atau melawan constraint tertentu, maka output pesan kesalahan */
 {
   // VALIDASI SUDAH MASUK ATAU BELUM
-  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
-  boolean isUserLoggedIn = true;
-  if (!isUserLoggedIn)
+  if (!isUserLoggedIn())
   {
     printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
@@ -70,9 +70,8 @@ void BuatKicauan()
   // Buat kicauan baru
   Kicauan kicauanBaru;
 
-  // TO DO: CONNECT KE GLOBAL VARIABLE CURRENT USER
-  // ADT PENGGUNA MASIH BERMASALAH, SET TO NULL DULU
-  CreateKicauan(&kicauanBaru, idKicauanBaru, kicauanStr, 0, NULL, waktuKicauan);
+  // Note: pakai global variable current user untuk author
+  CreateKicauan(&kicauanBaru, idKicauanBaru, kicauanStr, 0, currentUser, waktuKicauan);
   TreeKicauan nodeKicauan = newNodeKicauan(kicauanBaru);
   insertLastListDinKicauan(&listKicauan, nodeKicauan);
 
@@ -113,9 +112,7 @@ void TampilkanKicauan()
 /* F.S. Menampilkan seluruh kicauan buatan diri sendiri dan orang2 yang berada di list teman terurut berdasarkan waktu */
 {
   // VALIDASI SUDAH MASUK ATAU BELUM
-  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
-  boolean isUserLoggedIn = true;
-  if (!isUserLoggedIn)
+  if (!isUserLoggedIn())
   {
     printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
@@ -126,16 +123,21 @@ void TampilkanKicauan()
   // Buat list baru yang telah di sortir berdasarkan date time.
   ListDinKicauan sortedKicauan = sortKicauanByDateTime(listKicauan, true);
 
-  // TO DO: SAMBUNGKAN DENGAN LOGIC CURRENT USER & TEMAN USER
   // Cari kicauan yang dibuat oleh current user atau teman current user
   printf("\n");
   IdxType i;
   for (i = getFirstIdxListDinKicauan(sortedKicauan); i <= getLastIdxListDinKicauan(sortedKicauan); i++)
   {
-    boolean isCurrentUserOrFriend = true;
-    if (isCurrentUserOrFriend)
+    // Get kicauan
+    TreeKicauan kicauan = ELMT_LDK(sortedKicauan, i);
+    User *author = AUTHOR(InfoKicauan(kicauan));
+    boolean isFriends = areFriendsEachOthers(*currentUser, *author);
+    boolean isCurrentUser = currentUser == author;
+
+    // Jika kicauan dibuat oleh current user atau teman current user, print detail kicauan
+    if (isFriends || isCurrentUser)
     {
-      printDetailKicauan(InfoKicauan(ELMT_LDK(sortedKicauan, i)));
+      printDetailKicauan(InfoKicauan(kicauan));
       printf("\n");
     }
   }
@@ -148,9 +150,7 @@ void SukaKicauan(int idKicau)
   Bila idKicau tidak valid, maka keluarkan pesan kicauan tidak ditemukan */
 {
   // VALIDASI SUDAH MASUK ATAU BELUM
-  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
-  boolean isUserLoggedIn = true;
-  if (!isUserLoggedIn)
+  if (!isUserLoggedIn())
   {
     printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
@@ -168,10 +168,15 @@ void SukaKicauan(int idKicau)
     return;
   }
 
+  int idxKicau = idKicau - 1;
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idxKicau);
+
   // KASUS KICAUAN DIMILIKI AKUN PRIVAT DAN BELUM BERTEMAN
-  // TODO: CONNECT DENGAN LOGIC CURRENT USE & APAKAH USER SUDAH BERTEMAN
-  boolean isCurrentUserCanSee = true;
-  if (!isCurrentUserCanSee)
+  User *author = AUTHOR(InfoKicauan(kicauan));
+  boolean isPrivate = isUserPrivate(*author);
+  boolean isFriend = areFriendsEachOthers(*currentUser, *author);
+
+  if (isPrivate && !isFriend)
   {
     printf("\n");
     printf("Wah, kicauan tersebut dibuat oleh akun privat! Ikuti akun itu dulu ya\n");
@@ -179,16 +184,14 @@ void SukaKicauan(int idKicau)
     return;
   }
 
-  // kASUS IDKICAU VALID DAN BISA DILIHAT
-  int idxKicau = idKicau - 1;
-  TreeKicauan nodeKicauan = ELMT_LDK(listKicauan, idxKicau);
-  LIKE(InfoKicauan(nodeKicauan)) += 1;
+  // KASUS IDKICAU VALID DAN BISA DILIHAT
+  LIKE(InfoKicauan(kicauan)) += 1;
 
   // Cetak pesan
   printf("\n");
   printf("Selamat! kicauan telah disukai!\n");
   printf("Detil kicauan:\n");
-  printDetailKicauan(InfoKicauan(nodeKicauan));
+  printDetailKicauan(InfoKicauan(kicauan));
   printf("\n");
 }
 
@@ -199,9 +202,7 @@ void UbahKicauan(int idKicau)
   Bila idKicau tidak valid, maka keluarkan pesan kicauan tidak ditemukan */
 {
   // VALIDASI SUDAH MASUK ATAU BELUM
-  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
-  boolean isUserLoggedIn = true;
-  if (!isUserLoggedIn)
+  if (!isUserLoggedIn())
   {
     printf("\n");
     printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
@@ -219,10 +220,12 @@ void UbahKicauan(int idKicau)
     return;
   }
 
+  // Dapatkan kicauan
+  int idxKicau = idKicau - 1;
+  TreeKicauan nodeKicauan = ELMT_LDK(listKicauan, idxKicau);
+
   // KASUS KICAUAN BUKAN MILIK CURRENT LOGGED IN USER
-  // TODO: CONNECT DENGAN LOGIC CURRENT USER
-  boolean isKicauanMilikPengguna = true;
-  if (!isKicauanMilikPengguna)
+  if (currentUser != AUTHOR(InfoKicauan(nodeKicauan)))
   {
     printf("\n");
     printf("Kicauan dengan ID = %d bukan milikmu!\n", idKicau);
@@ -250,9 +253,6 @@ void UbahKicauan(int idKicau)
   }
 
   // Masukan valid, update kicauan
-  int idxKicau = idKicau - 1;
-  TreeKicauan nodeKicauan = ELMT_LDK(listKicauan, idxKicau);
-
   // Update text
   strcpy(TEXT(InfoKicauan(nodeKicauan)), kicauanStr);
 

@@ -20,6 +20,7 @@ void CreateListStatik(ListStatik *l)
         strcpy(ELMT(*l, i).acc_type, "");
         createMatrix(5, 10, &(ELMT(*l, i).profile));
         strcpy(ELMT(*l, i).jenis_akun, "1");
+        CreateEmptyStack(&(ELMT(*l, i).draf));
     }
 }
 

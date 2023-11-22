@@ -1,111 +1,210 @@
-// import
-#include "./matrixteman.h"
+/* Implementasi ADT MatrixTeman */
 
-void createFriendMatrix(Matrix* RelasiPertemanan){
-  createMatrix(20, 20, RelasiPertemanan);
+#include <stdio.h>
+#include "matrixteman.h"
+
+/* ********** DEFINISI PROTOTIPE PRIMITIF ********** */
+/* *** Konstruktor membentuk MatrixTeman *** */
+void createMatrixTeman(int nRows, int nCols, MatrixTeman *m)
+/* Membentuk sebuah MatrixTeman "kosong" yang siap diisi berukuran nRow x nCol di "ujung kiri" memori */
+/* I.S. nRow dan nCol adalah valid untuk memori matriks yang dibuat */
+/* F.S. Matriks m sesuai dengan definisi di atas terbentuk */
+{
+  // Inisialisasi neff
+  ROW_EFF_MTXTEMAN(*m) = nRows;
+  COL_EFF_MTXTEMAN(*m) = nCols;
 }
 
-IdxType searchIndexPengguna(ListStatik ListPengguna, User Pengguna){
-  return searchIndexPenggunaByName(ListPengguna, Pengguna.username);
+/* *** Selektor "Dunia MatrixTeman" *** */
+boolean isMatrixTemanIdxValid(int i, int j)
+/* Mengirimkan true jika i, j adalah index yang valid untuk matriks apa pun */
+{
+  return (i >= 0) && (i < ROW_CAP_MTXTEMAN) && (j >= 0) && (j < COL_CAP_MTXTEMAN);
 }
 
-IdxType searchIndexPenggunaByName(ListStatik ListPengguna, char *Username){
-  IdxType IdxPengguna = -1, i = 0;
-  boolean found = false;
-  // Harusnya compare string aman dari '\0', semoga ga ngebug TT
-  while (i < listLength(ListPengguna) && !found) {
-    if (compareString(Username, USERNAME(ListPengguna, i), stringLength(Username)) == 0) {
-      found = true;
-      IdxPengguna = i;
-    } else {
-      i++;
+/* *** Selektor: Untuk sebuah matriks m yang terdefinisi: *** */
+IdxTypeMTXTeman getLastIdxRowMatrixTeman(MatrixTeman m)
+/* Mengirimkan Index baris terbesar m */
+{
+  return ROW_EFF_MTXTEMAN(m) - 1;
+}
+IdxTypeMTXTeman getLastIdxColMatrixTeman(MatrixTeman m)
+/* Mengirimkan Index kolom terbesar m */
+{
+  return COL_EFF_MTXTEMAN(m) - 1;
+}
+boolean isIdxEffMatrixTeman(MatrixTeman m, IdxTypeMTXTeman i, IdxTypeMTXTeman j)
+/* Mengirimkan true jika i, j adalah Index efektif bagi m */
+{
+  return (i >= 0) && (i <= getLastIdxRowMatrixTeman(m)) && (j >= 0) && (j <= getLastIdxColMatrixTeman(m));
+}
+ElTypeMTXTeman getElmtDiagonalMatrixTeman(MatrixTeman m, IdxTypeMTXTeman i)
+/* Mengirimkan elemen m(i,i) */
+{
+  return ELMT_MTXTEMAN(m, i, i);
+}
+
+/* ********** Assignment  MatrixTeman ********** */
+void copyMatrixTeman(MatrixTeman mIn, MatrixTeman *mOut)
+/* Melakukan assignment mOut <- mIn */
+{
+  int i, j;
+  createMatrixTeman(ROW_EFF_MTXTEMAN(mIn), COL_EFF_MTXTEMAN(mIn), mOut);
+  for (i = 0; i < ROW_EFF_MTXTEMAN(mIn); i++)
+  {
+    for (j = 0; j < COL_EFF_MTXTEMAN(mIn); j++)
+    {
+      ELMT_MTXTEMAN(*mOut, i, j) = ELMT_MTXTEMAN(mIn, i, j);
     }
   }
-  return IdxPengguna;
 }
 
-boolean areFriendsEachOthers(Matrix RelasiPertemanan, ListStatik ListPengguna, User Pengguna1, User Pengguna2){
-  return areFriendsByName(RelasiPertemanan, ListPengguna, Pengguna1.username, Pengguna2.username);
-}
-
-boolean areFriendsByName(Matrix RelasiPertemanan, ListStatik ListPengguna, char *Username1, char *Username2){
-  IdxType IdxPengguna1 = searchIndexPenggunaByName(ListPengguna, Username1);
-  IdxType IdxPengguna2 = searchIndexPenggunaByName(ListPengguna, Username2);
-  IdxType i = IdxPengguna1, j = IdxPengguna2;
-  return (ELMT(RelasiPertemanan, i, j) == 1 && ELMT(RelasiPertemanan, j, i) == 1);
-}
-
-void displayListFriend(ListStatik DaftarTeman, User CurrentPengguna){
-  IdxType i;
-  printf("Daftar teman %s\n", CurrentPenguna.username);
-  for (i = 0; i < listLength(DaftarTeman); i++){
-    printf("| %s\n", USERNAME(DaftarTeman, i));
-  }
-}
-
-void showFriendList(Matrix RelasiPertemanan, ListStatik ListPengguna, User CurrentPengguna){
-  // track semua dulu, kompleksitasnya tetep T(20) = O(1)
-  // Kasus jika belum ada User login
-  if (CurrentPengguna = NULL) { // import global variable || !*isLoggedIn
-      printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
-      return;
-  } else {
-    IdxType IdxCurrentPengguna = searchIndexPengguna(ListPengguna, CurrentPengguna);
-
-    // Buat list temannya CurrentPengguna
-    ListStatik DaftarTeman;
-    CreateListStatik(&DaftarTeman);
-    for (i = 0; i < listLength(ListPengguna); i++){
-      if (ELMT(RelasiPertemanan, IdxCurrentPengguna, i) == 1){
-        insertLast(&DaftarTeman, ELMT(RelasiPertemanan, IdxCurrentPengguna, i));
+/* ********** KELOMPOK BACA/TULIS ********** */
+void displayMatrixTeman(MatrixTeman m)
+/* I.S. m terdefinisi */
+/* F.S. Nilai m(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris
+   dipisahkan sebuah spasi. Baris terakhir tidak diakhiri dengan newline */
+/* Proses: Menulis nilai setiap elemen m ke layar dengan traversal per baris dan per kolom */
+/* Contoh: menulis matriks 3x3 (ingat di akhir tiap baris, tidak ada spasi)
+1 2 3
+4 5 6
+8 9 10
+*/
+{
+  int i, j;
+  for (i = 0; i < ROW_EFF_MTXTEMAN(m); i++)
+  {
+    for (j = 0; j < COL_EFF_MTXTEMAN(m); j++)
+    {
+      printf("%d", ELMT_MTXTEMAN(m, i, j));
+      if (j != COL_EFF_MTXTEMAN(m) - 1)
+      {
+        printf(" ");
       }
     }
-
-    if (listLength(DaftarTeman) == 0){
-      printf("%s belum mempunyai teman\n", CurrentPengguna.username);
-    } else {
-      printf("%s memiliki %d teman\n", CurrentPengguna.username, listLength(DaftarTeman));
-      displayListFriend(DaftarTeman, CurrentPengguna);
-    }
+    printf("\n");
   }
 }
 
-void deleteFriend(Matrix *RelasiPertemanan, ListStatik ListPengguna, User CurrentUser) {
-  MASUKAN UsernameMasukan;
-  printf("Masukkan nama pengguna:\n");
-  baca(&UsernameMasukan);
+/* ********** KELOMPOK OPERASI RELASIONAL TERHADAP MatrixTeman ********** */
+boolean isMatrixTemanEqual(MatrixTeman m1, MatrixTeman m2)
+/* Mengirimkan true jika m1 = m2, yaitu count(m1) = count(m2) dan */
+/* untuk setiap i,j yang merupakan Index baris dan kolom m1(i,j) = m2(i,j) */
+/* Juga merupakan strong eq karena getLastIdxCol(m1) = getLastIdxCol(m2) */
+{
+  int i, j;
+  boolean equal;
+  // Jmlh elemen beda
+  if (countElmtMatrixTeman(m1) != countElmtMatrixTeman(m2))
+  {
+    return false;
+  }
 
-  char* UsernameStr;
-  MASUKANToStr(UsernameMasukan, UsernameStr);
-
-  IdxType IndexCurrentUser = searchIndexPengguna(ListPengguna, CurrentUser);
-  IdxType IndexUsername = searchIndexPenggunaByName(ListPengguna, UsernameStr);
-
-  if (IndexUsername == -1) {
-    // Kasus tidak ditemukan
-    printf("Tidak ditemukan pengguna bernama %s.\n", UsernameStr);
-  } else if (!areFriendsByName(*RelasiPertemanan, ListPengguna, CurrentUser.username, UsernameStr)) {
-    // Kasus belum berteman
-    printf("%s bukan teman Anda.\n", UsernameStr);
-  } else {
-    // Kasus lain, jika sudah berteman ataupun sudah mengirim req teman
-    MASUKAN Yakin;
-    printf("Apakah anda yakin ingin menghapus Bob dari daftar teman anda?(YA/TIDAK) ");
-    baca(&Yakin);
-    // Jika tidak mengetik "YA;" diasumsikan tidak ingin menghapus
-    if (isSame(Yakin, "YA;")){
-      IdxType i = IndexCurrentUser, j = IndexUsername;
-      ELMT(*RelasiPertemanan, i, j) == 0;
-      ELMT(*RelasiPertemanan, j, i) == 0;
-      printf("%s berhasil dihapus dari daftar teman Anda.\n", UsernameStr);
-    } else {
-      printf("Penghapusan teman dibatalkan.\n");
+  // Jmlh elemen sama
+  equal = true;
+  for (i = 0; i < ROW_EFF_MTXTEMAN(m1); i++)
+  {
+    for (j = 0; j < COL_EFF_MTXTEMAN(m1); j++)
+    {
+      if (ELMT_MTXTEMAN(m1, i, j) != ELMT_MTXTEMAN(m2, i, j))
+      {
+        equal = false;
+      }
     }
   }
+  return equal;
+}
+boolean isMatrixTemanNotEqual(MatrixTeman m1, MatrixTeman m2)
+/* Mengirimkan true jika m1 tidak sama dengan m2 */
+{
+  return !isMatrixTemanEqual(m1, m2);
+}
+boolean isMatrixTemanSizeEqual(MatrixTeman m1, MatrixTeman m2)
+/* Mengirimkan true jika ukuran efektif matriks m1 sama dengan ukuran efektif m2 */
+/* yaitu RowEff(m1) = RowEff (m2) dan ColEff (m1) = ColEff (m2) */
+{
+  return ROW_EFF_MTXTEMAN(m1) == ROW_EFF_MTXTEMAN(m2) && COL_EFF_MTXTEMAN(m1) == COL_EFF_MTXTEMAN(m2);
 }
 
-// unit test driver
-int main() {
-  Matrix RelasiPertemanan;
-  createRelasiPertemanan(20, 20, &RelasiPertemanan);
+/* ********** Operasi lain ********** */
+int countElmtMatrixTeman(MatrixTeman m)
+/* Mengirimkan banyaknya elemen m */
+{
+  return ROW_EFF_MTXTEMAN(m) * COL_EFF_MTXTEMAN(m);
+}
+
+/* ********** KELOMPOK TEST TERHADAP MatrixTeman ********** */
+boolean isSquareMatrixTeman(MatrixTeman m)
+/* Mengirimkan true jika m adalah matriks dg ukuran baris dan kolom sama */
+{
+  return ROW_EFF_MTXTEMAN(m) == COL_EFF_MTXTEMAN(m);
+}
+boolean isSymmetricMatrixTeman(MatrixTeman m)
+/* Mengirimkan true jika m adalah matriks simetri : isSquare(m) dan untuk setiap elemen m, m(i,j)=m(j,i) */
+{
+  int i, j;
+  boolean symmetric;
+  if (!isSquareMatrixTeman(m))
+  {
+    return false;
+  }
+
+  symmetric = true;
+  for (i = 0; i < ROW_EFF_MTXTEMAN(m); i++)
+  {
+    for (j = 0; j < i; j++)
+    {
+      if (ELMT_MTXTEMAN(m, i, j) != ELMT_MTXTEMAN(m, j, i))
+      {
+        symmetric = false;
+      }
+    }
+  }
+
+  return symmetric;
+}
+boolean isIdentityMatrixTeman(MatrixTeman m)
+/* Mengirimkan true jika m adalah matriks satuan: isSquare(m) dan
+   setiap elemen diagonal m bernilai 1 dan elemen yang bukan diagonal bernilai 0 */
+{
+  int i, j;
+  boolean identity;
+
+  if (!isSquareMatrixTeman(m))
+  {
+    return false;
+  }
+
+  identity = true;
+  for (i = 0; i < ROW_EFF_MTXTEMAN(m); i++)
+  {
+    for (j = 0; j < COL_EFF_MTXTEMAN(m); j++)
+    {
+      if ((i == j && ELMT_MTXTEMAN(m, i, j) != 1) || (i != j && ELMT_MTXTEMAN(m, i, j) != 0))
+      {
+        identity = false;
+      }
+    }
+  }
+
+  return identity;
+}
+boolean isSparseMatrixTeman(MatrixTeman m)
+/* Mengirimkan true jika m adalah matriks sparse: matriks “jarang” dengan definisi:
+   hanya maksimal 5% dari memori matriks yang efektif bukan bernilai 0 */
+{
+  int i, j, countNonZero;
+
+  for (i = 0; i < ROW_EFF_MTXTEMAN(m); i++)
+  {
+    for (j = 0; j < COL_EFF_MTXTEMAN(m); j++)
+    {
+      if (ELMT_MTXTEMAN(m, i, j) != 0)
+      {
+        countNonZero += 1;
+      }
+    }
+  }
+
+  return 100 * countNonZero <= 5 * countElmtMatrixTeman(m);
 }

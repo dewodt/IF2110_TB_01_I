@@ -97,6 +97,11 @@ void printList(ListStatik *pengguna);
 // I.S.
 // F.S.
 
+/* Check apakah user privat */
+boolean isUserPrivate(User user);
+/* Mengembalikan true bila akun user privat */
+/* Mengembalikan false bila akun user public */
+
 void SetPhoneNum(ListStatik *l, int userIndex, MASUKAN nohp);
 // I.S.
 // F.S.

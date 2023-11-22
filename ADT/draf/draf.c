@@ -249,8 +249,6 @@ void UbahDraf(Stack *stackDraf)
   // Masukan
   MASUKAN pilihan;
   baca(&pilihan);
-  // Str
-  char *pilihanStr = MASUKANToStr(pilihan);
   printf("\n");
 
   // Validasi pilihan

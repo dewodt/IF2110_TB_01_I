@@ -19,7 +19,7 @@ void CreateListStatik(ListStatik *l)
         strcpy(ELMT(*l, i).weton, "");
         strcpy(ELMT(*l, i).acc_type, "");
         createMatrix(5, 10, &(ELMT(*l, i).profile));
-        strcpy(ELMT(*l, i).jenis_akun, "1");
+        // strcpy(ELMT(*l, i).jenis_akun, "1");
         (ELMT(*l, i).isPrivate = false);
     }
 }

@@ -19,8 +19,8 @@ void CreateListStatik(ListStatik *l)
         strcpy(ELMT(*l, i).weton, "");
         strcpy(ELMT(*l, i).acc_type, "");
         createMatrix(5, 10, &(ELMT(*l, i).profile));
-        // strcpy(ELMT(*l, i).jenis_akun, "1");
         (ELMT(*l, i).isPrivate = false);
+        CreateEmptyStack(&(ELMT(*l, i).draf));
     }
 }
 
@@ -80,6 +80,14 @@ void printList(ListStatik *pengguna)
         }
     }
     printf("]");
+}
+
+/* Check apakah user privat */
+boolean isUserPrivate(User user)
+/* Mengembalikan true bila akun user privat */
+/* Mengembalikan false bila akun user public */
+{
+    return compareString(user.jenis_akun, "0", 1);
 }
 
 void SetPhoneNum(ListStatik *l, int userIndex, MASUKAN nohp)

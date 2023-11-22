@@ -8,11 +8,10 @@
 
 #include <stdio.h>
 #include "../boolean.h"
-#include "../modifiedliststatik/modifiedliststatik.h"
-#include "../modifiedmatrix/modifiedmatrix.h"
 #include "../masukan/masukan.h"
 #include "../pcolor/pcolor.h"
-// #include "../draf/stack/stack.h"
+#include "../modifiedmatrix/modifiedmatrix.h"
+#include "../stackdraf/stackdraf.h"
 
 /*  Kamus Umum */
 #define CAPACITY 20
@@ -30,7 +29,7 @@
 #define MAX_ACC_TYPE_LENGTH 10
 
 /* Definisi elemen dan koleksi objek */
-typedef struct
+typedef struct user
 {
    char username[MAX_USERNAME_LENGTH];
    char password[MAX_PASSWORD_LENGTH];
@@ -96,6 +95,11 @@ boolean isFull(ListStatik l);
 void printList(ListStatik *pengguna);
 // I.S.
 // F.S.
+
+/* Check apakah user privat */
+boolean isUserPrivate(User user);
+/* Mengembalikan true bila akun user privat */
+/* Mengembalikan false bila akun user public */
 
 void SetPhoneNum(ListStatik *l, int userIndex, MASUKAN nohp);
 // I.S.

@@ -7,8 +7,8 @@
 /* State Mesin MASUKAN */
 boolean EndMASUKAN;
 MASUKAN currentMASUKAN;
-boolean EOP;
-char currentChar;
+// boolean EOP;
+// char currentChar;
 
 void STARTMASUKAN()
 /* I.S. : currentChar sembarang
@@ -39,11 +39,14 @@ void CopyMASUKAN()
   int i = 0;
   do
   {
-    currentMASUKAN.TabMASUKAN[i] = currentChar;
+    if (i < NMax && currentChar != 10)
+    {
+      currentMASUKAN.TabMASUKAN[i] = currentChar;
+      currentMASUKAN.Length = i + 1;
+      i++;
+    }
     ADV();
-    i += 1;
-  } while (currentChar != ';' && i < NMax);
-  currentMASUKAN.Length = i;
+  } while (currentChar != ';');
 }
 
 void baca(MASUKAN *masukan)
@@ -51,18 +54,6 @@ void baca(MASUKAN *masukan)
   // Menerima input untuk nama, sandi, bio, dll
   STARTMASUKAN();
   *masukan = currentMASUKAN;
-  if ((*masukan).TabMASUKAN[0] == 10)
-  {
-    int i;
-    for (i = 1; i < (*masukan).Length; i++)
-    {
-      (*masukan).TabMASUKAN[i - 1] = (*masukan).TabMASUKAN[i];
-    }
-    (*masukan).Length = (*masukan).Length - 1;
-  }
-  else
-  {
-  }
 }
 
 void perintah(MASUKAN *perintah, MASUKAN *argumen1, MASUKAN *argumen2)
@@ -221,6 +212,17 @@ char *strcpy(char *destination, const char *source)
   }
   *destination = '\0';
   return dest_start;
+}
+
+/* Mengembalikan hasil sambungan dari dua string */
+char *concatStr(const char *str1, const char *str2)
+{
+  int len1 = stringLength(str1);
+  int len2 = stringLength(str2);
+  char *str = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
+  strcpy(str, str1);
+  strcpy(str + len1, str2);
+  return str;
 }
 
 int compareString(const char *str1, const char *str2, size_t n)

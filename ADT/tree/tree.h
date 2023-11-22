@@ -94,6 +94,11 @@ int getNewBalasanId(TreeKicauan nodeKicauan);
 /* Menghasilkan 1 bila tidak ada balasan pada suatu kicauan */
 /* Menghasilkan idxLatest + 1 dengan idxLatest adalah balasan paling baru */
 
+/* Hitung jumlah balasan yang dimiliki suatu kicauan */
+int countBalasan(TreeKicauan nodeKicauan);
+int countBalasanRecursive(AddressBalasan nodeBalasan);
+/* Menghasilkan jumlah balasan yang dimiliki suatu kicauan yang valid */
+
 /* Dapatkan node balasan dengan id terbesar (latest balasan) */
 AddressBalasan getLatestBalasan(TreeKicauan nodeKicauan);
 AddressBalasan getLatestBalasanRecursive(AddressBalasan nodeBalasan);

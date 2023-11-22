@@ -2,38 +2,30 @@
 /* deklarasi stack yang diimplementasi dengan tabel kontigu dan ukuran sama */
 /* TOP adalah alamat elemen puncak */
 /* Implementasi dalam bahasa C dengan alokasi statik */
+#ifndef STACK_DRAF_H
+#define STACK_DRAF_H
 
-#ifndef stackt_H
-#define stackt_H
-
-#include "./../boolean.h"
-#include "./../pengguna/pengguna.h"
-#include "./../datetime/datetime.h"
+#include "../boolean.h"
+#include "../datetime/datetime.h"
 
 #define Nil -1
 #define MaxEl 100
 /* Nil adalah stack dengan elemen kosong . */
 
-typedef Draf infotype; // UTK SOAL TERAKHIR
-typedef int address;  /* indeks tabel */
+typedef int address; /* indeks tabel */
 
 // Datatype Draf untuk diunggah ke ADT Kicauan
-typedef struct {
+typedef struct
+{
   int id; // auto-increment mulai 1
   char text[280];
-  // int like; // draf reload to 0 or sesuai kicauan sebelumnya? kicauan gbs jdi draf
-  User *author; // use pointer
   DATETIME datetime;
 } Draf;
+
 /**
  * Definisi Draf Kicauan
-*/
-
-/* Definisi akses dengan Selektor : Set dan Get */
-#define ID(S) (S).id
-#define TEXT(S) (S).text
-#define AUTHOR(S) (S).author
-#define DATETIME(S) (S).datetime
+ */
+typedef Draf infotype; // UTK SOAL TERAKHIR
 
 /* Contoh deklarasi variabel bertype stack dengan ciri TOP : */
 /* Versi I : dengan menyimpan tabel dan alamat top secara eksplisit*/
@@ -54,26 +46,26 @@ typedef struct
 
 /* ************ Prototype ************ */
 /* *** Konstruktor/Kreator *** */
-void CreateEmpty(Stack *S);
+void CreateEmptyStack(Stack *S);
 /* I.S. sembarang; */
 /* F.S. Membuat sebuah stack S yang kosong berkapasitas MaxEl */
 /* jadi indeksnya antara 0.. MaxEl */
 /* Ciri stack kosong : TOP bernilai Nil */
 
 /* ************ Predikat Untuk test keadaan KOLEKSI ************ */
-boolean IsEmpty(Stack S);
+boolean IsEmptyStack(Stack S);
 /* Mengirim true jika Stack kosong: lihat definisi di atas */
-boolean IsFull(Stack S);
+boolean IsFullStack(Stack S);
 /* Mengirim true jika tabel penampung nilai elemen stack penuh */
 
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
-void Push(Stack *S, infotype X);
+void PushStack(Stack *S, infotype X);
 /* Menambahkan X sebagai elemen Stack S. */
 /* I.S. S mungkin kosong, tabel penampung elemen stack TIDAK penuh */
 /* F.S. X menjadi TOP yang baru,TOP bertambah 1 */
 
 /* ************ Menghapus sebuah elemen Stack ************ */
-void Pop(Stack *S, infotype *X);
+void PopStack(Stack *S, infotype *X);
 /* Menghapus X dari Stack S. */
 /* I.S. S  tidak mungkin kosong */
 /* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */

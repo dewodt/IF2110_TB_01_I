@@ -1,35 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "listdinForUtas.h"
-#include "../listlinierUtas/listlinierForUtas.h" // Janlup ganti jadi.h
-
-/* Fungsi/Posedur untuk Tipe Bentukan Utas  */
-void CreateUtas(UTAS *u, Kicauan *kicauan, int id)
-{
-  KicauanUtama(*u) = kicauan;
-  IDUtas(*u) = id;
-  KicauanSambungan(*u) = NULL;
-  for (int i = 0; i < 20; i++)
-  {
-    (AuthorUtas(*u))[i] = (AUTHOR(*kicauan))[i];
-  }
-}
-
-void SambungUtas(UTAS *u, char text[MAX_CHAR], int index)
-// Menyambung utas, dipastikan index valid
-{
-
-  Address P = KicauanSambungan(*u); // P merupakan alamat kicauan sambungan pertama
-  if (P == NULL)
-  {
-    Address N = newThreadNode(text);
-    KicauanSambungan(*u) = N;
-  }
-  else
-  {
-    insertAtThreads(&KicauanSambungan(*u), text, index);
-  }
-}
+#include "../listlinierUtas/listlinierForUtas.h"
 
 /* Fungsi/Posedur untuk List Dinamis Utas  */
 void CreateListUtas(ListUtas *u, int capacity)
@@ -40,50 +12,35 @@ void CreateListUtas(ListUtas *u, int capacity)
   CAPACITYListDinUtas(*u) = capacity;
 }
 
-boolean isEmptyListDinUtas(ListUtas u)
 // Mengirimkan kosong jika listUtas Kosong (Belum ada Utas)
+boolean isEmptyListDinUtas(ListUtas u)
 {
   return (NEFFListDinUtas(u) == 0);
 }
 
-boolean isFullListDinUtas(ListUtas u)
 // Mengirimkan true jika Utas Efektif = capacity
+boolean isFullListDinUtas(ListUtas u)
 {
   return (NEFFListDinUtas(u) == CAPACITYListDinUtas(u));
 }
 
-int listLength(ListUtas u)
 // Mengirimkan banyaknya Kicaun utama pada ListUtas
+int listUtasLength(ListUtas u)
 {
   return (NEFFListDinUtas(u));
 }
 
-void expandListDinUtas(ListUtas *u, int num)
 // Menambah capacity u sebesar num
+void expandListDinUtas(ListUtas *u, int num)
+
 {
   int capacity = num + CAPACITYListDinUtas(*u);
   BUFFERListDinUtas(*u) = realloc(BUFFERListDinUtas(*u), capacity * sizeof(UTAS));
   CAPACITYListDinUtas(*u) += num;
 }
 
-void displayUtas(UTAS u)
-// Menampilkan Utas dengan format pada spek
-{
-  // Cetak kicauan utama
-  printf(" |%d\n", ID(*(KicauanUtama(u))));
-  printf(" |%s\n", AuthorUtas(u));
-  printf(" |");
-  displayTime(DATETIME(*(KicauanUtama(u))));
-  printf("\n");
-  printf(" |%s\n", TEXT(*(KicauanUtama(u))));
-  printf("\n");
-
-  // Cetak kicauan sambungan
-  displayThreads(KicauanSambungan(u), AuthorUtas(u));
-}
-
-void insertUtas(ListUtas *lu, UTAS U)
 // Memasukkan Utas baru kedalam list utas
+void insertUtas(ListUtas *lu, UTAS U)
 {
   if (isFullListDinUtas(*lu))
   {
@@ -102,12 +59,12 @@ void insertUtas(ListUtas *lu, UTAS U)
   NEFFListDinUtas(*lu) += 1;
 }
 
-void deleteSambungan(UTAS *u, int idx)
 // Menghapus Kicauan Sambungan pada utas dengan index tertentu
+void deleteSambungan(UTAS *u, int idx)
 {
   if (idx == 1)
   {
-    Address P = KicauanSambungan(*u);
+    AddressUtas P = KicauanSambungan(*u);
     if (lengthThreads(KicauanSambungan(*u)) == 1)
     {
       KicauanSambungan(*u) = NULL;
@@ -121,7 +78,7 @@ void deleteSambungan(UTAS *u, int idx)
   }
   else
   {
-    Address P = KicauanSambungan(*u), prevP = NULL;
+    AddressUtas P = KicauanSambungan(*u), prevP = NULL;
     for (int i = 1; i < idx; i++)
     {
       prevP = P;

@@ -39,12 +39,29 @@ int listDinKicauanLength(ListDinKicauan l)
   return NEFF_LDK(l);
 }
 
+/* Prosedur Menghitung banyaknya kicauan yang memiliki balasan */
+int countKicauanWithBalasan(ListDinKicauan l)
+/* Mengembalikan banyaknya kicauan yg memiliki balasan */
+{
+  int count = 0;
+  int i;
+  for (i = getFirstIdxListDinKicauan(l); i <= getLastIdxListDinKicauan(l); i++)
+  {
+    TreeKicauan kicauan = ELMT_LDK(l, i);
+    if (isKicauanHasBalasan(kicauan))
+    {
+      count++;
+    }
+  }
+  return count;
+}
+
 /* *** Selektor INDEKS *** */
 IdxType getFirstIdxListDinKicauan(ListDinKicauan l)
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l pertama */
 {
-  return IDX_MIN;
+  return IDX_MIN_LDK;
 }
 IdxType getLastIdxListDinKicauan(ListDinKicauan l)
 /* Prekondisi : List l tidak kosong */
@@ -155,7 +172,7 @@ void insertLastListDinKicauan(ListDinKicauan *l, ElTypeListDinKicauan val)
 {
   if (isEmptyListDinKicauan(*l))
   {
-    ELMT_LDK(*l, IDX_MIN) = val;
+    ELMT_LDK(*l, IDX_MIN_LDK) = val;
   }
   else
   {

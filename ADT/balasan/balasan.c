@@ -3,6 +3,7 @@
 #include "../balasan/balasan.h"
 #include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
 #include "../pengguna/pengguna.h"             // Global variable currentUser
+#include "../teman/teman.h"                   // ADT Cek pertemanan
 
 /* Buat balasan baru */
 void CreateBalasan(Balasan *b, int id, char *text, User *author, DATETIME datetime)
@@ -60,9 +61,10 @@ void BuatBalasan(int idKicau, int idBalasan)
     // idKicau valid
 
     // VALIDASI AKUN PRIVAT DAN BELUM BERTEMAN
-    // TO DO: CONNECT DGN ADT CEK TEMAN & CEK PRIVAT PENGGUNA
-    boolean isCurrentUserCanSee = true;
-    if (!isCurrentUserCanSee)
+    User *author = AUTHOR(InfoKicauan(kicauan));
+    boolean isPrivate = isUserPrivate(*author);
+    boolean isFriend = areFriendsEachOthers(*currentUser, *author);
+    if (isPrivate && !isFriend)
     {
       // Kasus tidak bisa membalas kicauan
       printf("\n");
@@ -118,9 +120,14 @@ void BuatBalasan(int idKicau, int idBalasan)
       return;
     }
 
+    // Dapatkan balasan yang ingin dibalas
+    AddressBalasan balasan = getBalasan(kicauan, idBalasan);
+
     // VALIDASI AKUN PRIVAT DAN BELUM BERTEMAN
-    boolean isCurrentUserCanSee = true;
-    if (!isCurrentUserCanSee)
+    User *author = AUTHOR(InfoBalasan(balasan));
+    boolean isPrivate = isUserPrivate(*author);
+    boolean isFriend = areFriendsEachOthers(*currentUser, *author);
+    if (isPrivate && !isFriend)
     {
       printf("\n");
       printf("Wah, akun tersebut merupakan akun privat dan anda belum berteman akun tersebu!\n");
@@ -129,10 +136,6 @@ void BuatBalasan(int idKicau, int idBalasan)
     }
 
     // Kasus idKicau valid, idBalasan valid (membalas balasan)
-
-    // Dapatkan balasan yang ingin dibalas
-    AddressBalasan balasan = getBalasan(kicauan, idBalasan);
-
     // Dapatkan input balasan
     printf("\n");
     printf("Masukkan balasan:\n");
@@ -257,23 +260,24 @@ void TampilkanBalasan(int idKicau)
   int idxKicauan = idKicau - 1;
   TreeKicauan kicauan = ELMT_LDK(listKicauan, idxKicauan);
 
+  // Kasus pemilik kicauan akun privat
+  User *author = AUTHOR(InfoKicauan(kicauan));
+  boolean isPrivate = isUserPrivate(*author);
+  boolean isFriend = areFriendsEachOthers(*currentUser, *author);
+  if (isPrivate && !isFriend)
+  {
+    printf("\n");
+    printf("Wah, kicauan tersebut dibuat oleh pengguna dengan akun privat!\n");
+    printf("\n");
+    return;
+  }
+
   // Kasus kicauan ada namun tidak ada balasan
   if (!isKicauanHasBalasan(kicauan))
   {
     printf("\n");
     printf("Belum terdapat balasan apapun pada kicauan tersebut. Yuk balas kicauan tersebut!\n");
     printf("\n");
-  }
-
-  // Kasus pemilik kicauan akun privat
-  // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
-  boolean isCurrentUserCanSee = true;
-  if (!isCurrentUserCanSee)
-  {
-    printf("\n");
-    printf("Wah, kicauan tersebut dibuat oleh pengguna dengan akun privat!\n");
-    printf("\n");
-    return;
   }
 
   // Kasus ada balasan (setidaknya satu) dan kicauan tidak privat
@@ -284,10 +288,13 @@ void TampilkanBalasan(int idKicau)
 }
 void TampilkanBalasanRekursif(AddressBalasan nodeBalasan, int depth)
 {
-  // Kasus tidak kosong
-  // Cetak node sekarang
-  boolean isPrivat = false;
-  CetakDetailBalasan(InfoBalasan(nodeBalasan), isPrivat, depth);
+  // Cek apakah node sekarang privat dan belum berteman
+  User *author = AUTHOR(InfoBalasan(nodeBalasan));
+  boolean isPrivate = isUserPrivate(*author);
+  boolean isFriend = areFriendsEachOthers(*currentUser, *author);
+  boolean isPrivatAndNotFriend = isPrivate && !isFriend;
+
+  CetakDetailBalasan(InfoBalasan(nodeBalasan), isPrivatAndNotFriend, depth);
   printf("\n");
 
   // Selesaikan leftchild dulu, baru right child

@@ -3,6 +3,7 @@
 #include "../kicauan/kicauan.h"
 #include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
 #include "../pengguna/pengguna.h"             // Global variable currentUser
+#include "../teman/teman.h"
 
 /* Konstruktor kicauan */
 void CreateKicauan(Kicauan *k, int id, char *text, int like, User *author, DATETIME datetime)
@@ -122,16 +123,21 @@ void TampilkanKicauan()
   // Buat list baru yang telah di sortir berdasarkan date time.
   ListDinKicauan sortedKicauan = sortKicauanByDateTime(listKicauan, true);
 
-  // TO DO: SAMBUNGKAN DENGAN LOGIC CURRENT USER & TEMAN USER
   // Cari kicauan yang dibuat oleh current user atau teman current user
   printf("\n");
   IdxType i;
   for (i = getFirstIdxListDinKicauan(sortedKicauan); i <= getLastIdxListDinKicauan(sortedKicauan); i++)
   {
-    boolean isCurrentUserOrFriend = true;
-    if (isCurrentUserOrFriend)
+    // Get kicauan
+    TreeKicauan kicauan = ELMT_LDK(sortedKicauan, i);
+    User *author = AUTHOR(InfoKicauan(kicauan));
+    boolean isFriends = areFriendsEachOthers(*currentUser, *author);
+    boolean isCurrentUser = currentUser == author;
+
+    // Jika kicauan dibuat oleh current user atau teman current user, print detail kicauan
+    if (isFriends || isCurrentUser)
     {
-      printDetailKicauan(InfoKicauan(ELMT_LDK(sortedKicauan, i)));
+      printDetailKicauan(InfoKicauan(kicauan));
       printf("\n");
     }
   }
@@ -162,10 +168,15 @@ void SukaKicauan(int idKicau)
     return;
   }
 
+  int idxKicau = idKicau - 1;
+  TreeKicauan kicauan = ELMT_LDK(listKicauan, idxKicau);
+
   // KASUS KICAUAN DIMILIKI AKUN PRIVAT DAN BELUM BERTEMAN
-  // TODO: CONNECT DENGAN LOGIC CURRENT USE & APAKAH USER SUDAH BERTEMAN
-  boolean isCurrentUserCanSee = true;
-  if (!isCurrentUserCanSee)
+  User *author = AUTHOR(InfoKicauan(kicauan));
+  boolean isPrivate = isUserPrivate(*author);
+  boolean isFriend = areFriendsEachOthers(*currentUser, *author);
+
+  if (isPrivate && !isFriend)
   {
     printf("\n");
     printf("Wah, kicauan tersebut dibuat oleh akun privat! Ikuti akun itu dulu ya\n");
@@ -174,15 +185,13 @@ void SukaKicauan(int idKicau)
   }
 
   // KASUS IDKICAU VALID DAN BISA DILIHAT
-  int idxKicau = idKicau - 1;
-  TreeKicauan nodeKicauan = ELMT_LDK(listKicauan, idxKicau);
-  LIKE(InfoKicauan(nodeKicauan)) += 1;
+  LIKE(InfoKicauan(kicauan)) += 1;
 
   // Cetak pesan
   printf("\n");
   printf("Selamat! kicauan telah disukai!\n");
   printf("Detil kicauan:\n");
-  printDetailKicauan(InfoKicauan(nodeKicauan));
+  printDetailKicauan(InfoKicauan(kicauan));
   printf("\n");
 }
 

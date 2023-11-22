@@ -81,6 +81,14 @@ void printList(ListStatik *pengguna)
     printf("]");
 }
 
+/* Check apakah user privat */
+boolean isUserPrivate(User user)
+/* Mengembalikan true bila akun user privat */
+/* Mengembalikan false bila akun user public */
+{
+    return compareString(user.jenis_akun, "0", 1);
+}
+
 void SetPhoneNum(ListStatik *l, int userIndex, MASUKAN nohp)
 {
     if (userIndex >= 0 && userIndex < MAX_USERS)

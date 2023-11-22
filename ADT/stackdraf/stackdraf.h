@@ -2,8 +2,8 @@
 /* deklarasi stack yang diimplementasi dengan tabel kontigu dan ukuran sama */
 /* TOP adalah alamat elemen puncak */
 /* Implementasi dalam bahasa C dengan alokasi statik */
-#ifndef stackt_H
-#define stackt_H
+#ifndef STACK_DRAF_H
+#define STACK_DRAF_H
 
 #include "../boolean.h"
 #include "../datetime/datetime.h"
@@ -12,9 +12,6 @@
 #define MaxEl 100
 /* Nil adalah stack dengan elemen kosong . */
 
-// Forward declaration type User
-struct User;
-
 typedef int address; /* indeks tabel */
 
 // Datatype Draf untuk diunggah ke ADT Kicauan
@@ -22,10 +19,9 @@ typedef struct
 {
   int id; // auto-increment mulai 1
   char text[280];
-  // int like; // draf reload to 0 or sesuai kicauan sebelumnya? kicauan gbs jdi draf
-  struct User *author; // use pointer
   DATETIME datetime;
 } Draf;
+
 /**
  * Definisi Draf Kicauan
  */

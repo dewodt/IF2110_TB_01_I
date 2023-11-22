@@ -8,6 +8,9 @@
 #include "../pengguna/pengguna.h"                     // Global variable currentUser
 
 void createDraf(Draf *Draf, char *text, DATETIME datetime)
+/* I.S. Draf sembarang, id, text, author, datetime terdefinisi */
+/* Draf terdefinisi */
+/* F.S. Draf terdefinisi sesuai parameter */
 {
   // Datetime
   DATETIME(*Draf) = datetime;
@@ -18,6 +21,9 @@ void createDraf(Draf *Draf, char *text, DATETIME datetime)
 
 // CEK LAGIIII
 void prosesDraf(Stack *DrafStack, Draf *Draft)
+/**
+ * Prosedur untuk 4 perintah MASUKAN yang memproses Draf
+ */
 {
   Draf TempDraf;
 
@@ -77,6 +83,9 @@ void prosesDraf(Stack *DrafStack, Draf *Draft)
 }
 
 void tampilkanDraf(Draf DrafInfo)
+/**
+ * Prosedur untuk menampilkan informasi draf
+ */
 {
   // Tanggal
   printf("| ");
@@ -88,6 +97,9 @@ void tampilkanDraf(Draf DrafInfo)
 }
 
 void buatDraf(Stack *DrafStack)
+/**
+ * Prosedur untuk MASUKAN BUAT_DRAF
+ */
 {
   // Validasi sudah masuk atau belum
   // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
@@ -125,6 +137,9 @@ void buatDraf(Stack *DrafStack)
 }
 
 void lihatDraf(Stack *DrafStack)
+/**
+ * Prosedur untuk MASUKAN LIHAT_DRAF
+ */
 {
   // Validasi sudah masuk atau belum
   // TODO: CONNECT WITH GLOBAL VAR CURRENT USER
@@ -153,6 +168,9 @@ void lihatDraf(Stack *DrafStack)
 }
 
 void ubahDraf(Stack *DrafStack, Draf *Draft)
+/**
+ * Prosedur untuk mengubah Draft setelah melihat draf
+ */
 {
   // Masukan pesan Draf
   printf("Masukkan Draf:\n");

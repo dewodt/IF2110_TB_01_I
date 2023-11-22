@@ -4,8 +4,7 @@
 #ifndef __DRAF_H__
 #define __DRAF_H__
 
-#include "./../stack/stack.h"
-#include "./../masukan/masukan.h"
+#include "../stackdraf/stackdraf.h"
 
 // Pointer to draf of CurrentUser, all parameter in Stack* Draf = &(currentUser->draf)
 

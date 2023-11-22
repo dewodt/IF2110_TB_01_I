@@ -17,9 +17,9 @@ void CreateListStatik(ListStatik *l)
         strcpy(ELMT(*l, i).password, "");
         strcpy(ELMT(*l, i).bio, "");
         strcpy(ELMT(*l, i).weton, "");
-        strcpy(ELMT(*l, i).acc_type, "");
+        ELMT(*l, i).isPrivate = false; // Private defaults to false
         createMatrix(5, 10, &(ELMT(*l, i).profile));
-        strcpy(ELMT(*l, i).jenis_akun, "1");
+        (ELMT(*l, i).isPrivate = false);
         CreateEmptyStack(&(ELMT(*l, i).draf));
     }
 }
@@ -87,7 +87,7 @@ boolean isUserPrivate(User user)
 /* Mengembalikan true bila akun user privat */
 /* Mengembalikan false bila akun user public */
 {
-    return compareString(user.jenis_akun, "0", 1);
+    return user.isPrivate;
 }
 
 void SetPhoneNum(ListStatik *l, int userIndex, MASUKAN nohp)
@@ -119,6 +119,14 @@ void SetProfile(ListStatik *l, int userIndex, Matrix *profile)
     if (userIndex >= 0 && userIndex < MAX_USERS)
     {
         ELMT(*l, userIndex).profile = *profile;
+    }
+}
+
+void SetIsPrivate(ListStatik *l, int userIndex, boolean *status)
+{
+    if (userIndex >= 0 && userIndex < MAX_USERS)
+    {
+        ELMT(*l, userIndex).isPrivate = *status;
     }
 }
 

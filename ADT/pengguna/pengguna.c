@@ -3,10 +3,18 @@
 #include "../masukan/masukan.h"
 #include "pengguna.h"
 
-// mendaftarkan pengguna
-void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
+// Mengembalikan true bila user sudah login dan mengembalikan false bila user belum login
+boolean isUserLoggedIn()
+// Jika global variable currentUser NULL maka belum login
+// Jika global variable currentUser tidak NULL maka sudah login (pointer ke user yang sedang login)
 {
-    if (*isLoggedin)
+    return currentUser != NULL;
+}
+
+// mendaftarkan pengguna
+void DAFTAR(ListStatik *pengguna)
+{
+    if (isUserLoggedIn())
     {
         printf("Anda sudah masuk. Keluar terlebih dahulu untuk melakukan daftar.\n");
     }
@@ -19,7 +27,7 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
         }
 
         int idx = listLength(*pengguna);
-        printf("listlength: %d\n", idx);
+        // printf("listlength: %d\n", idx);
 
         boolean uservalid = false;
         MASUKAN username_temp;
@@ -52,7 +60,7 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
 
         char *username = MASUKANToStr(username_temp);
         strcpy(ELMT(*pengguna, idx).username, username);
-        printf("username: %s\n", ELMT(*pengguna, idx).username);
+        // printf("username: %s\n", ELMT(*pengguna, idx).username);
 
         boolean passwordvalid = false;
         MASUKAN password_temp;
@@ -74,29 +82,21 @@ void DAFTAR(ListStatik *pengguna, boolean *isLoggedin)
         }
 
         char *password = MASUKANToStr(password_temp);
-        printf("idx skrg: %d\n", idx);
+        // printf("idx skrg: %d\n", idx);
         strcpy(ELMT(*pengguna, idx).password, password);
-        printf("password: %s\n", ELMT(*pengguna, idx).password);
+        // printf("password: %s\n", ELMT(*pengguna, idx).password);
 
         printf("Pengguna telah berhasil terdaftar. Masuk untuk menikmati fitur-fitur BurBir.\n");
     }
 }
 
-// Mengembalikan true bila user sudah login dan mengembalikan false bila user belum login
-boolean isUserLoggedIn()
-// Jika global variable currentUser NULL maka belum login
-// Jika global variable currentUser tidak NULL maka sudah login (pointer ke user yang sedang login)
-{
-    return currentUser != NULL;
-}
-
 // masuk sebagai pengguna
-boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
+void MASUK(ListStatik *pengguna, User **currentUser)
 {
-    if (*isLoggedin)
+    if (isUserLoggedIn())
     {
         printf("Wah Anda sudah masuk. Keluar dulu yuk!\n");
-        return *isLoggedin;
+        return;
     }
 
     MASUKAN username;
@@ -136,7 +136,6 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
     {
         if (isMASUKANEqual(strToMASUKAN(ELMT(*pengguna, userIndex).password, stringLength(ELMT(*pengguna, userIndex).password)), password))
         {
-            *isLoggedin = true;
             char *username_str = MASUKANToStr(username);
             printf("Anda telah berhasil masuk dengan nama pengguna %s. Mari menjelajahi BurBir bersama Ande-Ande Lumut!\n", username_str);
             passwordvalid = true;
@@ -149,30 +148,39 @@ boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser)
         }
     } while (!passwordvalid);
 
-    *currentUser = ELMT(*pengguna, userIndex);
+    if (*currentUser != NULL) 
+    {
+        **currentUser = ELMT(*pengguna, userIndex);
+    } 
+    else 
+    {
+        *currentUser = malloc(sizeof(User));
+        **currentUser = ELMT(*pengguna, userIndex);
+    }
 
-    return *isLoggedin;
+    return;
 }
 
 // keluar dari akun pengguna
-boolean KELUAR(boolean *isLoggedin)
+void KELUAR(User **currentUser)
 {
-    if (!*isLoggedin)
+    if (!isUserLoggedIn())
     {
         printf("Anda belum login! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
     }
     else
     {
-        *isLoggedin = false;
+        free(*currentUser);
+        *currentUser = NULL;
         printf("Anda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n");
     }
-    return *isLoggedin;
+    return;
 }
 
 // ganti profil (nama, bio akun, no HP, weton)
-void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
 {
-    if (!*isLoggedIn)
+    if (!isUserLoggedIn())
     {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
     }
@@ -215,12 +223,17 @@ void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
         do
         {
             validnumber = true;
-            for (z = 0; z < nohp.Length; z++)
-            {
-                if (nohp.TabMASUKAN[z] < '0' || nohp.TabMASUKAN[z] > '9')
+            if (nohp.Length > 15) {
+                validnumber = false;
+            }
+            else {
+                for (z = 0; z < nohp.Length; z++)
                 {
-                    validnumber = false;
-                    break;
+                    if (nohp.TabMASUKAN[z] < '0' || nohp.TabMASUKAN[z] > '9')
+                    {
+                        validnumber = false;
+                        break;
+                    }
                 }
             }
 
@@ -286,7 +299,7 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
 
     if (userIndex != -1)
     {
-        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1')
+        if (ELMT(*pengguna, userIndex).isPrivate == false)
         {
             printf("| Nama: %s\n", ELMT(*pengguna, userIndex).username);
             printf("| Bio Akun: %s\n", ELMT(*pengguna, userIndex).bio);
@@ -296,7 +309,7 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
             printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
             displayProfile(ELMT(*pengguna, userIndex).profile);
         }
-        else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0')
+        else if (ELMT(*pengguna, userIndex).isPrivate == true)
         {
             printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", namapengguna.TabMASUKAN, namapengguna.TabMASUKAN);
         }
@@ -308,9 +321,9 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
 }
 
 // ganti profile
-void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+void UBAH_FOTO_PROFIL(ListStatik *pengguna, User *currentUser)
 {
-    if (!*isLoggedIn)
+    if (!isUserLoggedIn())
     {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
     }
@@ -342,9 +355,9 @@ void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUs
 }
 
 // atur jenis akun
-void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser)
+void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser)
 {
-    if (!*isLoggedIn)
+    if (!isUserLoggedIn())
     {
         printf("Anda belum login! Masuk terlebih dahulu untuk mengganti profil!\n");
     }
@@ -353,6 +366,7 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUse
         // cari dulu di list dia idx ke berapa, biar kalo ada perubahan semua berubah
         int i = 0;
         int userIndex;
+        boolean status = false;
         MASUKAN username;
         username = strToMASUKAN(currentUser->username, stringLength(currentUser->username));
         while (i < listLength(*pengguna))
@@ -365,7 +379,7 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUse
             i++;
         }
 
-        if (ELMT(*pengguna, userIndex).jenis_akun[0] == '1')
+        if (ELMT(*pengguna, userIndex).isPrivate == false)
         {
             printf("Saat ini, akun Anda adalah akun Publik.\n");
             printf("Ingin mengubah ke akun Privat? (YA/TIDAK) ");
@@ -375,8 +389,8 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUse
 
             if (isSame(acctype, "YA;"))
             {
-                ELMT(*pengguna, userIndex).jenis_akun[0] = '0';
-                ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
+                status = true;
+                SetIsPrivate(pengguna, userIndex, &status);
                 printf("Akun anda sudah diubah menjadi akun Privat.\n");
             }
             else if (isSame(acctype, "TIDAK;"))
@@ -384,7 +398,7 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUse
                 printf("Akun anda tidak jadi diubah menjadi akun Privat.\n");
             }
         }
-        else if (ELMT(*pengguna, userIndex).jenis_akun[0] == '0')
+        else if (ELMT(*pengguna, userIndex).isPrivate == true)
         {
             printf("Saat ini, akun Anda adalah akun Privat.\n");
             printf("Ingin mengubah ke akun Publik? (YA/TIDAK) ");
@@ -394,8 +408,7 @@ void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUse
 
             if (isSame(acctype, "YA;"))
             {
-                ELMT(*pengguna, userIndex).jenis_akun[0] = '1';
-                ELMT(*pengguna, userIndex).jenis_akun[1] = '\0';
+                SetIsPrivate(pengguna, userIndex, &status);
                 printf("Akun anda sudah diubah menjadi akun Publik.\n");
             }
             else if (isSame(acctype, "TIDAK;"))

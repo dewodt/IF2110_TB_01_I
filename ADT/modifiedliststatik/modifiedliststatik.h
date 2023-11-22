@@ -11,6 +11,7 @@
 #include "../masukan/masukan.h"
 #include "../pcolor/pcolor.h"
 #include "../modifiedmatrix/modifiedmatrix.h"
+#include "../stackdraf/stackdraf.h"
 
 /*  Kamus Umum */
 #define CAPACITY 20
@@ -27,9 +28,6 @@
 #define MAX_WETON_LENGTH 10
 #define MAX_ACC_TYPE_LENGTH 10
 
-// Forward declaration type Stack
-struct Stack;
-
 /* Definisi elemen dan koleksi objek */
 typedef struct user
 {
@@ -41,8 +39,8 @@ typedef struct user
    char acc_type[MAX_ACC_TYPE_LENGTH];
    Matrix profile;
    char jenis_akun[6];
-   struct Stack *draf; // Forward declaration
-} User;                /* type elemen List */
+   Stack draf;
+} User; /* type elemen List */
 typedef int IdxType;
 typedef struct
 {

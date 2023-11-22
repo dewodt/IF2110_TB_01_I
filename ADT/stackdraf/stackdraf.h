@@ -2,8 +2,8 @@
 /* deklarasi stack yang diimplementasi dengan tabel kontigu dan ukuran sama */
 /* TOP adalah alamat elemen puncak */
 /* Implementasi dalam bahasa C dengan alokasi statik */
-#ifndef stackt_H
-#define stackt_H
+#ifndef STACK_DRAF_H
+#define STACK_DRAF_H
 
 #include "../boolean.h"
 #include "../datetime/datetime.h"
@@ -12,9 +12,6 @@
 #define MaxEl 100
 /* Nil adalah stack dengan elemen kosong . */
 
-// Forward declaration type User
-struct User;
-
 typedef int address; /* indeks tabel */
 
 // Datatype Draf untuk diunggah ke ADT Kicauan
@@ -22,10 +19,9 @@ typedef struct
 {
   int id; // auto-increment mulai 1
   char text[280];
-  // int like; // draf reload to 0 or sesuai kicauan sebelumnya? kicauan gbs jdi draf
-  struct User *author; // use pointer
   DATETIME datetime;
 } Draf;
+
 /**
  * Definisi Draf Kicauan
  */
@@ -50,26 +46,26 @@ typedef struct
 
 /* ************ Prototype ************ */
 /* *** Konstruktor/Kreator *** */
-void CreateEmpty(Stack *S);
+void CreateEmptyStack(Stack *S);
 /* I.S. sembarang; */
 /* F.S. Membuat sebuah stack S yang kosong berkapasitas MaxEl */
 /* jadi indeksnya antara 0.. MaxEl */
 /* Ciri stack kosong : TOP bernilai Nil */
 
 /* ************ Predikat Untuk test keadaan KOLEKSI ************ */
-boolean IsEmpty(Stack S);
+boolean IsEmptyStack(Stack S);
 /* Mengirim true jika Stack kosong: lihat definisi di atas */
-boolean IsFull(Stack S);
+boolean IsFullStack(Stack S);
 /* Mengirim true jika tabel penampung nilai elemen stack penuh */
 
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
-void Push(Stack *S, infotype X);
+void PushStack(Stack *S, infotype X);
 /* Menambahkan X sebagai elemen Stack S. */
 /* I.S. S mungkin kosong, tabel penampung elemen stack TIDAK penuh */
 /* F.S. X menjadi TOP yang baru,TOP bertambah 1 */
 
 /* ************ Menghapus sebuah elemen Stack ************ */
-void Pop(Stack *S, infotype *X);
+void PopStack(Stack *S, infotype *X);
 /* Menghapus X dari Stack S. */
 /* I.S. S  tidak mungkin kosong */
 /* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */

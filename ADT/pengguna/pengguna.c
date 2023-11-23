@@ -333,12 +333,12 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
             char *phonenum = MASUKANToStr(ELMT(*pengguna, userIndex).phone_num);
             printf("| No HP: %s\n", phonenum);
             printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
-            printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
+            printf("Foto profil akun %s \n", MASUKANToStr(namapengguna));
             displayProfile(ELMT(*pengguna, userIndex).profile);
         }
         else if (ELMT(*pengguna, userIndex).isPrivate == true)
         {
-            printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", namapengguna.TabMASUKAN, namapengguna.TabMASUKAN);
+            printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", MASUKANToStr(namapengguna), MASUKANToStr(namapengguna));
         }
     }
     else

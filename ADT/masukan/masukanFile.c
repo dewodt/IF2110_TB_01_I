@@ -334,7 +334,7 @@ void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
     MASUKAN tempMasukan;
     tempMasukan = masukanFileToMasukan(masukanFile);
     int idx;
-    idx = searchID_Pengguna(listPengguna,tempMasukan);
+    idx = searchID_Pengguna(tempMasukan);
     User author;
     author = listPengguna.contents[idx];
     // datetime
@@ -421,7 +421,7 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
       MASUKAN tempMasukan;
       tempMasukan = masukanFileToMasukan(masukanFile);
       int idx;
-      idx = searchID_Pengguna(listPengguna,tempMasukan);
+      idx = searchID_Pengguna(tempMasukan);
       User author;
       author = listPengguna.contents[idx];
 

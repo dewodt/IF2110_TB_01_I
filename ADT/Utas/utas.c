@@ -88,7 +88,7 @@ void BUAT_UTAS(ListDinKicauan lk, ListUtas lu, User userloggedIn, int idk) // In
     }
     else
     {
-        printf("Kicauan tidak ditemuka\n");
+        printf("Kicauan tidak ditemukan!\n");
     }
 }
 

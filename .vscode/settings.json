@@ -58,6 +58,9 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "prioqueueint.h": "c",
-    "charmachine.h": "c"
+    "charmachine.h": "c",
+    "utas.h": "c",
+    "teman.h": "c",
+    "matrixteman.h": "c"
   }
 }

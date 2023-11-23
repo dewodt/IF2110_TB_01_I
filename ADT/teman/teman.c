@@ -156,7 +156,7 @@ void deleteFriend()
 
   // Jika sudah berteman, hapus
   MASUKAN Yakin;
-  printf("Apakah anda yakin ingin menghapus Bob dari daftar teman anda?(YA/TIDAK) ");
+  printf("Apakah anda yakin ingin menghapus %s dari daftar teman anda? (YA/TIDAK) ", usernameStr);
   baca(&Yakin);
 
   // Jika tidak mengetik "YA;" diasumsikan tidak ingin menghapus

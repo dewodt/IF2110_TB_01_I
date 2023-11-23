@@ -74,4 +74,6 @@ int compareString(const char *str1, const char *str2, size_t n);
 void toLowerCase(char *str);
 // mengubah string menjadi huruf kecil
 
+int masukanToInt(MASUKAN masukan);
+
 #endif

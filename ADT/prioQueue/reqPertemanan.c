@@ -1,9 +1,5 @@
-#include <stdio.h>
-#include "../masukan/masukan.h"
-#include "../modifiedliststatik/modifiedliststatik.h"
-//#include "../matrixteman/matrixteman.h"
-#include "prioQueueint.h"
-#include "../pengguna/pengguna.h"
+
+#include "reqPertemanan.h"
 int searchID_Pengguna(ListStatik listPengguna, MASUKAN Pengguna)
 {
     int hasil;
@@ -20,7 +16,7 @@ int searchID_Pengguna(ListStatik listPengguna, MASUKAN Pengguna)
     }
     return hasil;
 }
-// void SETUJUI_PERTEMANAN(PrioQueueint* listReqPertemanan, Matrix relasiPertemanan, int ID_Pengguna, ListStatik listPengguna, int jumlahPengguna){
+// void SETUJUI_PERTEMANAN(PrioQueueint* listReqPertemanan, MatrixTeman relasiPertemanan, int ID_Pengguna, ListStatik listPengguna, int jumlahPengguna){
 //     int id;
 //     id = searchID_Pengguna(listPengguna, USERNAME(*currentUser));
 //     int i;
@@ -28,7 +24,7 @@ int searchID_Pengguna(ListStatik listPengguna, MASUKAN Pengguna)
 //     hasil = 0;
 //     for ( i = 0; i < 20; i++)
 //     {
-//         if(ELMT_MTX(relasiPertemanan,id,i) == 1 && ELMT_MTX(relasiPertemanan,i,id) == 1){
+//         if(ELMT_MTXTEMAN(relasiPertemanan,id,i) == 1 && ELMT_MTXTEMAN(relasiPertemanan,i,id) == 1){
 //             hasil += 1;
 //         }
 //     }
@@ -41,16 +37,16 @@ int searchID_Pengguna(ListStatik listPengguna, MASUKAN Pengguna)
 //     return USERNAME(listPengguna,ID_Pengguna);
 // }
 
-void isiReqPertemanan(PrioQueueint* listReqPertemanan, Matrix relasiPertemanan, int jumlahPengguna, int ID_Pengguna){
+void isiReqPertemanan(PrioQueueint* listReqPertemanan, MatrixTeman relasiPertemanan, int jumlahPengguna, int ID_Pengguna){
     int i, countSameFriend;
     for ( i = 0; i < jumlahPengguna; i++)
     {
         countSameFriend = 0;
-        if((ELMT_MTX(relasiPertemanan, ID_Pengguna, i) == 0) && (ELMT_MTX(relasiPertemanan, i, ID_Pengguna) == 1)){
+        if((ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, i) == 0) && (ELMT_MTXTEMAN(relasiPertemanan, i, ID_Pengguna) == 1)){
             int j;
             for ( j = 0; j < jumlahPengguna; j++)
             {
-                if((ELMT_MTX(relasiPertemanan, ID_Pengguna, i) == 1) && (ELMT_MTX(relasiPertemanan, i, ID_Pengguna) == 1)){
+                if((ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, i) == 1) && (ELMT_MTXTEMAN(relasiPertemanan, i, ID_Pengguna) == 1)){
                     countSameFriend ++;
                 }
             }
@@ -63,7 +59,7 @@ void isiReqPertemanan(PrioQueueint* listReqPertemanan, Matrix relasiPertemanan, 
     
  }
 
-void TAMBAH_TEMAN(PrioQueueint listReqPertemanan, Matrix relasiPertemanan, int ID_Pengguna, ListStatik listPengguna){
+void TAMBAH_TEMAN(PrioQueueint listReqPertemanan, MatrixTeman relasiPertemanan, int ID_Pengguna, ListStatik listPengguna){
     if(!IsEmptyQ(listReqPertemanan)){
         printf("Terdapat permintaan pertemanan yang belum Anda setujui.\n");
         printf("Silakan kosongkan daftar permintaan pertemanan untuk Anda terlebih dahulu.\n");
@@ -73,23 +69,23 @@ void TAMBAH_TEMAN(PrioQueueint listReqPertemanan, Matrix relasiPertemanan, int I
         if(searchID_Pengguna(listPengguna, namaTeman) == -1){
             printf("Pengguna bernama namaTeman tidak ditemukan.\n"); 
         }
-        else if(ELMT_MTX(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 1 && ELMT_MTX(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 0){
+        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 1 && ELMT_MTXTEMAN(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 0){
             printf("Anda sudah mengirimkan permintaan pertemanan kepada namaTeman. Silakan tunggu hingga permintaan Anda disetujui.\n");
         }
-        else if(ELMT_MTX(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 0 && ELMT_MTX(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 0){
-            ELMT_MTX(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) = 1;
+        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 0 && ELMT_MTXTEMAN(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 0){
+            ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) = 1;
             printf("Anda sudah mengirimkan permintaan pertemanan kepada namaTeman. Silakan tunggu hingga permintaan Anda disetujui.\n");
         }
-        else if(ELMT_MTX(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 1 && ELMT_MTX(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 1){
+        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 1 && ELMT_MTXTEMAN(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 1){
             printf("Anda sudah berteman.\n");
         }
     }
 }
 // update Spesifikasi fitur ini ditiadakan
-// void BATAL_TAMBAH_TEMAN(Matrix relasiPertemanan, int ID_Pengguna, MASUKAN namaTeman, ListStatik listPengguna){
-//     if(ELMT_MTX(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 1 && ELMT_MTX(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 0){
+// void BATAL_TAMBAH_TEMAN(MatrixTeman relasiPertemanan, int ID_Pengguna, MASUKAN namaTeman, ListStatik listPengguna){
+//     if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 1 && ELMT_MTXTEMAN(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 0){
 //         printf("Permintaan pertemanan kepada Bob telah dibatalkan.\n");
-//         ELMT_MTX(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) = 0;
+//         ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) = 0;
 //     }else{
 //         printf("Anda belum mengirimkan permintaan pertemanan kepada Bob.\n");
 //     }
@@ -115,7 +111,7 @@ void DAFTAR_PERMINTAAN_PERTEMANAN(PrioQueueint listReqPertemanan, ListStatik lis
 
 
 // DONE
-void SETUJUI_PERTEMANAN(PrioQueueint* listReqPertemanan, Matrix relasiPertemanan, int ID_Pengguna, ListStatik listPengguna, int jumlahPengguna){
+void SETUJUI_PERTEMANAN(PrioQueueint* listReqPertemanan, MatrixTeman relasiPertemanan, int ID_Pengguna, ListStatik listPengguna, int jumlahPengguna){
     infotypeQ reqFriend;
     Dequeue(listReqPertemanan, &reqFriend);
     //MASUKAN namaPengguna;
@@ -131,10 +127,10 @@ void SETUJUI_PERTEMANAN(PrioQueueint* listReqPertemanan, Matrix relasiPertemanan
         baca(&valid);
     }
     if(isSame(valid, "YA")){
-        ELMT_MTX(relasiPertemanan, ID_Pengguna, reqFriend.info) = 1;
+        ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, reqFriend.info) = 1;
         printf("Permintaan pertemanan dari %s telah disetujui. Selamat! Anda telah berteman dengan %s.\n", USERNAME(listPengguna,reqFriend.info), USERNAME(listPengguna,reqFriend.info));
     }else if(isSame(valid,"YA")){
         printf("Permintaan pertemanan dari %s telah ditolak.\n", USERNAME(listPengguna,reqFriend.info));
-        ELMT_MTX(relasiPertemanan, reqFriend.info, ID_Pengguna) = 0;
+        ELMT_MTXTEMAN(relasiPertemanan, reqFriend.info, ID_Pengguna) = 0;
     }
 }

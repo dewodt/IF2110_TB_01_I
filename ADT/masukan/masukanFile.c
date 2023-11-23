@@ -450,7 +450,7 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
 
 // membaca pengguna.config
 // status: tinggal connectin thread
-void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas listUtas){
+void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas* listUtas){
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile,namaFile,5);
   int n;
@@ -465,10 +465,10 @@ void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPeng
     a = 0;
     a = masukanFileToInt(masukanFile);
     Kicauan kicauan;
-    kicauan = ELMT_LDK(*listKicauan,idKicau-1)->infoKicauan;
+    kicauan = ELMT_LDK(listKicauan,idKicau-1)->infoKicauan;
     UTAS utasUtama;
     CreateUtas(&utasUtama, &kicauan, i);
-    for ( a = 0; a < listKicauan->nEff; a++)
+    for ( a = 0; a < listKicauan.nEff; a++)
     {
       bacaLanjutFile(&masukanFile);
       char* text;
@@ -489,7 +489,7 @@ void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPeng
       // tempUtas = newThreadNode(text,datetime);
       insertLastThreadForConfig(&utasUtama, text, datetime);
     }
-    insertUtas(&listUtas,utasUtama);
+    insertUtas(listUtas,utasUtama);
   }
   
 }
@@ -524,7 +524,7 @@ void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* ang
   *angka = masukanFileToInt(masukanAngka);
 }
 
-void bacaDraf(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
+void bacaDraf(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna){
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile,namaFile,4);
   int n;

@@ -1,12 +1,12 @@
 #include "utas.h"
 #include <stdio.h>
 
-boolean isKicauExistinUtas(Kicauan kicau, ListUtas lu)
+boolean isKicauExistinUtas(AddressKicauan kicau, ListUtas lu)
 {
     boolean exist = false;
     for (int i = 0; i < listUtasLength(lu); i++)
     {
-        if (ID(*KicauanUtama(BUFFERListDinUtas(lu)[i])) == ID(kicau))
+        if (ID(InfoKicauan(KicauanUtama(BUFFERListDinUtas(lu)[i]))) == ID(InfoKicauan(kicau)))
         {
             exist = true;
             break;
@@ -37,7 +37,7 @@ boolean isIndexSambunganValid(threads u, int index)
 
 boolean isUtasUser(UTAS u, User userloggedin)
 {
-    return (isSame(strToMASUKAN(AuthorUtas(u), 20), userloggedin.username));
+    return (isSame(strToMASUKAN(AUTHOR(InfoKicauan(KicauanUtama(u)))->username, 20), userloggedin.username));
 }
 
 boolean isKicauanUser(Kicauan k, User userloggedin)
@@ -51,18 +51,18 @@ void BUAT_UTAS(ListDinKicauan lk, ListUtas lu, User userloggedIn, int idk) // In
     UTAS utas;
     if (isIdxEffListDinKicauan(lk, idk - 1)) // ID Kicauan Valid, fungsinya ngecek dari 0..
     {
-        if (isKicauExistinUtas((InfoKicauan((BUFFER_LDK(lk))[idk - 1])), lu))
+        if (isKicauExistinUtas(BUFFER_LDK(lk)[idk - 1], lu))
         {
             if (isKicauanUser((InfoKicauan((BUFFER_LDK(lk))[idk - 1])), userloggedIn)) // ID Kicauan Milik sendiri
             {
 
-                CreateUtas(&utas, &(InfoKicauan((BUFFER_LDK(lk))[idk - 1])), listUtasLength(lu) + 1);
+                CreateUtas(&utas, BUFFER_LDK(lk)[idk - 1], listUtasLength(lu) + 1);
 
                 printf("Utas berhasil dibuat!\n\n");
                 printf("Masukkan kicauan:\n");
                 baca(&teks);
 
-                SambungUtasLast(&utas, MASUKANToStr(teks),getCurrTime());
+                SambungUtasLast(&utas, MASUKANToStr(teks), getCurrTime());
 
                 printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
                 baca(&teks);
@@ -70,7 +70,7 @@ void BUAT_UTAS(ListDinKicauan lk, ListUtas lu, User userloggedIn, int idk) // In
                 {
                     printf("Masukkan kicauan:\n");
                     baca(&teks);
-                    SambungUtasLast(&utas, MASUKANToStr(teks),getCurrTime());
+                    SambungUtasLast(&utas, MASUKANToStr(teks), getCurrTime());
                     printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
                     baca(&teks);
                 }
@@ -146,24 +146,24 @@ void HAPUS_UTAS(ListUtas *li, int idU, int index, User userloggedin)
             printf("Anda tidak bisa menghapus kicauan dalam utas ini!\n");
         }
     }
-    else
+    else // ID = -1 atau tidak ditemukan
     {
         printf("Utas tidak ditemukan!\n");
     }
 }
 
-void CETAK_UTAS(int idU, ListUtas li, User user1, User user2)
+void CETAK_UTAS(int idU, ListUtas li, User userloggedin)
 {
-
     if (isIdUtasValid(li, idU))
     {
-        if (areFriendsEachOthers(user1, user2))
-        {
-            displayUtas((BUFFERListDinUtas(li))[idU - 1]);
-        }
-        else
+        if (isUserPrivate(*AUTHOR(InfoKicauan(KicauanUtama(BUFFERListDinUtas(li)[idU - 1])))) && !(areFriendsEachOthers(userloggedin, *AUTHOR(InfoKicauan(KicauanUtama(BUFFERListDinUtas(li)[idU - 1]))))))
         {
             printf("Akun yang membuat utas ini adalah akun privat! Ikuti dahulu akun ini untuk melihat utasnya!\n");
+        }
+
+        else
+        {
+            displayUtas((BUFFERListDinUtas(li))[idU - 1]);
         }
     }
     else

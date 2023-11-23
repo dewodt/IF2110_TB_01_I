@@ -41,10 +41,10 @@ AddressUtas newThreadNode(char text[MAX_CHAR], DATETIME time) // Works
   AddressUtas p = (AddressUtas)malloc(sizeof(ThreadNode));
   if (p != NULL)
   {
-    // Text Thread
+    // Memasukkan teks
     strcpy(TextThread(p), text);
 
-    // Date Time Thread
+    // Memasukkan time
     Day(TimeThread(p)) = Day(time);
     Month(TimeThread(p)) = Month(time);
     Year(TimeThread(p)) = Year(time);
@@ -127,13 +127,13 @@ void insertAtThreads(threads *l, char text[MAX_CHAR], int idx)
 }
 
 // Fungsi untuk me-load utas dari config
-void insertLastThreadForConfig(UTAS *utas, char text[MAX_CHAR], DATETIME time)
+void insertLastThreadForConfig(UTAS utas, char text[MAX_CHAR], DATETIME time)
 {
-  AddressUtas P = KicauanSambungan(*utas);
+  AddressUtas P = KicauanSambungan(utas);
   AddressUtas N = newThreadNode(text, time);
   if (P == NULL)
   {
-    KicauanSambungan(*utas) = N;
+    KicauanSambungan(utas) = N;
   }
   else
   {
@@ -210,14 +210,20 @@ void displayThreads(threads l, char author[20])
   }
 }
 
-// Konstruktor Utas
-void CreateUtas(UTAS *u, Kicauan *kicauan, int id)
+AddressNodeUtas newUtasNode(AddressKicauan kicauan, int id)
 {
-  threads sambungan;
-  CreateThreads(&sambungan);
-  KicauanUtama(*u) = kicauan;
-  IDUtas(*u) = id;
-  KicauanSambungan(*u) = sambungan;
+  AddressNodeUtas N = (AddressNodeUtas)malloc(sizeof(UTASNode));
+  IDUtas(N) = id;
+  KicauanUtama(N) = kicauan;
+  KicauanSambungan(N) = NULL;
+  return N;
+}
+
+// Konstruktor Utas
+void CreateUtas(UTAS *u, AddressKicauan kicauan, int id)
+{
+  AddressNodeUtas N = newUtasNode(kicauan, id);
+  *u = N;
 }
 
 // Menyambung utas pada elemen terakhir, dipastikan index valid
@@ -251,14 +257,13 @@ void HapusUtasAt(UTAS *u, int index)
 void displayUtas(UTAS u)
 {
   // Cetak kicauan utama
-  printf(" | ID = %d\n", ID(*(KicauanUtama(u))));
-  printf(" | %s\n", AuthorUtas(u));
+  printf(" | ID = %d\n", ID(InfoKicauan(KicauanUtama(u))));
+  printf(" | %s\n", AUTHOR(InfoKicauan(KicauanUtama(u)))->username);
   printf(" | ");
-  displayTime(DATETIME(*(KicauanUtama(u))));
+  displayTime(DATETIME(InfoKicauan(KicauanUtama(u))));
   printf("\n");
-  printf(" | %s\n", TEXT(*(KicauanUtama(u))));
+  printf(" | %s\n", TEXT(InfoKicauan(KicauanUtama(u))));
   printf("\n");
 
-  // Cetak kicauan sambungan
-  displayThreads(KicauanSambungan(u), AuthorUtas(u));
+  displayThreads(KicauanSambungan(u), AUTHOR(InfoKicauan(KicauanUtama(u)))->username);
 }

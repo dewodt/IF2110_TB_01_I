@@ -13,7 +13,7 @@
 
 #include <stdio.h>
 
-boolean isKicauExistinUtas(Kicauan kicau, ListUtas lu);
+boolean iisKicauExistinUtas(AddressKicauan kicau, ListUtas lu);
 
 int isIdUtasValid(ListUtas li, int idx);
 
@@ -29,6 +29,6 @@ void SAMBUNG_UTAS(int idU, int index, ListUtas *lu, User userloggedin);
 
 void HAPUS_UTAS(ListUtas *li, int idU, int index, User userloggedin);
 
-void CETAK_UTAS(int idU, ListUtas li, User user1, User user2);
+void CETAK_UTAS(int idU, ListUtas li, User userloggedin);
 
 #endif

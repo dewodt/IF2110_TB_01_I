@@ -14,7 +14,6 @@
 #include "../listdinUtas/listdinForUtas.h"
 #include "../listlinierUtas/listlinierForUtas.h"
 
-
 /* Prosedur untuk menyimpan seluruh data program dalam folder config/foo */
 void Simpan()
 /* I.S. Sembarang */
@@ -50,7 +49,7 @@ void Simpan()
 
     // Make Directory
     // 2ND ARGUMENT WAJIB 0700 DI LINUX / WSL.
-    mkdir(folderDir, 0700);
+    mkdir(folderDir);
 
     // Cetak pesan berhasil
     printf("%s sudah berhasil dibuat.\n", folderStr);
@@ -78,9 +77,9 @@ void Simpan()
   printf("\n");
 }
 
-// menyimpan pengguna 
+// menyimpan pengguna
 // status: done?
-void SimpanPengguna(char* folderDir)
+void SimpanPengguna(char *folderDir)
 {
   char *fileDir = concatStr(folderDir, "/pengguna.config");
   FILE *fptr;
@@ -89,60 +88,73 @@ void SimpanPengguna(char* folderDir)
   fptr = fopen(fileDir, "w");
   int countPengguna = listLength(listUser);
   fprintf(fptr, "%d", countPengguna);
-  
+
   int i;
-  for ( i = 0; i < countPengguna; i++)
+  for (i = 0; i < countPengguna; i++)
   {
     User pengguna;
     pengguna = listUser.contents[i];
-    char* nama;
+    char *nama;
     nama = pengguna.username;
     fprintf(fptr, "\n%s", nama);
-    char* pw;
+    char *pw;
     pw = pengguna.password;
     fprintf(fptr, "\n%s", pw);
-    char* bio;
+    char *bio;
     bio = pengguna.bio;
     fprintf(fptr, "\n%s", bio);
-    char* noHp;
+    char *noHp;
     noHp = pengguna.phone_num.TabMASUKAN;
     fprintf(fptr, "\n%s", noHp);
     boolean jenisAkun;
     jenisAkun = pengguna.isPrivate;
-    if(jenisAkun){
+    if (jenisAkun)
+    {
       fprintf(fptr, "\n%s", "Privat");
-    }else{
+    }
+    else
+    {
       fprintf(fptr, "\n%s", "Publik");
     }
     int a;
-    for ( a = 0; a < 5; a++)
+    for (a = 0; a < 5; a++)
     {
       int b;
-      for ( b = 0; b < 19; b++)
+      for (b = 0; b < 19; b++)
       {
-        fprintf(fptr, "%c", ELMT_MTX(PROFILE(listUser,i),a,b));
-        if(b == 18){
+        fprintf(fptr, "%c", ELMT_MTX(PROFILE(listUser, i), a, b));
+        if (b == 18)
+        {
           fprintf(fptr, "\n");
         }
       }
     }
   }
   int c;
-  for ( c = 0; c < listLength(listUser); c++)
+  for (c = 0; c < listLength(listUser); c++)
   {
     int d;
-    for ( d = 0; d < listLength(listUser); d++)
+    for (d = 0; d < listLength(listUser); d++)
     {
-      if(ELMT_MTX(RelasiPertemanan,c,d) == 1 && ELMT_MTX(RelasiPertemanan,d,c) == 1){
-        if(d == listLength(listUser)-1){
+      if (ELMT_MTX(RelasiPertemanan, c, d) == 1 && ELMT_MTX(RelasiPertemanan, d, c) == 1)
+      {
+        if (d == listLength(listUser) - 1)
+        {
           fprintf(fptr, "%d\n", 1);
-        }else{
+        }
+        else
+        {
           fprintf(fptr, "%d", 1);
         }
-      }else{
-        if(d == listLength(listUser)-1){
+      }
+      else
+      {
+        if (d == listLength(listUser) - 1)
+        {
           fprintf(fptr, "%d\n", 0);
-        }else{
+        }
+        else
+        {
           fprintf(fptr, "%d", 0);
         }
       }
@@ -151,14 +163,16 @@ void SimpanPengguna(char* folderDir)
   int countReqPertemanan;
   countReqPertemanan = 0;
   int e;
-  for ( e = 0; e < listLength(listUser); e++)
+  for (e = 0; e < listLength(listUser); e++)
   {
     int f;
-    for ( f = 0; f < listLength(listUser); f++)
+    for (f = 0; f < listLength(listUser); f++)
     {
-      if(ELMT_MTX(RelasiPertemanan,e,f) == 1 && ELMT_MTX(RelasiPertemanan,e,f) == 0){
+      if (ELMT_MTX(RelasiPertemanan, e, f) == 1 && ELMT_MTX(RelasiPertemanan, e, f) == 0)
+      {
         countReqPertemanan += 1;
-      }else if (ELMT_MTX(RelasiPertemanan,e,f) == 0 && ELMT_MTX(RelasiPertemanan,e,f) == 1)
+      }
+      else if (ELMT_MTX(RelasiPertemanan, e, f) == 0 && ELMT_MTX(RelasiPertemanan, e, f) == 1)
       {
         countReqPertemanan += 1;
       }
@@ -166,41 +180,47 @@ void SimpanPengguna(char* folderDir)
   }
   fprintf(fptr, "%d \n", countReqPertemanan);
   int m;
-  for ( m = 0; m < listLength(listUser); m++)
+  for (m = 0; m < listLength(listUser); m++)
   {
     int n;
-    for ( n = 0; n < listLength(listUser); n++)
+    for (n = 0; n < listLength(listUser); n++)
     {
-      if(ELMT_MTX(RelasiPertemanan,m,n) == 1 && ELMT_MTX(RelasiPertemanan,n,m) == 0){
-        int pop;
-        pop = 0;
-        int o;
-        for ( o = 0; o < listLength(listUser); o++)
-        {
-          if(o != n && o != m){
-            if(ELMT_MTX(RelasiPertemanan,n,o) == 1 && ELMT_MTX(RelasiPertemanan,o,n) == 1 && ELMT_MTX(RelasiPertemanan,m,o) == 1 && ELMT_MTX(RelasiPertemanan,o,m) == 1){
-              pop += 1;
-            }
-         }
-        }
-        fprintf(fptr, "%d %d %d\n", m,n, pop);
-      }else if (ELMT_MTX(RelasiPertemanan,m,n) == 0 && ELMT_MTX(RelasiPertemanan,n,m) == 1)
+      if (ELMT_MTX(RelasiPertemanan, m, n) == 1 && ELMT_MTX(RelasiPertemanan, n, m) == 0)
       {
         int pop;
         pop = 0;
         int o;
-        for ( o = 0; o < listLength(listUser); o++)
+        for (o = 0; o < listLength(listUser); o++)
         {
-          if(o != n && o != m){
-            if(ELMT_MTX(RelasiPertemanan,n,o) == 1 && ELMT_MTX(RelasiPertemanan,o,n) == 1 && ELMT_MTX(RelasiPertemanan,m,o) == 1 && ELMT_MTX(RelasiPertemanan,o,m) == 1){
+          if (o != n && o != m)
+          {
+            if (ELMT_MTX(RelasiPertemanan, n, o) == 1 && ELMT_MTX(RelasiPertemanan, o, n) == 1 && ELMT_MTX(RelasiPertemanan, m, o) == 1 && ELMT_MTX(RelasiPertemanan, o, m) == 1)
+            {
               pop += 1;
             }
-         }
+          }
         }
-        fprintf(fptr, "%d %d %d\n",n,m, pop);
+        fprintf(fptr, "%d %d %d\n", m, n, pop);
       }
-    } 
-  }  
+      else if (ELMT_MTX(RelasiPertemanan, m, n) == 0 && ELMT_MTX(RelasiPertemanan, n, m) == 1)
+      {
+        int pop;
+        pop = 0;
+        int o;
+        for (o = 0; o < listLength(listUser); o++)
+        {
+          if (o != n && o != m)
+          {
+            if (ELMT_MTX(RelasiPertemanan, n, o) == 1 && ELMT_MTX(RelasiPertemanan, o, n) == 1 && ELMT_MTX(RelasiPertemanan, m, o) == 1 && ELMT_MTX(RelasiPertemanan, o, m) == 1)
+            {
+              pop += 1;
+            }
+          }
+        }
+        fprintf(fptr, "%d %d %d\n", n, m, pop);
+      }
+    }
+  }
 }
 
 /* Prosedur untuk menyimpan data kicauan dalam folder config/foo */
@@ -339,48 +359,51 @@ void writeBalasanDetailFile(FILE *ptr, int parentId, AddressBalasan nodeBalasan)
   writeBalasanDetailFile(ptr, currentId, LeftChildBalasan);
 }
 
-
-void saveDraf(char* folderDir)
+void saveDraf(char *folderDir)
 {
   char *fileDir = concatStr(folderDir, "/draf.config");
 
   FILE *fptr;
 
   fptr = fopen(fileDir, "w");
-  
+
   Stack s;
   int i;
   int n = 0;
-  for ( i = 0; i < listLength(listUser); i++)
+  for (i = 0; i < listLength(listUser); i++)
   {
-    s = DRAF(listUser,i);
-    if(!IsEmptyStack(s)){
+    s = DRAF(listUser, i);
+    if (!IsEmptyStack(s))
+    {
       n++;
     }
   }
   fprintf(fptr, "%d", n);
 
   int j;
-  for ( j = 0; j < listLength(listUser); j++)
+  for (j = 0; j < listLength(listUser); j++)
   {
-    s = DRAF(listUser,j);
-    if(!IsEmptyStack(s)){
+    s = DRAF(listUser, j);
+    if (!IsEmptyStack(s))
+    {
       Stack temp;
       temp = s;
       int count = 0;
-      while(!IsEmptyStack(temp)){
+      while (!IsEmptyStack(temp))
+      {
         infotype elmt;
-        PopStack(&temp,&elmt);
-        count ++;
+        PopStack(&temp, &elmt);
+        count++;
       }
-      char* nama;
-      nama = USERNAME(listUser,j);
-      fprintf(fptr, "\n%s %d", nama ,count);
+      char *nama;
+      nama = USERNAME(listUser, j);
+      fprintf(fptr, "\n%s %d", nama, count);
       Stack temp2;
       temp2 = s;
-      while(!IsEmptyStack(temp2)){
+      while (!IsEmptyStack(temp2))
+      {
         infotype elmt;
-        PopStack(&temp2,&elmt);
+        PopStack(&temp2, &elmt);
         fprintf(fptr, "\n%s", elmt.text);
         DATETIME DT = elmt.datetime;
         fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
@@ -389,7 +412,7 @@ void saveDraf(char* folderDir)
   }
 }
 
-void SimpanUtas(char* folderDir)
+void SimpanUtas(char *folderDir)
 {
   char *fileDir = concatStr(folderDir, "/utas.config");
 
@@ -397,11 +420,11 @@ void SimpanUtas(char* folderDir)
 
   fptr = fopen(fileDir, "w");
 
-  int countUtas; 
+  int countUtas;
   countUtas = listUtasLength(listUtas);
   fprintf(fptr, "%d", countUtas);
   int i;
-  for ( i = 0; i < countUtas; i++)
+  for (i = 0; i < countUtas; i++)
   {
     UTAS utasUtama;
     utasUtama = listUtas.buffer[i];
@@ -421,11 +444,10 @@ void SimpanUtas(char* folderDir)
 
       char *username = (AUTHOR(*(utasUtama.KicauanUtama)))->username;
       fprintf(fptr, "\n%s", username);
-      
+
       DATETIME DT = p->timeThread;
       fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
       p = p->nextThread;
     }
   }
-
 }

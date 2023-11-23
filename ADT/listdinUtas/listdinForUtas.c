@@ -32,7 +32,6 @@ int listUtasLength(ListUtas u)
 
 // Menambah capacity u sebesar num
 void expandListDinUtas(ListUtas *u, int num)
-
 {
   int capacity = num + CAPACITYListDinUtas(*u);
   BUFFERListDinUtas(*u) = realloc(BUFFERListDinUtas(*u), capacity * sizeof(UTAS));
@@ -40,23 +39,33 @@ void expandListDinUtas(ListUtas *u, int num)
 }
 
 // Memasukkan Utas baru kedalam list utas
-void insertUtas(ListUtas *lu, UTAS U)
+void insertUtas(UTAS U, ListUtas *lu)
 {
+  printf("insert utas\n");
   if (isFullListDinUtas(*lu))
   {
     expandListDinUtas(lu, CAPACITYListDinUtas(*lu));
   }
 
-  KicauanUtama(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)]) = KicauanUtama(U);
-  IDUtas(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)]) = NEFFListDinUtas(*lu) + 1;
-  KicauanSambungan(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)]) = KicauanSambungan(U);
-  // Copy String Author
-  for (int i = 0; i < 20; i++)
-  {
-    (AuthorUtas(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)]))[i] = AuthorUtas(U)[i];
-  }
+  printf("test\n");
+  printf("NEFF LIST DIN :%d\n", NEFFListDinUtas(*lu));
+  BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)] = U;
 
+  // printf("test2\n");
+  // IDUtas(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)]) = NEFFListDinUtas(*lu) + 1; // dah bener
+  // printf("test3\n");
+  // KicauanSambungan(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)]) = KicauanSambungan(U);
+  // printf("test4\n");
+  // printf("===========================UTAS===================\n");
+  // displayUtas(*U);
+  // printf("======================DINAMIS=====================\n");
+  // displayUtas(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)]);
+  // printf("==================================================\n");
   NEFFListDinUtas(*lu) += 1;
+
+  displayUtas(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu) - 1]);
+
+  printf("NEFF :%d\n", NEFFListDinUtas(*lu));
 }
 
 // Menghapus Kicauan Sambungan pada utas dengan index tertentu

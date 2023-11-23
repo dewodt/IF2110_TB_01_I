@@ -63,18 +63,18 @@ void displayMASUKANFILE(MASUKANFILE masuk);
 
 MASUKAN masukanFileToMasukan(MASUKANFILE MASUKANFILE);
 
-void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile);
+void bacaPengguna(ListStatik *listPengguna, MASUKAN namaFile);
 
-void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaKicauan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 
-void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKANFILE* hasil2);
+void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE *hasil1, MASUKANFILE *hasil2);
 
-void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaBalasan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 
-void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas* listUtas);
+void bacaUtas(MASUKAN namaFile);
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);
 
-void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* angka);
+void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE *nama, int *angka);
 
 void bacaDraf(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 #endif

@@ -67,10 +67,10 @@ void Simpan()
 
   // Simpan semua config
   // SimpanPengguna();
-  SimpanKicauan(folderDir);
-  SimpanBalasan(folderDir);
+  // SimpanKicauan(folderDir);
+  // SimpanBalasan(folderDir);
   // SimpanDraf();
-  // SimpanUtas();
+  SimpanUtas(folderDir);
 
   // Cetak pesan berhasil
   printf("Penyimpanan berhasil dilakukan.\n");
@@ -417,37 +417,45 @@ void SimpanUtas(char *folderDir)
   char *fileDir = concatStr(folderDir, "/utas.config");
 
   FILE *fptr;
-
   fptr = fopen(fileDir, "w");
 
-  int countUtas;
-  countUtas = listUtasLength(listUtas);
+  // Hitung banyak utas
+  int countUtas = listUtasLength(listUtas);
   fprintf(fptr, "%d", countUtas);
+
   int i;
   for (i = 0; i < countUtas; i++)
   {
-    UTAS utasUtama;
-    utasUtama = listUtas.buffer[i];
+    // Get utas
+    UTAS utasUtama = listUtas.buffer[i];
 
-    fprintf(fptr, "\n%d", ID(*(utasUtama.KicauanUtama)));
+    // ID Kicauan Utama
+    fprintf(fptr, "\n%d", ID(InfoKicauan(KicauanUtama(utasUtama))));
 
-    AddressUtas p;
-    p = KicauanSambungan(utasUtama);
-    int x;
-    x = lengthThreads(p);
+    // Cetak banyaknya sambungan
+    AddressUtas p = KicauanSambungan(utasUtama);
+    int x = lengthThreads(p);
     fprintf(fptr, "\n%d", x);
 
+    // Cetak sambungan
     while (p != NULL)
     {
       char *text = p->textThread;
       fprintf(fptr, "\n%s", text);
 
-      char *username = (AUTHOR(*(utasUtama.KicauanUtama)))->username;
+      char *username = AUTHOR(InfoKicauan(KicauanUtama(utasUtama)))->username;
       fprintf(fptr, "\n%s", username);
 
       DATETIME DT = p->timeThread;
       fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+
       p = p->nextThread;
     }
   }
+
+  // Final newline
+  fprintf(fptr, "\n");
+
+  // Close file
+  fclose(fptr);
 }

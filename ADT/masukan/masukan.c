@@ -252,3 +252,24 @@ void toLowerCase(char *str)
     str++;
   }
 }
+
+int masukanToInt(MASUKAN masukan){
+  int hasil;
+  hasil = 0;
+  boolean isNeg;
+  isNeg = false;
+  int i;
+  for ( i = 0; i < masukan.Length; i++)
+  {
+    if(i == 0 && i == 45){
+      isNeg = true;
+    }else{
+      hasil *= 10;
+      hasil += masukan.TabMASUKAN[i] - 48;
+    }
+  }
+  if(isNeg){
+    hasil *= -1;
+  }
+  return hasil;
+}

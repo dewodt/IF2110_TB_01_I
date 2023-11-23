@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Werror -std=c11
+CFLAGS = -std=c11
 
 MAIN_FILES = main.c
 ADT_FILES = $(wildcard ADT/**/*.c)

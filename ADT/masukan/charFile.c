@@ -2,15 +2,15 @@
 /* Implementasi Mesin Karakter */
 
 #include <stdio.h>
-#include "charmachine.h"
+#include "charFile.h"
 
-char currentChar;
-boolean EOP;
+char currentCharFILE;
+//boolean EOP;
 
-static FILE *pitakey;
+static FILE *pita;
 static int retval;
 
-void START()
+void STARTFILE(char nameFile[])
 {
   /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
      Karakter pertama yang ada pada pita posisinya adalah pada jendela.
@@ -19,11 +19,11 @@ void START()
             Jika currentChar = MARK maka EOP akan menyala (true) */
 
   /* Algoritma */
-  pitakey = stdin;
-  ADV();
+  pita = fopen(nameFile, "r");
+  ADVFILE();
 }
 
-void ADV()
+void ADVFILE()
 {
   /* Pita dimajukan satu karakter.
      I.S. : Karakter pada jendela =
@@ -33,8 +33,8 @@ void ADV()
                   Jika  currentChar = MARK maka EOP akan menyala (true) */
 
   /* Algoritma */
-  retval = fscanf(pitakey, "%c", &currentChar);
-  EOP = (currentChar == MARK);
+  retval = fscanf(pita, "%c", &currentCharFILE);
+  EOP = (currentCharFILE == MARK);
   if (EOP)
   {
     // fclose(pita);

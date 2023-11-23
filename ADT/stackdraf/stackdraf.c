@@ -42,3 +42,11 @@ void PopStack(Stack *S, infotype *X)
   (*X) = (*S).T[Top(*S)];
   Top(*S) -= 1;
 }
+
+void ReverseStack(Stack s, Stack* rs){
+  infotype elmt;
+  while(!IsEmptyStack(s)){
+    PopStack(&s,&elmt);
+    PushStack(rs,elmt);
+  }
+}

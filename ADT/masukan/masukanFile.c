@@ -9,10 +9,10 @@
 /* State Mesin MASUKANFILE */
 boolean EndMASUKANFILE;
 MASUKANFILE currentMASUKANFILE;
-//boolean EOP;
-//char currentChar;
+// boolean EOP;
+// char currentChar;
 
-void STARTMASUKANFILE(char* nameFile)
+void STARTMASUKANFILE(char *nameFile)
 /* I.S. : currentChar sembarang
    F.S. : EndMASUKANFILE = true, dan currentChar = MARK;
           atau EndMASUKANFILE = false, currentMASUKANFILE adalah MASUKANFILE yang sudah diakuisisi,
@@ -68,11 +68,12 @@ void CopyMASUKANFILE()
   currentMASUKANFILE.Length = i;
 }
 
-int masukanFileToInt(MASUKANFILE masukanFile){
+int masukanFileToInt(MASUKANFILE masukanFile)
+{
   int hasil;
   hasil = 0;
   int i;
-  for ( i = 0; i < masukanFile.Length; i++)
+  for (i = 0; i < masukanFile.Length; i++)
   {
     hasil *= 10;
     hasil += masukanFile.TabMASUKANFILE[i] - 48;
@@ -80,37 +81,41 @@ int masukanFileToInt(MASUKANFILE masukanFile){
   return hasil;
 }
 
-int charToInt(char sebenarnyaInt){
+int charToInt(char sebenarnyaInt)
+{
   return sebenarnyaInt - 48;
 }
 
 void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile, int x)
 {
 
-  char* str = MASUKANToStr(namaFile);
-  if(x == 1){
-    printf("%s\n", concatStr(concatStr("config/",str),"/pengguna.config"));
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/pengguna.config")); 
+  char *str = MASUKANToStr(namaFile);
+  if (x == 1)
+  {
+    printf("%s\n", concatStr(concatStr("config/", str), "/pengguna.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/pengguna.config"));
   }
-  else if (x == 2){
-    printf("%s\n", concatStr(concatStr("config/",str),"/kicauan.config"));
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/kicauan.config")); 
-  }else if (x == 3)
+  else if (x == 2)
   {
-    printf("%s\n", concatStr(concatStr("config/",str),"/balasan.config"));
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/balasan.config")); 
-  }else if (x == 4)
-  {
-    printf("%s\n", concatStr(concatStr("config/",str),"/draf.config"));
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/draf.config")); 
-  }else if (x == 5)
-  {
-    printf("%s\n", concatStr(concatStr("config/",str),"/utas.config"));
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/utas.config")); 
+    printf("%s\n", concatStr(concatStr("config/", str), "/kicauan.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/kicauan.config"));
   }
-  
-  
-  
+  else if (x == 3)
+  {
+    printf("%s\n", concatStr(concatStr("config/", str), "/balasan.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/balasan.config"));
+  }
+  else if (x == 4)
+  {
+    printf("%s\n", concatStr(concatStr("config/", str), "/draf.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/draf.config"));
+  }
+  else if (x == 5)
+  {
+    printf("%s\n", concatStr(concatStr("config/", str), "/utas.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/utas.config"));
+  }
+
   *MASUKANFILE = currentMASUKANFILE;
   if ((*MASUKANFILE).TabMASUKANFILE[0] == 10)
   {
@@ -162,7 +167,6 @@ boolean isSameFile(MASUKANFILE masuk, char string[])
   return hasil;
 }
 
-
 void displayMASUKANFILE(MASUKANFILE masuk)
 {
   // Menampilkan isi MASUKANFILE
@@ -175,15 +179,16 @@ void displayMASUKANFILE(MASUKANFILE masuk)
   printf("]\n");
 }
 
-MASUKAN masukanFileToMasukan(MASUKANFILE masukanFile){
+MASUKAN masukanFileToMasukan(MASUKANFILE masukanFile)
+{
   MASUKAN hasil;
   hasil.Length = masukanFile.Length;
   int i;
-  for ( i = 0; i < masukanFile.Length; i++)
+  for (i = 0; i < masukanFile.Length; i++)
   {
     hasil.TabMASUKAN[i] = masukanFile.TabMASUKANFILE[i];
   }
-  
+
   return hasil;
 }
 
@@ -202,119 +207,152 @@ MASUKAN masukanFileToMasukan(MASUKANFILE masukanFile){
 
 // membaca pengguna.config
 // status: done?
-void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
+void bacaPengguna(ListStatik *listPengguna, MASUKAN namaFile)
+{
+  // Dapatkan jumlah user
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile,1);
+  bacaAwalFile(&masukanFile, namaFile, 1);
   int n;
   n = masukanFileToInt(masukanFile);
+
   int i;
-  for ( i = 0; i < n; i++)
+  // Looping per row pengguna
+  for (i = 0; i < n; i++)
   {
+    // Username
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int j;
-    for ( j = 0; j < masukanFile.Length; j++)
+    for (j = 0; j < masukanFile.Length; j++)
     {
       listPengguna->contents[i].username[j] = masukanFile.TabMASUKANFILE[j];
     }
-    
+
+    // Password
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int k;
-    for ( k = 0; k < masukanFile.Length; k++)
+    for (k = 0; k < masukanFile.Length; k++)
     {
-      listPengguna->contents[i].password[k] = masukanFile.TabMASUKANFILE[k];   
+      listPengguna->contents[i].password[k] = masukanFile.TabMASUKANFILE[k];
     }
 
-
+    // Bio
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int l;
-    for ( l = 0; l < masukanFile.Length; l++)
+    for (l = 0; l < masukanFile.Length; l++)
     {
       listPengguna->contents[i].bio[l] = masukanFile.TabMASUKANFILE[l];
     }
-  
+
+    // Phone number
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     listPengguna->contents[i].phone_num = masukanFileToMasukan(masukanFile);
 
+    // Weton
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int a;
-    for ( a = 0; a < masukanFile.Length; a++)
+    for (a = 0; a < masukanFile.Length; a++)
     {
       listPengguna->contents[i].weton[a] = masukanFile.TabMASUKANFILE[a];
     }
-    
+
+    // Acc type
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
-    if(isSame(masukanFileToMasukan(masukanFile), "Privat")){
-      IS_PRIVATE(*listPengguna,i) = true;
-    }else{
-      IS_PRIVATE(*listPengguna,i) = false;
+    if (isSame(masukanFileToMasukan(masukanFile), "Privat"))
+    {
+      IS_PRIVATE(*listPengguna, i) = true;
+    }
+    else
+    {
+      IS_PRIVATE(*listPengguna, i) = false;
     }
 
+    // Profile picture
     int c;
-    for ( c = 0; c < 5; c++)
+    // Loop row
+    for (c = 0; c < 5; c++)
     {
+      // Loop column
       bacaLanjutFile(&masukanFile);
       // displayMASUKANFILE(masukanFile);
       int d;
-      for ( d = 0; d < 10; d++)
+      for (d = 0; d < 10; d++)
       {
-        ELMT_MTX(listPengguna->contents[i].profile,c,d) = masukanFile.TabMASUKANFILE[2*(d)];
+        ELMT_MTX(listPengguna->contents[i].profile, c, d) = masukanFile.TabMASUKANFILE[2 * (d)];
       }
     }
-    
   }
+
+  displayMatrixTeman(RelasiPertemanan);
+  // Input relasi pertemanan
+  // note: ada n user
   int e;
-  for ( e = 0; e < n; e++)
+  for (e = 0; e < n; e++)
   {
     bacaLanjutFile(&masukanFile);
     int f;
-    for ( f = 0; f < masukanFile.Length; f++)
+    for (f = 0; f < n; f++)
     {
-      ELMT_MTX(RelasiPertemanan,e,f) = masukanFile.TabMASUKANFILE[2*f] - 48;
-    }  
+      ELMT_MTX(RelasiPertemanan, e, f) = masukanFile.TabMASUKANFILE[2 * f] - 48;
+    }
   }
+  displayMatrixTeman(RelasiPertemanan);
+
+  // Input relasi follow
   bacaLanjutFile(&masukanFile);
   int g;
   g = masukanFileToInt(masukanFile);
+
+  // Looping per row prioqueue
   int h;
-  for ( h = 0; h < g; h++)
-  { 
+  for (h = 0; h < g; h++)
+  {
     bacaLanjutFile(&masukanFile);
     int x;
-    int numTemp,num1,num2;
+    int numTemp, num1, num2;
     numTemp = 0;
     num1 = -1;
     num2 = -1;
-    for ( x = 0; x < masukanFile.Length; x++)
+    for (x = 0; x < masukanFile.Length; x++)
     {
-      if(num1 == -1 && num2 == -1){
-        if(masukanFile.TabMASUKANFILE[x] != 32){
+      if (num1 == -1 || num2 == -1)
+      {
+        if (masukanFile.TabMASUKANFILE[x] != 32)
+        {
           numTemp *= 10;
           numTemp += masukanFile.TabMASUKANFILE[x] - 48;
-        }else{
-          if(num1 == -1){
+        }
+        else
+        {
+          if (num1 == -1)
+          {
             num1 = numTemp;
-          }else{
+            numTemp = 0;
+          }
+          else
+          {
             num2 = numTemp;
           }
-      }
+        }
       }
     }
-    ELMT_MTX(RelasiPertemanan,num1,num2) = 1;
+    printf("%d %d\n", num1, num2);
+    ELMT_MTX(RelasiPertemanan, num1, num2) = 1;
   }
 }
 
 // membaca kicauan.config
 // status: done?
-void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
+void bacaKicauan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listPengguna)
+{
 
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile,2);
+  bacaAwalFile(&masukanFile, namaFile, 2);
 
   int n;
   n = masukanFileToInt(masukanFile);
@@ -322,7 +360,7 @@ void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
   Kicauan tempKicauan;
   int i;
 
-  for ( i = 0; i < n; i++)
+  for (i = 0; i < n; i++)
   {
 
     // id
@@ -334,7 +372,7 @@ void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
     // text
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
-    char* text = MASUKANToStr(masukanFileToMasukan(masukanFile));
+    char *text = MASUKANToStr(masukanFileToMasukan(masukanFile));
 
     // like
     bacaLanjutFile(&masukanFile);
@@ -350,56 +388,65 @@ void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
     displayMASUKAN(tempMasukan);
 
     int idx = 0;
-    searchID_Pengguna(tempMasukan,&idx);
+    searchID_Pengguna(tempMasukan, &idx);
 
-    printf("%d\n",idx);
+    printf("%d\n", idx);
     User author;
     author = listPengguna.contents[0];
     // datetime
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
-    int HH = charToInt(masukanFile.TabMASUKANFILE[11])*10 + charToInt(masukanFile.TabMASUKANFILE[12]);
-    int MM = charToInt(masukanFile.TabMASUKANFILE[14])*10 + charToInt(masukanFile.TabMASUKANFILE[15]);
-    int SS = charToInt(masukanFile.TabMASUKANFILE[17])*10 + charToInt(masukanFile.TabMASUKANFILE[18]);
-    int DD = charToInt(masukanFile.TabMASUKANFILE[0])*10 + charToInt(masukanFile.TabMASUKANFILE[1]);
-    int BB = charToInt(masukanFile.TabMASUKANFILE[3])*10 + charToInt(masukanFile.TabMASUKANFILE[4]);
-    int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
+    int HH = charToInt(masukanFile.TabMASUKANFILE[11]) * 10 + charToInt(masukanFile.TabMASUKANFILE[12]);
+    int MM = charToInt(masukanFile.TabMASUKANFILE[14]) * 10 + charToInt(masukanFile.TabMASUKANFILE[15]);
+    int SS = charToInt(masukanFile.TabMASUKANFILE[17]) * 10 + charToInt(masukanFile.TabMASUKANFILE[18]);
+    int DD = charToInt(masukanFile.TabMASUKANFILE[0]) * 10 + charToInt(masukanFile.TabMASUKANFILE[1]);
+    int BB = charToInt(masukanFile.TabMASUKANFILE[3]) * 10 + charToInt(masukanFile.TabMASUKANFILE[4]);
+    int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
     DATETIME datetime;
     CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
-    CreateKicauan(&tempKicauan,id,text,like,&author,datetime);
+    CreateKicauan(&tempKicauan, id, text, like, &author, datetime);
     AddressKicauan addKicauan;
     addKicauan = newNodeKicauan(tempKicauan);
-    insertLastListDinKicauan(listKicauan,addKicauan);
+    insertLastListDinKicauan(listKicauan, addKicauan);
   }
 }
 
-void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKANFILE* hasil2, boolean* neg){
+void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE *hasil1, MASUKANFILE *hasil2, boolean *neg)
+{
   boolean spaceFound = false;
-  hasil1->Length =0;
-  hasil2->Length =0;
-  int a,b;
+  hasil1->Length = 0;
+  hasil2->Length = 0;
+  int a, b;
   a = 0;
   b = 0;
   boolean isNeg = false;
-  if(masukanFile.TabMASUKANFILE[0] == 45){
+  if (masukanFile.TabMASUKANFILE[0] == 45)
+  {
     isNeg = true;
   }
   int i;
-  for ( i = 0; i < masukanFile.Length; i++)
+  for (i = 0; i < masukanFile.Length; i++)
   {
-    if(isNeg && i == 0){
-      
-    }else if(masukanFile.TabMASUKANFILE[i] == ' '){
+    if (isNeg && i == 0)
+    {
+    }
+    else if (masukanFile.TabMASUKANFILE[i] == ' ')
+    {
       spaceFound = true;
-    }else{
-      if(spaceFound){
+    }
+    else
+    {
+      if (spaceFound)
+      {
         hasil2->TabMASUKANFILE[b] = masukanFile.TabMASUKANFILE[i];
         hasil2->Length += 1;
-        b ++;
-      }else{
+        b++;
+      }
+      else
+      {
         hasil1->TabMASUKANFILE[a] = masukanFile.TabMASUKANFILE[i];
         hasil1->Length += 1;
-        a ++;
+        a++;
       }
     }
   }
@@ -408,14 +455,15 @@ void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKAN
 
 // membaca balasan.config
 // status: done?
-void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
+void bacaBalasan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listPengguna)
+{
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile,3);
+  bacaAwalFile(&masukanFile, namaFile, 3);
   int n;
   n = masukanFileToInt(masukanFile);
   printf("%d\n", n);
   int i;
-  for ( i = 0; i < n; i++)
+  for (i = 0; i < n; i++)
   {
     printf("%d\n", i);
     bacaLanjutFile(&masukanFile);
@@ -427,22 +475,23 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
     m = masukanFileToInt(masukanFile);
     printf("%d\n", m);
     int j;
-    for ( j = 0; j < m; j++)
+    for (j = 0; j < m; j++)
     {
       bacaLanjutFile(&masukanFile);
       displayMASUKANFILE(masukanFile);
       // parent, id balasan
-      MASUKANFILE mP,mQ;
+      MASUKANFILE mP, mQ;
       boolean neg;
-      splitMasukanFileJadi2(masukanFile,&mP,&mQ,&neg);
+      splitMasukanFileJadi2(masukanFile, &mP, &mQ, &neg);
       displayMASUKANFILE(mP);
       displayMASUKANFILE(mQ);
-      int p,q;
+      int p, q;
       p = 0;
       q = 0;
       p = masukanFileToInt(mP);
       q = masukanFileToInt(mQ);
-      if(neg){
+      if (neg)
+      {
         p *= -1;
       }
       printf("%d\n", p);
@@ -450,7 +499,7 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
 
       // text
       bacaLanjutFile(&masukanFile);
-      char* text = MASUKANToStr(masukanFileToMasukan(masukanFile));
+      char *text = MASUKANToStr(masukanFileToMasukan(masukanFile));
       printf("%s\n", text);
       // author
       bacaLanjutFile(&masukanFile);
@@ -458,47 +507,34 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
       MASUKAN tempMasukan;
       tempMasukan = masukanFileToMasukan(masukanFile);
       int idx = 0;
-      searchID_Pengguna(tempMasukan,&idx);
+      searchID_Pengguna(tempMasukan, &idx);
       printf("%d\n", idx);
       User author;
       author = listPengguna.contents[idx];
 
       // datetime
       bacaLanjutFile(&masukanFile);
-      int HH = charToInt(masukanFile.TabMASUKANFILE[11])*10 + charToInt(masukanFile.TabMASUKANFILE[12]);
-      int MM = charToInt(masukanFile.TabMASUKANFILE[14])*10 + charToInt(masukanFile.TabMASUKANFILE[15]);
-      int SS = charToInt(masukanFile.TabMASUKANFILE[17])*10 + charToInt(masukanFile.TabMASUKANFILE[18]);
-      int DD = charToInt(masukanFile.TabMASUKANFILE[0])*10 + charToInt(masukanFile.TabMASUKANFILE[1]);
-      int BB = charToInt(masukanFile.TabMASUKANFILE[3])*10 + charToInt(masukanFile.TabMASUKANFILE[4]);
-      int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
+      int HH = charToInt(masukanFile.TabMASUKANFILE[11]) * 10 + charToInt(masukanFile.TabMASUKANFILE[12]);
+      int MM = charToInt(masukanFile.TabMASUKANFILE[14]) * 10 + charToInt(masukanFile.TabMASUKANFILE[15]);
+      int SS = charToInt(masukanFile.TabMASUKANFILE[17]) * 10 + charToInt(masukanFile.TabMASUKANFILE[18]);
+      int DD = charToInt(masukanFile.TabMASUKANFILE[0]) * 10 + charToInt(masukanFile.TabMASUKANFILE[1]);
+      int BB = charToInt(masukanFile.TabMASUKANFILE[3]) * 10 + charToInt(masukanFile.TabMASUKANFILE[4]);
+      int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
-      Balasan tempBalasan;
-      CreateBalasan(&tempBalasan,q,text,&author,datetime); // masukan to str
-      CetakDetailBalasan(tempBalasan,false,0);
+      Balasan infoBalasan;
+      CreateBalasan(&infoBalasan, q, text, &author, datetime); // masukan to str
+      CetakDetailBalasan(infoBalasan, false, 0);
 
-
-
-      TreeKicauan tempTree = ELMT_LDK(*listKicauan,id-1);
-      if(p == -1){
-        balasKicauan(tempTree,tempBalasan);
-      }else{
-        AddressBalasan temp = getBalasan(tempTree,p);
-        if (temp == NULL) {
-          printf("NULL!");
-        } else {
-          printf("==============");
-          CetakDetailBalasan(InfoBalasan(temp),false,0);
-          printf("tengah=======");
-          CetakDetailBalasan(tempBalasan, false, 0);
-          printf("==============");
-
-        }
-        balasBalasan(temp,tempBalasan);
-        printf("===================\n");
-        AddressBalasan ab = FirstLeftChildBalasan(tempTree);
-        TampilkanBalasanRekursif(ab, 0);
-        printf("===================\n");
+      TreeKicauan tempTree = ELMT_LDK(*listKicauan, id - 1);
+      if (p == -1)
+      {
+        balasKicauan(tempTree, infoBalasan);
+      }
+      else
+      {
+        AddressBalasan balasanNode = getBalasan(tempTree, p);
+        balasBalasan(balasanNode, infoBalasan);
       }
     }
   }
@@ -506,13 +542,14 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
 
 // membaca pengguna.config
 // status: tinggal connectin thread
-void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas* listUtas){
+void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas *listUtas)
+{
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile,5);
+  bacaAwalFile(&masukanFile, namaFile, 5);
   int n;
   n = masukanFileToInt(masukanFile);
   int i;
-  for ( i = 0; i < n; i++)
+  for (i = 0; i < n; i++)
   {
     bacaLanjutFile(&masukanFile);
     int idKicau = masukanFileToInt(masukanFile);
@@ -521,22 +558,22 @@ void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengg
     a = 0;
     a = masukanFileToInt(masukanFile);
     Kicauan kicauan;
-    kicauan = ELMT_LDK(listKicauan,idKicau-1)->infoKicauan;
+    kicauan = ELMT_LDK(listKicauan, idKicau - 1)->infoKicauan;
     UTAS utasUtama;
     CreateUtas(&utasUtama, &kicauan, i);
-    for ( a = 0; a < listKicauan.nEff; a++)
+    for (a = 0; a < listKicauan.nEff; a++)
     {
       bacaLanjutFile(&masukanFile);
-      char* text;
+      char *text;
       text = MASUKANToStr(masukanFileToMasukan(masukanFile));
       bacaLanjutFile(&masukanFile); // just for skipping author karena udah bs ambil author dari kicauan
       bacaLanjutFile(&masukanFile);
-      int HH = charToInt(masukanFile.TabMASUKANFILE[11])*10 + charToInt(masukanFile.TabMASUKANFILE[12]);
-      int MM = charToInt(masukanFile.TabMASUKANFILE[14])*10 + charToInt(masukanFile.TabMASUKANFILE[15]);
-      int SS = charToInt(masukanFile.TabMASUKANFILE[17])*10 + charToInt(masukanFile.TabMASUKANFILE[18]);
-      int DD = charToInt(masukanFile.TabMASUKANFILE[0])*10 + charToInt(masukanFile.TabMASUKANFILE[1]);
-      int BB = charToInt(masukanFile.TabMASUKANFILE[3])*10 + charToInt(masukanFile.TabMASUKANFILE[4]);
-      int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
+      int HH = charToInt(masukanFile.TabMASUKANFILE[11]) * 10 + charToInt(masukanFile.TabMASUKANFILE[12]);
+      int MM = charToInt(masukanFile.TabMASUKANFILE[14]) * 10 + charToInt(masukanFile.TabMASUKANFILE[15]);
+      int SS = charToInt(masukanFile.TabMASUKANFILE[17]) * 10 + charToInt(masukanFile.TabMASUKANFILE[18]);
+      int DD = charToInt(masukanFile.TabMASUKANFILE[0]) * 10 + charToInt(masukanFile.TabMASUKANFILE[1]);
+      int BB = charToInt(masukanFile.TabMASUKANFILE[3]) * 10 + charToInt(masukanFile.TabMASUKANFILE[4]);
+      int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
       // User author;
@@ -545,22 +582,23 @@ void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengg
       // tempUtas = newThreadNode(text,datetime);
       insertLastThreadForConfig(&utasUtama, text, datetime);
     }
-    insertUtas(listUtas,utasUtama);
+    insertUtas(listUtas, utasUtama);
   }
-  
 }
 
-void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* angka){
+void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE *nama, int *angka)
+{
   int a;
   int idxLastSpace;
   idxLastSpace = -1;
-  for ( a = 0; a < masukanFile.Length; a++)
+  for (a = 0; a < masukanFile.Length; a++)
   {
-    if(masukanFile.TabMASUKANFILE[a] == 32){
+    if (masukanFile.TabMASUKANFILE[a] == 32)
+    {
       idxLastSpace = a;
     }
   }
-  MASUKANFILE  masukanAngka; // masukanNama
+  MASUKANFILE masukanAngka; // masukanNama
   // int b;
   // for ( b = 0; b < idxLastSpace + 1; b++)
   // {
@@ -572,26 +610,27 @@ void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* ang
   int idx;
   idx = 0;
   *angka = 0;
-  for ( c = idxLastSpace+ 1 ; c < masukanFile.Length ; c++)
+  for (c = idxLastSpace + 1; c < masukanFile.Length; c++)
   {
     masukanAngka.Length += 1;
     *angka *= 10;
-    *angka += masukanFile.TabMASUKANFILE[c]-48;
+    *angka += masukanFile.TabMASUKANFILE[c] - 48;
 
-    idx ++;
+    idx++;
   }
   *nama = masukanFile;
   (*nama).Length = idxLastSpace;
 }
 
-void bacaDraf(MASUKAN namaFile){
+void bacaDraf(MASUKAN namaFile)
+{
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile,4);
+  bacaAwalFile(&masukanFile, namaFile, 4);
   int n;
   n = masukanFileToInt(masukanFile);
-  printf("ini n %d\n",n);
+  printf("ini n %d\n", n);
   int i;
-  for ( i = 0; i < n; i++)
+  for (i = 0; i < n; i++)
   {
     bacaLanjutFile(&masukanFile);
     MASUKANFILE tempAuthor;
@@ -618,28 +657,27 @@ void bacaDraf(MASUKAN namaFile){
     Stack s;
     CreateEmptyStack(&s);
     int a;
-    for ( a = 0; a < count; a++)
+    for (a = 0; a < count; a++)
     {
       bacaLanjutFile(&masukanFile);
-      char* text;
+      char *text;
       text = MASUKANToStr(masukanFileToMasukan(masukanFile));
       bacaLanjutFile(&masukanFile);
-      int HH = charToInt(masukanFile.TabMASUKANFILE[11])*10 + charToInt(masukanFile.TabMASUKANFILE[12]);
-      int MM = charToInt(masukanFile.TabMASUKANFILE[14])*10 + charToInt(masukanFile.TabMASUKANFILE[15]);
-      int SS = charToInt(masukanFile.TabMASUKANFILE[17])*10 + charToInt(masukanFile.TabMASUKANFILE[18]);
-      int DD = charToInt(masukanFile.TabMASUKANFILE[0])*10 + charToInt(masukanFile.TabMASUKANFILE[1]);
-      int BB = charToInt(masukanFile.TabMASUKANFILE[3])*10 + charToInt(masukanFile.TabMASUKANFILE[4]);
-      int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
+      int HH = charToInt(masukanFile.TabMASUKANFILE[11]) * 10 + charToInt(masukanFile.TabMASUKANFILE[12]);
+      int MM = charToInt(masukanFile.TabMASUKANFILE[14]) * 10 + charToInt(masukanFile.TabMASUKANFILE[15]);
+      int SS = charToInt(masukanFile.TabMASUKANFILE[17]) * 10 + charToInt(masukanFile.TabMASUKANFILE[18]);
+      int DD = charToInt(masukanFile.TabMASUKANFILE[0]) * 10 + charToInt(masukanFile.TabMASUKANFILE[1]);
+      int BB = charToInt(masukanFile.TabMASUKANFILE[3]) * 10 + charToInt(masukanFile.TabMASUKANFILE[4]);
+      int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
       Draf tempDraf;
-      CreateDraf(&tempDraf, text,datetime);
-      PushStack(&s,tempDraf);
+      CreateDraf(&tempDraf, text, datetime);
+      PushStack(&s, tempDraf);
     }
     Stack fs;
     CreateEmptyStack(&fs);
     ReverseStack(s,&fs);
     DRAF(listUser,b) = fs;
   }
-  
 }

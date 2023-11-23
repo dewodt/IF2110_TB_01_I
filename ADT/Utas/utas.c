@@ -152,13 +152,12 @@ void HAPUS_UTAS(ListUtas *li, int idU, int index, User userloggedin)
     }
 }
 
-void CETAK_UTAS(int idU, ListUtas li, Matrix friendship, ListStatik ListPengguna, User user1, User user2)
+void CETAK_UTAS(int idU, ListUtas li, User user1, User user2)
 {
-    boolean teman = true;
 
     if (isIdUtasValid(li, idU))
     {
-        if (teman) // areFriendsEachOthers(friendship, ListPengguna, user1, user2)
+        if (areFriendsEachOthers(user1, user2))
         {
             displayUtas((BUFFERListDinUtas(li))[idU - 1]);
         }

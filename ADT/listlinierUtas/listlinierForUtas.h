@@ -65,6 +65,9 @@ void insertLastThreads(threads *l, char text[MAX_CHAR]);
 // Memasukkan Elemen pada indeks tertentu, indeks dipastikan valid, index dimulai dari 1
 void insertAtThreads(threads *l, char text[MAX_CHAR], int idx);
 
+// Memasukkan kicauan sambungan terakhir pada utas
+void insertLastThreadForConfig(UTAS *utas, char text[MAX_CHAR], DATETIME time);
+
 // Menghapus Elemen pertama pada utas
 void deleteFirstThreads(threads *l);
 

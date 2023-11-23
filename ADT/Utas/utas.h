@@ -9,6 +9,7 @@
 #include "../boolean.h"
 #include "../tree/tree.h"
 #include "../matrixteman/matrixteman.h"
+#include "../teman/teman.h"
 
 #include <stdio.h>
 
@@ -28,6 +29,6 @@ void SAMBUNG_UTAS(int idU, int index, ListUtas *lu, User userloggedin);
 
 void HAPUS_UTAS(ListUtas *li, int idU, int index, User userloggedin);
 
-void CETAK_UTAS(int idU, ListUtas li, Matrix friendship, ListStatik ListPengguna, User user1, User user2);
+void CETAK_UTAS(int idU, ListUtas li, User user1, User user2);
 
 #endif

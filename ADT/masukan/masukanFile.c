@@ -598,10 +598,7 @@ void bacaDraf(MASUKAN namaFile){
     displayMASUKANFILE(masukanFile);
     int count;
     MASUKANFILEToStrAndInt(masukanFile,&tempAuthor,&count);
-    printf("%d\n",count);
-    displayMASUKANFILE(tempAuthor);
     char* nama = MASUKANToStr(masukanFileToMasukan(tempAuthor));
-    printf("%s\n",nama);
     // User author;
     // boolean authorFound;
     // authorFound = false;
@@ -616,6 +613,7 @@ void bacaDraf(MASUKAN namaFile){
     //   }
     // }
     int b;
+    b = 0;
     searchID_Pengguna(masukanFileToMasukan(tempAuthor),&b);
     Stack s;
     CreateEmptyStack(&s);
@@ -639,6 +637,7 @@ void bacaDraf(MASUKAN namaFile){
       PushStack(&s,tempDraf);
     }
     Stack fs;
+    CreateEmptyStack(&fs);
     ReverseStack(s,&fs);
     DRAF(listUser,b) = fs;
   }

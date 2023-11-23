@@ -67,10 +67,11 @@ void Simpan()
   printf("\n");
 
   // Simpan semua config
-  // SimpanPengguna();
+  
+  SimpanPengguna(folderDir);
   SimpanKicauan(folderDir);
-  SimpanBalasan(folderDir);
-  // SimpanDraf();
+  // SimpanBalasan(folderDir);
+  saveDraf(folderDir);
   // SimpanUtas();
 
   // Cetak pesan berhasil
@@ -348,6 +349,7 @@ void saveDraf(char* folderDir)
 
   fptr = fopen(fileDir, "w");
   
+  // Dapatkan banyak user yang memiliki draf
   Stack s;
   int i;
   int n = 0;
@@ -360,30 +362,51 @@ void saveDraf(char* folderDir)
   }
   fprintf(fptr, "%d", n);
 
+  // 
   int j;
   for ( j = 0; j < listLength(listUser); j++)
   {
+
     s = DRAF(listUser,j);
     if(!IsEmptyStack(s)){
-      Stack temp;
-      temp = s;
+      // hitung ukuran stack
+      Stack temp; 
+      CreateEmptyStack(&temp);
       int count = 0;
-      while(!IsEmptyStack(temp)){
+      while(!IsEmptyStack(s)){
         infotype elmt;
-        PopStack(&temp,&elmt);
+        PopStack(&s,&elmt);
         count ++;
+        PushStack(&temp,elmt);
       }
+      // print user dan panjang stack
       char* nama;
       nama = USERNAME(listUser,j);
       fprintf(fptr, "\n%s %d", nama ,count);
       Stack temp2;
-      temp2 = s;
+      CreateEmptyStack(&temp2);
+      // reverse stack
+      while(!IsEmptyStack(temp)){
+        infotype elmt;
+        PopStack(&temp,&elmt);
+        PushStack(&temp2,elmt);
+      }
+      // print stack
       while(!IsEmptyStack(temp2)){
         infotype elmt;
         PopStack(&temp2,&elmt);
         fprintf(fptr, "\n%s", elmt.text);
+        //printf("\n%s", elmt.text);
         DATETIME DT = elmt.datetime;
         fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+        //printf("\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+        PushStack(&temp,elmt);
+      }
+
+      while(!IsEmptyStack(temp)){
+        infotype elmt;
+        PopStack(&temp,&elmt);
+        PushStack(&s,elmt);
       }
     }
   }

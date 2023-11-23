@@ -8,10 +8,9 @@ void searchID_Pengguna(MASUKAN Pengguna, int* id)
     hasil = -1;
     int i;
     i = 0;
-    // qq
     while (i < listLength(listUser) && hasil == -1)
     {
-        if(true){
+        if(isMASUKANEqual(strToMASUKAN(USERNAME(listUser,i),stringLength(USERNAME(listUser,i))),Pengguna)){
             hasil = i;
         }else{
             i++;

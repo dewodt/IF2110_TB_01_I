@@ -6,6 +6,7 @@
 #include "ADT/masukan/masukanFile.h"
 #include "ADT/matrixteman/matrixteman.h"
 #include "ADT/prioQueue/prioQueueint.h"
+#include "ADT/simpan/simpan.h"
 
 /* GLOBAL VARIABLES:
 currentUser
@@ -30,7 +31,9 @@ int main()
     CreateListUtas(&listUtas, 100);
     CreateListStatik(&listUser);
     currentUser = NULL;
-
+    Stack s;
+    CreateEmptyStack(&s);
+    DRAF(listUser,0) = s;
     // Tampilan awal
     printf(".______    __    __  .______      .______    __  .______ \n");
     printf("|   _  \\  |  |  |  | |   _  \\     |   _  \\  |  | |   _  \\\n");
@@ -76,23 +79,27 @@ int main()
 
     printf("%s\n", InfoTop(DRAF(listUser,0)).text);
     displayTime( InfoTop(DRAF(listUser,0)).datetime);
+    printf("%s\n", InfoTop(DRAF(listUser,1)).text);
+    displayTime( InfoTop(DRAF(listUser,1)).datetime);
     printf("sampe bacaDraf\n");
 
-    printf("==================\n");
-    printf("==================\n");
-    printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
-    printf("==================\n");
-    printf("==================\n");
-    bacaBalasan(&listKicauan,kata,listUser);
-    TreeKicauan tk = ELMT_LDK(listKicauan,0);
-    // AddressBalasan ab = FirstLeftChildBalasan(tk);
-    // TampilkanBalasanRekursif(ab, 0);
+    Simpan();
+
+    // printf("==================\n");
+    // printf("==================\n");
+    // printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
+    // printf("==================\n");
+    // printf("==================\n");
+    // bacaBalasan(&listKicauan,kata,listUser);
+    // TreeKicauan tk = ELMT_LDK(listKicauan,0);
+    // // AddressBalasan ab = FirstLeftChildBalasan(tk);
+    // // TampilkanBalasanRekursif(ab, 0);
 
 
-    printf("sampe bacaBalasan\n");
-    bacaUtas(listKicauan,kata,listUser,&listUtas);
-    printf("sampe bacaUtas\n");
-    printf(">>");
+    // printf("sampe bacaBalasan\n");
+    // bacaUtas(listKicauan,kata,listUser,&listUtas);
+    // printf("sampe bacaUtas\n");
+    // printf(">>");
 
     while (!isSame(kata, "\nTUTUP_PROGRAM;"))
     {

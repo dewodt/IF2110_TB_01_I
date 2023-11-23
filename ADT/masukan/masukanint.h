@@ -16,7 +16,6 @@ typedef int MASUKANint;
 extern boolean EndMASUKANint;
 extern MASUKANint currentMASUKANint;
 
-
 void STARTMASUKANint();
 /* I.S. : currentChar sembarang
    F.S. : EndMASUKAN = true, dan currentChar = MARK;
@@ -31,7 +30,6 @@ void CopyMASUKANint();
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
-void bacaInt(int* angka);
-
+void bacaInt(int *angka);
 
 #endif

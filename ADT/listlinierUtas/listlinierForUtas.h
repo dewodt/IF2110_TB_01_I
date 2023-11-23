@@ -57,10 +57,10 @@ void CreateThreads(threads *l);
 boolean isThreadsEmpty(threads l);
 
 // Memasukkan kicauan sambungan di awal threads
-void insertFirstThreads(threads *l, char text[MAX_CHAR]);
+void insertFirstThreads(threads *l, char text[MAX_CHAR], DATETIME time);
 
 // Memasukkan elemen terakhirpada utas
-void insertLastThreads(threads *l, char text[MAX_CHAR]);
+void insertLastThreads(threads *l, char text[MAX_CHAR], DATETIME time);
 
 // Memasukkan Elemen pada indeks tertentu, indeks dipastikan valid, index dimulai dari 1
 void insertAtThreads(threads *l, char text[MAX_CHAR], int idx);
@@ -84,7 +84,7 @@ void displayThreads(threads l, char author[20]);
 void CreateUtas(UTAS *u, Kicauan *kicauan, int id);
 
 // Menyambung utas pada elemen terakhir, dipastikan index valid
-void SambungUtasLast(UTAS *u, char text[MAX_CHAR]);
+void SambungUtasLast(UTAS *u, char text[MAX_CHAR], DATETIME time);
 
 // Menyambung utas pada index tertentu, dipastikan index valid. INDEX DIMULAI DARI 1
 void SambungUtasAt(UTAS *u, char text[MAX_CHAR], int index);

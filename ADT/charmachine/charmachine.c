@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include "charmachine.h"
 
-char currentChar;
-boolean EOP;
+// char currentChar;
+// boolean EOP;
 
 static FILE *pitakey;
 static int retval;

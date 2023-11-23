@@ -3,6 +3,9 @@
 #include "ADT/listdinkicauan/listdinkicauan.h"
 #include "ADT/modifiedliststatik/modifiedliststatik.h"
 #include "ADT/listdinUtas/listdinForUtas.h"
+#include "ADT/masukan/masukanFile.h"
+#include "ADT/matrixteman/matrixteman.h"
+#include "ADT/prioQueue/prioQueueint.h"
 
 /* GLOBAL VARIABLES:
 currentUser
@@ -17,11 +20,11 @@ ListStatik listUser;
 ListUtas listUtas;
 User *currentUser;
 int jumlahPengguna;
+MatrixTeman RelasiPertemanan;
+PrioQueueint Q;
 
 int main()
 {
-    ListStatik listPengguna;
-    CreateListStatik(&listPengguna);
     // Inisialisasi global variable
     CreateListDinKicauan(&listKicauan, 100);
     CreateListUtas(&listUtas, 100);
@@ -46,9 +49,12 @@ int main()
     printf(">>");
     baca(&kata);
     // Proses salin konfig ke dalam variabel program
-    // Perlu dipastikan tiap data disimpan dalam bentuk apa di dalam program
+    bacaPengguna(&listUser,kata);
+    bacaKicauan(&listKicauan,kata,listUser);
+    bacaBalasan(&listKicauan,kata,listUser);
+    bacaUtas(listKicauan,kata,listUser,&listUtas);
+    bacaDraf(listKicauan,kata,listUser);
     printf(">>");
-    baca(&kata);
 
     while (!isSame(kata, "\nTUTUP_PROGRAM;"))
     {

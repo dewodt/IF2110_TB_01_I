@@ -13,6 +13,8 @@
 //#include "../prioQueue/reqPertemanan.c"
 #include "../kicauan/kicauan.h"
 #include "../balasan/balasan.h"
+#include "../stackdraf/stackdraf.h"
+#include "../draf/draf.h"
 #include "../listdinUtas/listdinForUtas.h"
 
 #define NMax 281
@@ -71,4 +73,7 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
 void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);
 
+void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* angka);
+
+void bacaDraf(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 #endif

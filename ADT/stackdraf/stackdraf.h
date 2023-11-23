@@ -17,7 +17,7 @@ typedef int address; /* indeks tabel */
 // Datatype Draf untuk diunggah ke ADT Kicauan
 typedef struct
 {
-  int id; // auto-increment mulai 1
+  // int id; // auto-increment mulai 1
   char text[280];
   DATETIME datetime;
 } Draf;
@@ -69,5 +69,7 @@ void PopStack(Stack *S, infotype *X);
 /* Menghapus X dari Stack S. */
 /* I.S. S  tidak mungkin kosong */
 /* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */
+
+void ReverseStack(Stack s, Stack* rs);
 
 #endif

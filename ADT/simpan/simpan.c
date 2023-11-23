@@ -331,7 +331,91 @@ void writeBalasanDetailFile(FILE *ptr, int parentId, AddressBalasan nodeBalasan)
   writeBalasanDetailFile(ptr, currentId, LeftChildBalasan);
 }
 
-void SimpanUtas(File* )
-{
 
+void SimpanDraf(File* folderDir)
+{
+  char *fileDir = concatStr(folderDir, "/draf.config");
+
+  FILE *fptr;
+
+  fptr = fopen(fileDir, "w");
+  
+  Stack s;
+  int i;
+  int n = 0;
+  for ( i = 0; i < listLength(listUser); i++)
+  {
+    s = DRAF(listUser,i);
+    if(!IsEmptyStack(s)){
+      n++;
+    }
+  }
+  fprintf(fptr, "%d", n);
+
+  int j;
+  for ( j = 0; j < listLength(listUser); j++)
+  {
+    s = DRAF(listUser,j);
+    if(!IsEmptyStack(s)){
+      Stack temp;
+      temp = s;
+      int count = 0;
+      while(!IsEmptyStack(temp)){
+        infotype elmt;
+        PopStack(&temp,&elmt);
+        count ++;
+      }
+      char* nama;
+      nama = USERNAME(listUser,j);
+      fprintf(fptr, "\n%s %d", nama ,count);
+      Stack temp2;
+      temp2 = s;
+      while(!IsEmptyStack(temp2)){
+        infotype elmt;
+        PopStack(&temp2,&elmt);
+        fprintf(fptr, "\n%s", elmt.text);
+        fprintf(fptr, "\n%s", elmt.datetime);
+      }
+    }
+  }
+}
+
+void SimpanUtas(File* folderDir)
+{
+  char *fileDir = concatStr(folderDir, "/utas.config");
+
+  FILE *fptr;
+
+  fptr = fopen(fileDir, "w");
+
+  int countUtas; 
+  countUtas = listUtasLength(listUtas);
+  fprintf(fptr, "%d", countUtas);
+  int i;
+  for ( i = 0; i < countUtas; i++)
+  {
+    Utas utasUtama;
+    utasUtama = listUtas[i];
+
+    fprintf(fptr, "\n%d", ID(utasUtama.Kicauan));
+
+    AddressUtas p;
+    p = KicauanSambungan(utasUtama);
+    int x;
+    x = lengthThreads(p);
+    fprintf(fptr, "\n%d", x);
+
+    while (p != NULL)
+    {
+      char *text = p->textThread;
+      fprintf(fptr, "\n%s", text);
+
+      char *username = AUTHOR(utasUtama.Kicauan);
+      fprintf(fptr, "\n%s", username);
+      
+      DATETIME DT = p->timeThread;
+      fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+      p = p->nextThread;
+    }
+  }
 }

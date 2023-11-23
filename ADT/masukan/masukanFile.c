@@ -453,7 +453,7 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
 
 // membaca pengguna.config
 // status: tinggal connectin thread
-void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
+void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas listUtas){
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile,namaFile);
   int n;
@@ -465,15 +465,98 @@ void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPeng
     int idKicau;
     idKicau = masukanFileToInt(masukanFile);
     bacaLanjutFile(&masukanFile);
-    a = masukanFileToInt(masukanFile);
     int a;
     a = 0;
-    AddressKicauan addKicauan;
-    addKicauan = ELMT_LDK(listKicauan,idKicau);
-    Kicauan tempKicauan;
-    tempKicauan = ELMT_LDK(listKicauan,idKicau);
+    a = masukanFileToInt(masukanFile);
+    Kicauan kicauan;
+    kicauan = ELMT_LDK(listKicauan,idKicau);
     UTAS utasUtama;
+    CreateUtas(&utasUtama, &kicauan, i);
     for ( a = 0; a < listKicauan->nEff; a++)
+    {
+      bacaLanjutFile(&masukanFile);
+      char* text;
+      text = MASUKANToStr(masukanFileToMasukan(masukanFile));
+      bacaLanjutFile(&masukanFile); // just for skipping author karena udah bs ambil author dari kicauan
+      bacaLanjutFile(&masukanFile);
+      int HH = charToInt(masukanFile.TabMASUKANFILE[11])*10 + charToInt(masukanFile.TabMASUKANFILE[12]);
+      int MM = charToInt(masukanFile.TabMASUKANFILE[14])*10 + charToInt(masukanFile.TabMASUKANFILE[15]);
+      int SS = charToInt(masukanFile.TabMASUKANFILE[17])*10 + charToInt(masukanFile.TabMASUKANFILE[18]);
+      int DD = charToInt(masukanFile.TabMASUKANFILE[0])*10 + charToInt(masukanFile.TabMASUKANFILE[1]);
+      int BB = charToInt(masukanFile.TabMASUKANFILE[3])*10 + charToInt(masukanFile.TabMASUKANFILE[4]);
+      int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
+      DATETIME datetime;
+      CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
+      User author;
+      author = tempKicauan.author;
+      // threads tempUtas;
+      // tempUtas = newThreadNode(text,datetime);
+      insertLastThreadForConfig(&utasUtama, text, datetime);
+    }
+    insertUtas(&listUtas,utasUtama);
+  }
+  
+}
+
+void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* angka){
+  int a;
+  int idxLastSpace;
+  idxLastSpace = -1;
+  for ( a = 0; a < masukanFile.Length; a++)
+  {
+    if(masukanFile.TabMASUKANFILE[a] == 32){
+      idxLastSpace = a;
+    }
+  }
+  MASUKANFILE masukanNama, masukanAngka;
+  int b;
+  for ( b = 0; b < idxLastSpace + 1; b++)
+  {
+    masukanNama.Length += 1;
+    masukanNama.TabMASUKANFILE[b] = masukanFile.TabMASUKANFILE[b];
+  }
+  int c;
+  int idx;
+  idx = 0;
+  for ( c = idxLastSpace+ 1 ; c < masukanFile.Length ; c++)
+  {
+    masukanAngka.Length += 1;
+    masukanAngka.TabMASUKANFILE[idx] = masukanFile.TabMASUKANFILE[c];
+    idx ++;
+  }
+  *nama = masukanNama;
+  *angka = masukanFileToInt(masukanAngka);
+}
+
+void bacaDraf(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
+  MASUKANFILE masukanFile;
+  bacaAwalFile(&masukanFile,namaFile);
+  int n;
+  n = masukanFileToInt(masukanFile);
+  int i;
+  for ( i = 0; i < n; i++)
+  {
+    bacaLanjutFile(&masukanFile);
+    MASUKANFILE tempAuthor;
+    int count;
+    MASUKANFILEToStrAndInt(masukanFile,&tempAuthor,&count);
+    char* nama = MASUKANToStr(masukanFileToMasukan(tempAuthor));
+    User author;
+    boolean authorFound;
+    authorFound = false;
+    int b = 0;
+    while(b < listLength(listPengguna) && !authorFound){
+      if(USERNAME(listPengguna,b) == nama){
+        authorFound = true;
+        author = listPengguna.contents[b];
+      }else{
+        b ++;
+      }
+    }
+    Stack s;
+    CreateEmptyStack(&s);
+    int a;
+    for ( a = 0; a < count; a++)
     {
       bacaLanjutFile(&masukanFile);
       char* text;
@@ -487,13 +570,13 @@ void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPeng
       int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
-      User author;
-      author = tempKicauan.author;
-      UTAS tempUtas;
-      CreateUtas(&tempUtas,&tempKicauan,a+1);
-      SambungUtasLast(&)
+      Draf tempDraf;
+      CreateDraf(&tempDraf, text,datetime);
+      PushStack(&s,tempDraf);
     }
-    
+    Stack fs;
+    ReverseStack(s,&fs);
+    DRAF(listPengguna,b) = fs;
   }
   
 }

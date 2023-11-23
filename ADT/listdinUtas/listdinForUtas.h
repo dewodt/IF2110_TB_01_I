@@ -14,6 +14,8 @@ typedef struct
    int CAPACITYListDinUtas; // ukuran buffer
 } ListUtas;
 
+extern ListUtas listUtas;
+
 #define NEFFListDinUtas(lu) (lu).NEFF // fyi, lu = list utas
 #define BUFFERListDinUtas(lu) (lu).buffer
 #define CAPACITYListDinUtas(lu) (lu).CAPACITYListDinUtas

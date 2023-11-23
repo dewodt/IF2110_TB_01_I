@@ -62,7 +62,7 @@ void BUAT_UTAS(ListDinKicauan lk, ListUtas lu, User userloggedIn, int idk) // In
                 printf("Masukkan kicauan:\n");
                 baca(&teks);
 
-                SambungUtasLast(&utas, MASUKANToStr(teks));
+                SambungUtasLast(&utas, MASUKANToStr(teks),getCurrTime());
 
                 printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
                 baca(&teks);
@@ -70,7 +70,7 @@ void BUAT_UTAS(ListDinKicauan lk, ListUtas lu, User userloggedIn, int idk) // In
                 {
                     printf("Masukkan kicauan:\n");
                     baca(&teks);
-                    SambungUtasLast(&utas, MASUKANToStr(teks));
+                    SambungUtasLast(&utas, MASUKANToStr(teks),getCurrTime());
                     printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
                     baca(&teks);
                 }

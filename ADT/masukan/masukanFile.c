@@ -3,6 +3,7 @@
 #include "../boolean.h"
 // #include "../modifiedliststatik/modifiedliststatik.h"
 #include "masukanFile.h"
+#include "../matrixteman/matrixteman.h"
 
 /* State Mesin MASUKANFILE */
 boolean EndMASUKANFILE;
@@ -85,19 +86,19 @@ void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile, int x)
   char* str = MASUKANToStr(namaFile);
   //printf("%s\n", str);
   if(x == 1){
-    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"pengguna.config")); 
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"pengguna.config")); 
   }
   else if (x == 2){
-    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"kicauan.config")); 
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"kicauan.config")); 
   }else if (x == 3)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"balasan.config")); 
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"balasan.config")); 
   }else if (x == 4)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"draf.config")); 
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"draf.config")); 
   }else if (x == 5)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/",MASUKANToStr(namaFile)),"utas.config")); 
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"utas.config")); 
   }
   
   
@@ -195,7 +196,7 @@ MASUKAN masukanFileToMasukan(MASUKANFILE masukanFile){
 // status: done?
 void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile);
+  bacaAwalFile(&masukanFile,namaFile,1);
   int n;
   n = masukanFileToInt(masukanFile);
   int i;
@@ -240,11 +241,12 @@ void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
     
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
-    int b;
-    for ( b = 0; b < masukanFile.Length; b++)
-    {
-      listPengguna->contents[i].acc_type[b] = masukanFile.TabMASUKANFILE[b];
+    if(isSame(masukanFileToMasukan(masukanFile), "Privat")){
+      IS_PRIVATE(*listPengguna,i) = true;
+    }else{
+      IS_PRIVATE(*listPengguna,i) = false;
     }
+
     int c;
     for ( c = 0; c < 5; c++)
     {
@@ -265,7 +267,7 @@ void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
     int f;
     for ( f = 0; f < masukanFile.Length; f++)
     {
-      ELMT_MTX(,e,f) == masukanFile.TabMASUKANFILE[2*f] - 48;
+      ELMT_MTX(RelasiPertemanan,e,f) = masukanFile.TabMASUKANFILE[2*f] - 48;
     }  
   }
   bacaLanjutFile(&masukanFile);
@@ -290,12 +292,12 @@ void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
           if(num1 == -1){
             num1 = numTemp;
           }else{
-            num2 = numTemp
+            num2 = numTemp;
           }
       }
       }
     }
-    ELMT_MTX(RelasiTeman,num1,num2) = 1;
+    ELMT_MTX(RelasiPertemanan,num1,num2) = 1;
   }
 }
 
@@ -303,9 +305,10 @@ void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
 // status: done?
 void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile);
+  bacaAwalFile(&masukanFile,namaFile,2);
   int n;
   n = masukanFileToInt(masukanFile);
+  Kicauan tempKicauan;
   int i;
   for ( i = 0; i < n; i++)
   {
@@ -318,12 +321,7 @@ void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
     // text
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
-    int a;
-    char text[masukanFile.Length];
-    for ( a = 0; a < masukanFile.Length; a++)
-    {
-      text[a] = masukanFile.TabMASUKANFILE[a];
-    }
+    char* text = MASUKANToStr(masukanFileToMasukan(masukanFile));
     // like
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
@@ -350,8 +348,7 @@ void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
     int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
     DATETIME datetime;
     CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
-    Kicauan tempKicauan;
-    CreateKicauan(&tempKicauan,id,&text,like,&author,datetime);
+    CreateKicauan(&tempKicauan,id,text,like,&author,datetime);
     AddressKicauan addKicauan;
     addKicauan = newNodeKicauan(tempKicauan);
     insertLastListDinKicauan(listKicauan,addKicauan);
@@ -387,7 +384,7 @@ void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKAN
 // status: done?
 void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile);
+  bacaAwalFile(&masukanFile,namaFile,3);
   int n;
   n = masukanFileToInt(masukanFile);
   int i;
@@ -405,7 +402,7 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
       bacaLanjutFile(&masukanFile);
       // parent, id balasan
       MASUKANFILE mP,mQ;
-      splitMasukanFileJadi2(masukanFile,mP,mQ);
+      splitMasukanFileJadi2(masukanFile,&mP,&mQ);
       int p,q;
       p = masukanFileToInt(mP);
       q = masukanFileToInt(mQ);
@@ -439,7 +436,7 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
       Balasan tempBalasan;
-      CreateBalasan(&tempBalasan,q, &text,&author,datetime);
+      CreateBalasan(&tempBalasan,q, text,&author,datetime); // masukan to str
       TreeKicauan tempTree;
       tempTree = ELMT_LDK(*listKicauan,id-1);
       if(p == -1){
@@ -455,21 +452,20 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
 // status: tinggal connectin thread
 void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas listUtas){
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile);
+  bacaAwalFile(&masukanFile,namaFile,5);
   int n;
   n = masukanFileToInt(masukanFile);
   int i;
   for ( i = 0; i < n; i++)
   {
     bacaLanjutFile(&masukanFile);
-    int idKicau;
-    idKicau = masukanFileToInt(masukanFile);
+    int idKicau = masukanFileToInt(masukanFile);
     bacaLanjutFile(&masukanFile);
     int a;
     a = 0;
     a = masukanFileToInt(masukanFile);
     Kicauan kicauan;
-    kicauan = ELMT_LDK(listKicauan,idKicau);
+    kicauan = ELMT_LDK(*listKicauan,idKicau-1)->infoKicauan;
     UTAS utasUtama;
     CreateUtas(&utasUtama, &kicauan, i);
     for ( a = 0; a < listKicauan->nEff; a++)
@@ -487,8 +483,8 @@ void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPeng
       int YYYY = charToInt(masukanFile.TabMASUKANFILE[6])*1000 + charToInt(masukanFile.TabMASUKANFILE[7])*100 + charToInt(masukanFile.TabMASUKANFILE[8])*10 + charToInt(masukanFile.TabMASUKANFILE[9]);
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
-      User author;
-      author = tempKicauan.author;
+      // User author;
+      // author = tempKicauan.author;
       // threads tempUtas;
       // tempUtas = newThreadNode(text,datetime);
       insertLastThreadForConfig(&utasUtama, text, datetime);
@@ -530,7 +526,7 @@ void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* ang
 
 void bacaDraf(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
   MASUKANFILE masukanFile;
-  bacaAwalFile(&masukanFile,namaFile);
+  bacaAwalFile(&masukanFile,namaFile,4);
   int n;
   n = masukanFileToInt(masukanFile);
   int i;
@@ -541,14 +537,14 @@ void bacaDraf(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPeng
     int count;
     MASUKANFILEToStrAndInt(masukanFile,&tempAuthor,&count);
     char* nama = MASUKANToStr(masukanFileToMasukan(tempAuthor));
-    User author;
+    // User author;
     boolean authorFound;
     authorFound = false;
     int b = 0;
     while(b < listLength(listPengguna) && !authorFound){
       if(USERNAME(listPengguna,b) == nama){
         authorFound = true;
-        author = listPengguna.contents[b];
+        // author = listPengguna.contents[b];
       }else{
         b ++;
       }

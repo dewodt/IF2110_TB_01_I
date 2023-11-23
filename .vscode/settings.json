@@ -6,7 +6,8 @@
     "utas.h": "c",
     "masukanfile.h": "c",
     "boolean.h": "c",
-    "stackdraf.h": "c"
+    "stackdraf.h": "c",
+    "prioqueueint.h": "c"
   },
   "C_Cpp.dimInactiveRegions": true,
   "C_Cpp.errorSquiggles": "disabled"

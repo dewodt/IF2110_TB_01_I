@@ -1,6 +1,7 @@
 #ifndef SIMPAN
 #define SIMPAN
 
+#include "../matrixteman/matrixteman.h"
 #include "../tree/tree.h"
 
 /* Prosedur untuk menyimpan seluruh data program dalam folder config/foo */

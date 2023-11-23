@@ -7,7 +7,11 @@
     "masukanfile.h": "c",
     "boolean.h": "c",
     "stackdraf.h": "c",
-    "prioqueueint.h": "c"
+    "prioqueueint.h": "c",
+    "simpan.h": "c",
+    "pengguna.h": "c",
+    "reqpertemanan.h": "c",
+    "modifiedliststatik.h": "c"
   },
   "C_Cpp.dimInactiveRegions": true,
   "C_Cpp.errorSquiggles": "disabled"

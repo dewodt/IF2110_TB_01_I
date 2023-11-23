@@ -7,7 +7,7 @@
 #include "../boolean.h"
 #include "../charmachine/charmachine.h"
 
-#define NMax 281
+#define NMax 280
 #define BLANK ' '
 
 typedef int MASUKANint;

@@ -10,14 +10,14 @@
 #include "masukan.h"
 #include "../modifiedliststatik/modifiedliststatik.h"
 #include "../listdinkicauan/listdinkicauan.h"
-//#include "../prioQueue/reqPertemanan.c"
+#include "../prioQueue/reqPertemanan.c"
 #include "../kicauan/kicauan.h"
 #include "../balasan/balasan.h"
 #include "../stackdraf/stackdraf.h"
 #include "../draf/draf.h"
 #include "../listdinUtas/listdinForUtas.h"
 
-#define NMax 281
+#define NMax 280
 #define BLANK ' '
 
 typedef struct
@@ -70,7 +70,7 @@ void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKAN
 
 void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 
-void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaUtas(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas listUtas);
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);
 
 void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* angka);

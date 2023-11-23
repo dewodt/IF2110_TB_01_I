@@ -9,6 +9,10 @@
 #include "../pengguna/pengguna.h"                     // global variable currentUser
 #include "../masukan/masukanFile.h"
 #include "../masukan/masukanint.h"
+#include "../teman/teman.h"
+#include "../Utas/utas.h"
+#include "../listdinUtas/listdinForUtas.h"
+#include "../listlinierUtas/listlinierForUtas.h"
 
 
 /* Prosedur untuk menyimpan seluruh data program dalam folder config/foo */
@@ -103,16 +107,20 @@ void SimpanPengguna(char* folderDir)
     char* noHp;
     noHp = pengguna.phone_num.TabMASUKAN;
     fprintf(fptr, "\n%s", noHp);
-    char* jenisAkun;
-    jenisAkun = pengguna.acc_type;
-    fprintf(fptr, "\n%s", jenisAkun);
+    boolean jenisAkun;
+    jenisAkun = pengguna.isPrivate;
+    if(jenisAkun){
+      fprintf(fptr, "\n%s", "Privat");
+    }else{
+      fprintf(fptr, "\n%s", "Publik");
+    }
     int a;
     for ( a = 0; a < 5; a++)
     {
       int b;
       for ( b = 0; b < 19; b++)
       {
-        fprintf(fptr, "%c", pengguna.profile[a][b]);
+        fprintf(fptr, "%c", ELMT_MTX(PROFILE(listUser,i),a,b));
         if(b == 18){
           fprintf(fptr, "\n");
         }
@@ -125,7 +133,7 @@ void SimpanPengguna(char* folderDir)
     int d;
     for ( d = 0; d < listLength(listUser); d++)
     {
-      if(ELMT_MTX(RelasiTeman,c,d) == 1 && ELMT_MTX(RelasiTeman,d,c) == 1){
+      if(ELMT_MTX(RelasiPertemanan,c,d) == 1 && ELMT_MTX(RelasiPertemanan,d,c) == 1){
         if(d == listLength(listUser)-1){
           fprintf(fptr, "%d\n", 1);
         }else{
@@ -148,9 +156,9 @@ void SimpanPengguna(char* folderDir)
     int f;
     for ( f = 0; f < listLength(listUser); f++)
     {
-      if(ELMT_MTX(RelasiTeman,e,f) == 1 && ELMT_MTX(RelasiTeman,e,f) == 0){
+      if(ELMT_MTX(RelasiPertemanan,e,f) == 1 && ELMT_MTX(RelasiPertemanan,e,f) == 0){
         countReqPertemanan += 1;
-      }else if (ELMT_MTX(RelasiTeman,e,f) == 0 && ELMT_MTX(RelasiTeman,e,f) == 1)
+      }else if (ELMT_MTX(RelasiPertemanan,e,f) == 0 && ELMT_MTX(RelasiPertemanan,e,f) == 1)
       {
         countReqPertemanan += 1;
       }
@@ -163,20 +171,20 @@ void SimpanPengguna(char* folderDir)
     int n;
     for ( n = 0; n < listLength(listUser); n++)
     {
-      if(ELMT_MTX(RelasiTeman,m,n) == 1 && ELMT_MTX(RelasiTeman,n,m) == 0){
+      if(ELMT_MTX(RelasiPertemanan,m,n) == 1 && ELMT_MTX(RelasiPertemanan,n,m) == 0){
         int pop;
         pop = 0;
         int o;
         for ( o = 0; o < listLength(listUser); o++)
         {
           if(o != n && o != m){
-            if(ELMT_MTX(RelasiTeman,n,o) == 1 && ELMT_MTX(RelasiTeman,o,n) == 1 && ELMT_MTX(RelasiTeman,m,o) == 1 && ELMT_MTX(RelasiTeman,o,m) == 1){
+            if(ELMT_MTX(RelasiPertemanan,n,o) == 1 && ELMT_MTX(RelasiPertemanan,o,n) == 1 && ELMT_MTX(RelasiPertemanan,m,o) == 1 && ELMT_MTX(RelasiPertemanan,o,m) == 1){
               pop += 1;
             }
          }
         }
         fprintf(fptr, "%d %d %d\n", m,n, pop);
-      }else if (ELMT_MTX(RelasiTeman,m,n) == 0 && ELMT_MTX(RelasiTeman,n,m) == 1)
+      }else if (ELMT_MTX(RelasiPertemanan,m,n) == 0 && ELMT_MTX(RelasiPertemanan,n,m) == 1)
       {
         int pop;
         pop = 0;
@@ -184,7 +192,7 @@ void SimpanPengguna(char* folderDir)
         for ( o = 0; o < listLength(listUser); o++)
         {
           if(o != n && o != m){
-            if(ELMT_MTX(RelasiTeman,n,o) == 1 && ELMT_MTX(RelasiTeman,o,n) == 1 && ELMT_MTX(RelasiTeman,m,o) == 1 && ELMT_MTX(RelasiTeman,o,m) == 1){
+            if(ELMT_MTX(RelasiPertemanan,n,o) == 1 && ELMT_MTX(RelasiPertemanan,o,n) == 1 && ELMT_MTX(RelasiPertemanan,m,o) == 1 && ELMT_MTX(RelasiPertemanan,o,m) == 1){
               pop += 1;
             }
          }
@@ -332,7 +340,7 @@ void writeBalasanDetailFile(FILE *ptr, int parentId, AddressBalasan nodeBalasan)
 }
 
 
-void SimpanDraf(File* folderDir)
+void saveDraf(char* folderDir)
 {
   char *fileDir = concatStr(folderDir, "/draf.config");
 
@@ -374,13 +382,14 @@ void SimpanDraf(File* folderDir)
         infotype elmt;
         PopStack(&temp2,&elmt);
         fprintf(fptr, "\n%s", elmt.text);
-        fprintf(fptr, "\n%s", elmt.datetime);
+        DATETIME DT = elmt.datetime;
+        fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
       }
     }
   }
 }
 
-void SimpanUtas(File* folderDir)
+void SimpanUtas(char* folderDir)
 {
   char *fileDir = concatStr(folderDir, "/utas.config");
 
@@ -394,10 +403,10 @@ void SimpanUtas(File* folderDir)
   int i;
   for ( i = 0; i < countUtas; i++)
   {
-    Utas utasUtama;
-    utasUtama = listUtas[i];
+    UTAS utasUtama;
+    utasUtama = listUtas.buffer[i];
 
-    fprintf(fptr, "\n%d", ID(utasUtama.Kicauan));
+    fprintf(fptr, "\n%d", ID(*(utasUtama.KicauanUtama)));
 
     AddressUtas p;
     p = KicauanSambungan(utasUtama);
@@ -410,7 +419,7 @@ void SimpanUtas(File* folderDir)
       char *text = p->textThread;
       fprintf(fptr, "\n%s", text);
 
-      char *username = AUTHOR(utasUtama.Kicauan);
+      char *username = (AUTHOR(*(utasUtama.KicauanUtama)))->username;
       fprintf(fptr, "\n%s", username);
       
       DATETIME DT = p->timeThread;
@@ -418,4 +427,5 @@ void SimpanUtas(File* folderDir)
       p = p->nextThread;
     }
   }
+
 }

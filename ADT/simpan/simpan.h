@@ -29,12 +29,12 @@ void writeBalasanDetailFile(FILE *ptr, int parentId, AddressBalasan nodeBalasan)
 /* F.S. seluruh balasan tertulis pada file */
 
 /* Prosedur untuk menyimpan data draf dalam folder config/foo */
-void SimpanDraf();
+void saveDraf(char *folderDir);
 /* I.S. Sembarang */
 /* F.S. Data draf tersimpan dalam folder config/foo/draf */
 
 /* Prosedur untuk menyimpan data utas dalam folder config/foo */
-void SimpanUtas();
+void SimpanUtas(char *folderDir);
 /* I.S. Sembarang */
 /* F.S. Data utas tersimpan dalam folder config/foo/utas */
 

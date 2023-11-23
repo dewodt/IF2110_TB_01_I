@@ -44,7 +44,7 @@ void insertUtas(ListUtas *lu, UTAS U)
 {
   if (isFullListDinUtas(*lu))
   {
-    expandListDinUtas(lu, 2 * CAPACITYListDinUtas(*lu));
+    expandListDinUtas(lu, CAPACITYListDinUtas(*lu));
   }
 
   KicauanUtama(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)]) = KicauanUtama(U);

@@ -1,4 +1,4 @@
-#include "prioQueueInt.h"
+#include "prioQueueint.h"
 /* ********* Prototype ********* */
 boolean IsEmptyQ (PrioQueueint Q) {
     /* Mengirim true jika Q kosong: lihat definisi di atas */

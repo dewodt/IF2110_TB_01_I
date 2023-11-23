@@ -210,9 +210,31 @@ void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
         MASUKAN bio_temp;
         printf("Masukkan Bio Akun: ");
         baca(&bio_temp);
-        char *bio = MASUKANToStr(bio_temp);
+        // displayMASUKAN(bio_temp);
 
-        SetBio(pengguna, userIndex, bio);
+        boolean validbio = false;
+
+        do
+        {
+            validbio = false;
+            if (bio_temp.Length > 135) {
+                validbio = false;
+            }
+            else {
+                validbio = true;
+            }
+
+            if (!validbio)
+            {
+                printf("Bio anda > 135 karakter. Masukkan lagi: ");
+                baca(&bio_temp);
+            }
+        } while (!validbio);
+
+        if (validbio) {
+            char *bio = MASUKANToStr(bio_temp);
+            SetBio(pengguna, userIndex, bio);
+        }
 
         MASUKAN nohp;
         int z;
@@ -225,6 +247,9 @@ void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
             validnumber = true;
             if (nohp.Length > 15) {
                 validnumber = false;
+            }
+            else if (isMasukanEmpty(nohp)) {
+                validnumber = true;
             }
             else {
                 for (z = 0; z < nohp.Length; z++)
@@ -247,22 +272,24 @@ void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
         SetPhoneNum(pengguna, userIndex, nohp);
 
         MASUKAN weton_temp;
-        char weton[NMax];
+        char *weton;
         printf("Masukkan Weton: ");
         baca(&weton_temp);
         boolean validweton = false;
 
         do
         {
-            char *weton = MASUKANToStr(weton_temp);
-            if (compareString(weton, "\0", 1) == 0)
+            weton = MASUKANToStr(weton_temp);
+            // printf("%s\n", weton);
+            // printf("char[0]: %c\n", weton[0]);
+            if (isMasukanEmpty(weton_temp))
             {
                 validweton = true;
             }
             else
             {
                 toLowerCase(weton);
-                if (compareString(weton, ";", 1) == 0 || compareString(weton, "pahing", 6) == 0 || compareString(weton, "kliwon", 6) == 0 || compareString(weton, "wage", 4) == 0 || compareString(weton, "pon", 3) == 0 || compareString(weton, "legi", 4) == 0)
+                if ((compareString(weton, ";", 1) == 0)|| (compareString(weton, "pahing", 6) == 0 && weton_temp.Length == 6) || (compareString(weton, "kliwon", 6) == 0 && weton_temp.Length == 6) || (compareString(weton, "wage", 4) == 0 && weton_temp.Length == 4) || (compareString(weton, "pon", 3) == 0 && weton_temp.Length == 3) || (compareString(weton, "legi", 4) == 0 && weton_temp.Length == 4))
                 {
                     validweton = true;
                 }

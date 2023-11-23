@@ -75,5 +75,9 @@ void toLowerCase(char *str);
 // mengubah string menjadi huruf kecil
 
 int masukanToInt(MASUKAN masukan);
+// mengubah masukan menjadi integer
+
+boolean isMasukanEmpty(MASUKAN masukan);
+// memeriksa apakah masukan kosong
 
 #endif

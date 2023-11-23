@@ -20,6 +20,7 @@ void STARTMASUKAN()
   if (currentChar == ';')
   {
     EndMASUKAN = true;
+    currentMASUKAN.Length = 0;
   }
   else
   {
@@ -37,16 +38,27 @@ void CopyMASUKAN()
           Jika panjang MASUKAN melebihi NMax, maka sisa MASUKAN "dipotong" */
 {
   int i = 0;
-  do
-  {
+  currentMASUKAN.Length = 0;
+  while (currentChar != ';') {
     if (i < NMax && currentChar != 10)
     {
       currentMASUKAN.TabMASUKAN[i] = currentChar;
       currentMASUKAN.Length = i + 1;
       i++;
     }
-    ADV();
-  } while (currentChar != ';');
+    ADV(); 
+  }
+
+  // do
+  // {
+  //   if (i < NMax && currentChar != 10)
+  //   {
+  //     currentMASUKAN.TabMASUKAN[i] = currentChar;
+  //     currentMASUKAN.Length = i + 1;
+  //     i++;
+  //   }
+  //   ADV();
+  // } while (currentChar != ';');
 }
 
 void baca(MASUKAN *masukan)
@@ -272,4 +284,8 @@ int masukanToInt(MASUKAN masukan){
     hasil *= -1;
   }
   return hasil;
+}
+
+boolean isMasukanEmpty(MASUKAN masukan) {
+  return masukan.Length == 0;
 }

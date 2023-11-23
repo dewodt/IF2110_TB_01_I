@@ -8,7 +8,7 @@ void searchID_Pengguna(MASUKAN Pengguna, int* id)
     hasil = -1;
     int i;
     i = 0;
-    printf("%d\n", listLength(listUser));
+    // qq
     while (i < listLength(listUser) && hasil == -1)
     {
         if(true){

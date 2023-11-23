@@ -13,7 +13,9 @@
     "reqpertemanan.h": "c",
     "modifiedliststatik.h": "c",
     "charfile.h": "c",
-    "masukan.h": "c"
+    "masukan.h": "c",
+    "listdinforutas.h": "c",
+    "listdinkicauan.h": "c"
   },
   "C_Cpp.dimInactiveRegions": true,
   "C_Cpp.errorSquiggles": "disabled"

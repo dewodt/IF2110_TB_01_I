@@ -67,16 +67,31 @@ int main()
     printf("%s\n", BIO(listUser,1));
     printf("%s\n", USERNAME(listUser,2));
     printf("%s\n", WETON(listUser,2));
+
     bacaKicauan(&listKicauan,kata,listUser);
     printf("sampe bacaKicauan\n");
     printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
     printDetailKicauan(ELMT_LDK(listKicauan,1)->infoKicauan);
+    bacaDraf(kata);
+
+    printf("%s\n", InfoTop(DRAF(listUser,0)).text);
+    displayTime( InfoTop(DRAF(listUser,0)).datetime);
+    printf("sampe bacaDraf\n");
+
+    printf("==================\n");
+    printf("==================\n");
+    printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
+    printf("==================\n");
+    printf("==================\n");
     bacaBalasan(&listKicauan,kata,listUser);
+    TreeKicauan tk = ELMT_LDK(listKicauan,0);
+    // AddressBalasan ab = FirstLeftChildBalasan(tk);
+    // TampilkanBalasanRekursif(ab, 0);
+
+
     printf("sampe bacaBalasan\n");
     bacaUtas(listKicauan,kata,listUser,&listUtas);
     printf("sampe bacaUtas\n");
-    bacaDraf(listKicauan,kata,listUser);
-    printf("sampe bacaDraf\n");
     printf(">>");
 
     while (!isSame(kata, "\nTUTUP_PROGRAM;"))

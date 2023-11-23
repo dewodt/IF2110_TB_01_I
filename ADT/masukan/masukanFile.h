@@ -67,7 +67,7 @@ void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile);
 
 void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 
-void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKANFILE* hasil2);
+void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKANFILE* hasil2, boolean* neg);
 
 void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
 
@@ -76,5 +76,5 @@ void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengg
 
 void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* angka);
 
-void bacaDraf(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaDraf(MASUKAN namaFile);
 #endif

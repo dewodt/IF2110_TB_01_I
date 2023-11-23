@@ -129,19 +129,3 @@ void SetIsPrivate(ListStatik *l, int userIndex, boolean *status)
         ELMT(*l, userIndex).isPrivate = *status;
     }
 }
-
-// TES
-
-// int main() {
-//     ListStatik l;
-//     CreateListStatik(&l);
-//     printf("list length: %d\n", listLength(l));
-
-//     char username_temp[MAX_USERNAME_LENGTH];
-//     printf("Masukkan nama: ");
-//     fgets(username_temp, MAX_USERNAME_LENGTH, stdin);
-//     username_temp[strcspn(username_temp, "\n")] = '\0';
-//     strcpy(ELMT(l, 0).username, username_temp);
-//     printList(l);
-//     printf("list length: %d\n", listLength(l));
-// }

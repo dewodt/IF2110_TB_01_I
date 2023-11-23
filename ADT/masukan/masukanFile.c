@@ -3,6 +3,7 @@
 #include "../boolean.h"
 // #include "../modifiedliststatik/modifiedliststatik.h"
 #include "masukanFile.h"
+#include "../prioQueue/reqPertemanan.h"
 #include "../matrixteman/matrixteman.h"
 
 /* State Mesin MASUKANFILE */
@@ -11,12 +12,13 @@ MASUKANFILE currentMASUKANFILE;
 //boolean EOP;
 //char currentChar;
 
-void STARTMASUKANFILE(char nameFile[])
+void STARTMASUKANFILE(char* nameFile)
 /* I.S. : currentChar sembarang
    F.S. : EndMASUKANFILE = true, dan currentChar = MARK;
           atau EndMASUKANFILE = false, currentMASUKANFILE adalah MASUKANFILE yang sudah diakuisisi,
           currentChar karakter pertama sesudah karakter terakhir MASUKANFILE */
 {
+  printf("ada\n");
   STARTFILE(nameFile);
   if (currentCharFILE == 10)
   {
@@ -25,7 +27,9 @@ void STARTMASUKANFILE(char nameFile[])
   else
   {
     EndMASUKANFILE = false;
+    printf("ada\n");
     CopyMASUKANFILE();
+    printf("ada\n");
   }
 }
 
@@ -84,21 +88,25 @@ void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile, int x)
 {
 
   char* str = MASUKANToStr(namaFile);
-  //printf("%s\n", str);
   if(x == 1){
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"pengguna.config")); 
+    printf("%s\n", concatStr(concatStr("config/",str),"/pengguna.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/pengguna.config")); 
   }
   else if (x == 2){
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"kicauan.config")); 
+    printf("%s\n", concatStr(concatStr("config/",str),"/kicauan.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/kicauan.config")); 
   }else if (x == 3)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"balasan.config")); 
+    printf("%s\n", concatStr(concatStr("config/",str),"/balasan.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/balasan.config")); 
   }else if (x == 4)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"draf.config")); 
+    printf("%s\n", concatStr(concatStr("config/",str),"/draf.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/draf.config")); 
   }else if (x == 5)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/",str),"utas.config")); 
+    printf("%s\n", concatStr(concatStr("config/",str),"/utas.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/",str),"/utas.config")); 
   }
   
   
@@ -304,39 +312,49 @@ void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile){
 // membaca kicauan.config
 // status: done?
 void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna){
+
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile,namaFile,2);
+
   int n;
   n = masukanFileToInt(masukanFile);
+
   Kicauan tempKicauan;
   int i;
+
   for ( i = 0; i < n; i++)
   {
+
     // id
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int id;
     id = masukanFileToInt(masukanFile);
-    tempKicauan.id = id;
+
     // text
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     char* text = MASUKANToStr(masukanFileToMasukan(masukanFile));
+
     // like
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int like;
     like = masukanFileToInt(masukanFile);
-    tempKicauan.like = like;
+
     // author
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     MASUKAN tempMasukan;
     tempMasukan = masukanFileToMasukan(masukanFile);
-    int idx;
-    idx = searchID_Pengguna(listPengguna,tempMasukan);
+    displayMASUKAN(tempMasukan);
+
+    int idx = 0;
+    searchID_Pengguna(tempMasukan,&idx);
+
+    printf("%d\n",idx);
     User author;
-    author = listPengguna.contents[idx];
+    author = listPengguna.contents[0];
     // datetime
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
@@ -420,8 +438,8 @@ void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listP
       bacaLanjutFile(&masukanFile);
       MASUKAN tempMasukan;
       tempMasukan = masukanFileToMasukan(masukanFile);
-      int idx;
-      idx = searchID_Pengguna(listPengguna,tempMasukan);
+      int idx = 0;
+      searchID_Pengguna(tempMasukan,&idx);
       User author;
       author = listPengguna.contents[idx];
 

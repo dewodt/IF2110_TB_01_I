@@ -50,7 +50,7 @@ void Simpan()
 
     // Make Directory
     // 2ND ARGUMENT WAJIB 0700 DI LINUX / WSL.
-    mkdir(folderDir, 0700);
+    mkdir(folderDir);
 
     // Cetak pesan berhasil
     printf("%s sudah berhasil dibuat.\n", folderStr);

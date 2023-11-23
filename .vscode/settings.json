@@ -11,7 +11,9 @@
     "simpan.h": "c",
     "pengguna.h": "c",
     "reqpertemanan.h": "c",
-    "modifiedliststatik.h": "c"
+    "modifiedliststatik.h": "c",
+    "charfile.h": "c",
+    "masukan.h": "c"
   },
   "C_Cpp.dimInactiveRegions": true,
   "C_Cpp.errorSquiggles": "disabled"

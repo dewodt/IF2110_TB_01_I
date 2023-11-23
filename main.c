@@ -49,11 +49,34 @@ int main()
     printf(">>");
     baca(&kata);
     // Proses salin konfig ke dalam variabel program
+    // FILE* output;
+    // output = fopen("config/config-1/pengguna.config", "r");
+    // if(!output){
+    //     printf("error\n");
+    // }else{
+    //     printf("berhasil\n");
+    // }
     bacaPengguna(&listUser,kata);
+    printf("sampe bacaPengguna\n");
+    printf("%s\n", USERNAME(listUser,0));
+    printf("%s\n", PASSWORD(listUser,0));
+    printf("%s\n", MASUKANToStr(PHONE_NUM(listUser,0)));
+    printf("%s\n", WETON(listUser,0));
+    displayProfile(PROFILE(listUser,0));
+    printf("%s\n", USERNAME(listUser,1));
+    printf("%s\n", BIO(listUser,1));
+    printf("%s\n", USERNAME(listUser,2));
+    printf("%s\n", WETON(listUser,2));
     bacaKicauan(&listKicauan,kata,listUser);
+    printf("sampe bacaKicauan\n");
+    printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
+    printDetailKicauan(ELMT_LDK(listKicauan,1)->infoKicauan);
     bacaBalasan(&listKicauan,kata,listUser);
+    printf("sampe bacaBalasan\n");
     bacaUtas(listKicauan,kata,listUser,&listUtas);
+    printf("sampe bacaUtas\n");
     bacaDraf(listKicauan,kata,listUser);
+    printf("sampe bacaDraf\n");
     printf(">>");
 
     while (!isSame(kata, "\nTUTUP_PROGRAM;"))

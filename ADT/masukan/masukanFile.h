@@ -31,7 +31,7 @@ typedef struct
 extern boolean EndMASUKANFILE;
 extern MASUKANFILE currentMASUKANFILE;
 
-void STARTMASUKANFILE(char nameFile[]);
+void STARTMASUKANFILE(char* nameFile);
 /* I.S. : currentChar sembarang
    F.S. : EndMASUKANFILE = true, dan currentChar = MARK;
           atau EndMASUKANFILE = false, currentMASUKANFILE adalah kata yang sudah diakuisisi,

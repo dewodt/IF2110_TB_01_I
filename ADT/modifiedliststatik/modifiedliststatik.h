@@ -11,6 +11,7 @@
 #include "../masukan/masukan.h"
 #include "../pcolor/pcolor.h"
 #include "../modifiedmatrix/modifiedmatrix.h"
+#include "../stackdraf/stackdraf.h"
 
 /*  Kamus Umum */
 #define CAPACITY 20
@@ -25,10 +26,6 @@
 #define MAX_PASSWORD_LENGTH 20
 #define MAX_BIO_LENGTH 135
 #define MAX_WETON_LENGTH 10
-#define MAX_ACC_TYPE_LENGTH 10
-
-// Forward declaration type Stack
-struct Stack;
 
 /* Definisi elemen dan koleksi objek */
 typedef struct user
@@ -38,11 +35,10 @@ typedef struct user
    char bio[MAX_BIO_LENGTH];
    MASUKAN phone_num;
    char weton[MAX_WETON_LENGTH];
-   char acc_type[MAX_ACC_TYPE_LENGTH];
+   boolean isPrivate;
    Matrix profile;
-   char jenis_akun[6];
-   struct Stack *draf; // Forward declaration
-} User;                /* type elemen List */
+   Stack draf;
+} User; /* type elemen List */
 typedef int IdxType;
 typedef struct
 {
@@ -67,9 +63,8 @@ extern ListStatik listUser;
 #define BIO(l, i) (l).contents[(i)].bio
 #define PHONE_NUM(l, i) (l).contents[(i)].phone_num
 #define WETON(l, i) (l).contents[(i)].weton
-#define ACC_TYPE(l, i) (l).contents[(i)].acc_type
+#define IS_PRIVATE(l, i) (l).contents[(i)].isPrivate
 #define PROFILE(l, i) (l).contents[(i)].profile
-#define JENIS_AKUN(l, i) (l).contents[(i)].jenis_akun
 #define DRAF(l, i) (l).contents[(i)].draf
 
 /* ********** KONSTRUKTOR ********** */
@@ -118,4 +113,7 @@ void SetProfile(ListStatik *l, int userIndex, Matrix *profile);
 // I.S.
 // F.S.
 
+void SetIsPrivate(ListStatik *l, int userIndex, boolean *status);
+// I.S.
+// F.S.
 #endif

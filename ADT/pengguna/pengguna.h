@@ -17,22 +17,22 @@ boolean isUserLoggedIn();
 // Jika global variable currentUser tidak NULL maka sudah login (pointer ke user yang sedang login)
 
 // mendaftarkan pengguna
-void DAFTAR(ListStatik *pengguna, boolean *isLoggedin);
+void DAFTAR(ListStatik *pengguna);
 // I.S.
 // F.S.
 
 // masuk sebagai pengguna
-boolean MASUK(ListStatik *pengguna, boolean *isLoggedin, User *currentUser);
+void MASUK(ListStatik *pengguna, User **currentUser);
 // I.S.
 // F.S.
 
 // keluar dari akun pengguna
-boolean KELUAR(boolean *isLoggedin);
+void KELUAR(User **currentUser);
 // I.S.
 // F.S.
 
 // ganti profil (nama, bio akun, no HP, weton)
-void GANTI_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser);
+void GANTI_PROFIL(ListStatik *pengguna, User *currentUser);
 // I.S.
 // F.S.
 
@@ -42,12 +42,12 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna);
 // F.S.
 
 // ganti profile
-void UBAH_FOTO_PROFIL(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser);
+void UBAH_FOTO_PROFIL(ListStatik *pengguna, User *currentUser);
 // I.S.
 // F.S.
 
 // atur jenis akun
-void ATUR_JENIS_AKUN(ListStatik *pengguna, boolean *isLoggedIn, User *currentUser);
+void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser);
 // I.S.
 // F.S.
 

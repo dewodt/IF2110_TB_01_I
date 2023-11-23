@@ -16,9 +16,12 @@ ListDinKicauan listKicauan;
 ListStatik listUser;
 ListUtas listUtas;
 User *currentUser;
+int jumlahPengguna;
 
 int main()
 {
+    ListStatik listPengguna;
+    CreateListStatik(&listPengguna);
     // Inisialisasi global variable
     CreateListDinKicauan(&listKicauan, 100);
     CreateListUtas(&listUtas, 100);

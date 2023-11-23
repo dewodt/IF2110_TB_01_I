@@ -74,6 +74,9 @@ void perintah(MASUKAN *perintah, MASUKAN *argumen1, MASUKAN *argumen2)
   MASUKAN temp;
   STARTMASUKAN();
   temp = currentMASUKAN;
+  (*perintah).Length = 0;
+  (*argumen1).Length = 0;
+  (*argumen2).Length = 0;
   int i, j, k;
   j = 0;
   k = 0;
@@ -95,16 +98,19 @@ void perintah(MASUKAN *perintah, MASUKAN *argumen1, MASUKAN *argumen2)
       if (k == 0)
       {
         (*perintah).TabMASUKAN[j] = temp.TabMASUKAN[i];
+        (*perintah).Length++;
         j++;
       }
       else if (k == 1)
       {
         (*argumen1).TabMASUKAN[j] = temp.TabMASUKAN[i];
+        (*argumen1).Length++;
         j++;
       }
       else
       {
         (*argumen2).TabMASUKAN[j] = temp.TabMASUKAN[i];
+        (*argumen2).Length++;
         j++;
       }
     }
@@ -265,22 +271,27 @@ void toLowerCase(char *str)
   }
 }
 
-int masukanToInt(MASUKAN masukan){
+int masukanToInt(MASUKAN masukan)
+{
   int hasil;
   hasil = 0;
   boolean isNeg;
   isNeg = false;
   int i;
-  for ( i = 0; i < masukan.Length; i++)
+  for (i = 0; i < masukan.Length; i++)
   {
-    if(i == 0 && i == 45){
+    if (i == 0 && i == 45)
+    {
       isNeg = true;
-    }else{
+    }
+    else
+    {
       hasil *= 10;
       hasil += masukan.TabMASUKAN[i] - 48;
     }
   }
-  if(isNeg){
+  if (isNeg)
+  {
     hasil *= -1;
   }
   return hasil;

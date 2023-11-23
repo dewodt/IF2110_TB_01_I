@@ -6,6 +6,7 @@
 #include "ADT/masukan/masukanFile.h"
 #include "ADT/matrixteman/matrixteman.h"
 #include "ADT/prioQueue/prioQueueint.h"
+#include "ADT/simpan/simpan.h"
 
 /* GLOBAL VARIABLES:
 currentUser
@@ -29,6 +30,7 @@ int main()
     CreateListDinKicauan(&listKicauan, 100);
     CreateListUtas(&listUtas, 100);
     CreateListStatik(&listUser);
+    createMatrixTeman(20, 20, &RelasiPertemanan);
     currentUser = NULL;
 
     // Tampilan awal
@@ -48,6 +50,7 @@ int main()
     MASUKAN kata;
     printf(">>");
     baca(&kata);
+
     // Proses salin konfig ke dalam variabel program
     // FILE* output;
     // output = fopen("config/config-1/pengguna.config", "r");
@@ -56,43 +59,58 @@ int main()
     // }else{
     //     printf("berhasil\n");
     // }
-    bacaPengguna(&listUser,kata);
+
+    // Load User
+    printf("\n\n\n\n");
+    bacaPengguna(&listUser, kata);
     printf("sampe bacaPengguna\n");
-    printf("%s\n", USERNAME(listUser,0));
-    printf("%s\n", PASSWORD(listUser,0));
-    printf("%s\n", MASUKANToStr(PHONE_NUM(listUser,0)));
-    printf("%s\n", WETON(listUser,0));
-    displayProfile(PROFILE(listUser,0));
-    printf("%s\n", USERNAME(listUser,1));
-    printf("%s\n", BIO(listUser,1));
-    printf("%s\n", USERNAME(listUser,2));
-    printf("%s\n", WETON(listUser,2));
+    printf("%s\n", USERNAME(listUser, 0));
+    printf("%s\n", PASSWORD(listUser, 0));
+    printf("%s\n", MASUKANToStr(PHONE_NUM(listUser, 0)));
+    printf("%s\n", WETON(listUser, 0));
+    displayProfile(PROFILE(listUser, 0));
+    printf("%s\n", USERNAME(listUser, 1));
+    printf("%s\n", BIO(listUser, 1));
+    printf("%s\n", USERNAME(listUser, 2));
+    printf("%s\n", WETON(listUser, 2));
+    displayMatrixTeman(RelasiPertemanan);
 
-    bacaKicauan(&listKicauan,kata,listUser);
-    printf("sampe bacaKicauan\n");
-    printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
-    printDetailKicauan(ELMT_LDK(listKicauan,1)->infoKicauan);
-    bacaDraf(kata);
+    // Simpan
+    Simpan();
 
-    printf("%s\n", InfoTop(DRAF(listUser,0)).text);
-    displayTime( InfoTop(DRAF(listUser,0)).datetime);
-    printf("sampe bacaDraf\n");
+    // // DUMMY CURRENT USER
+    // currentUser = &listUser.contents[0];
+    // // currentUser = NULL;
+    // printf("%p\n", currentUser);
 
-    printf("==================\n");
-    printf("==================\n");
-    printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
-    printf("==================\n");
-    printf("==================\n");
-    bacaBalasan(&listKicauan,kata,listUser);
-    TreeKicauan tk = ELMT_LDK(listKicauan,0);
-    // AddressBalasan ab = FirstLeftChildBalasan(tk);
-    // TampilkanBalasanRekursif(ab, 0);
+    // printf("\n\n\n\n");
+    // bacaKicauan(&listKicauan, kata, listUser);
+    // printf("sampe bacaKicauan\n");
+    // printDetailKicauan(ELMT_LDK(listKicauan, 0)->infoKicauan);
+    // printf("\n");
+    // printDetailKicauan(ELMT_LDK(listKicauan, 1)->infoKicauan);
+    // TampilkanKicauan();
+    // bacaDraf(kata);
 
+    // printf("\n\n\n\n");
+    // printf("%s\n", InfoTop(DRAF(listUser, 0)).text);
+    // displayTime(InfoTop(DRAF(listUser, 0)).datetime);
+    // printf("sampe bacaDraf\n");
+    // printf("==================\n");
+    // printf("==================\n");
+    // printDetailKicauan(ELMT_LDK(listKicauan, 0)->infoKicauan);
+    // printf("==================\n");
+    // printf("==================\n");
 
-    printf("sampe bacaBalasan\n");
-    bacaUtas(listKicauan,kata,listUser,&listUtas);
-    printf("sampe bacaUtas\n");
-    printf(">>");
+    // printf("\n\n\n\n");
+    // bacaBalasan(&listKicauan, kata, listUser);
+    // TampilkanBalasan(1);
+    // printf("sampe bacaBalasan\n");
+
+    // printf("\n\n\n\n");
+    // bacaUtas(listKicauan, kata, listUser, &listUtas);
+    // printf("sampe bacaUtas\n");
+    // printf(">>");
 
     while (!isSame(kata, "\nTUTUP_PROGRAM;"))
     {

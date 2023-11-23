@@ -50,7 +50,7 @@ int main()
     // printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
 
     // Baca config
-    MASUKAN kata;
+    MASUKAN kata, arg1, arg2;
     printf(">> ");
     baca(&kata);
     // Proses salin konfig ke dalam variabel program
@@ -147,11 +147,15 @@ int main()
         {
             printf("ini SETUJUI_PERTEMANAN");
         }
-        else if (isSame(kata, "\nKICAU;"))
+        else if (isSame(kata, "\nKICAU"))
         {
-            printf("ini KICAU");
+            BuatKicauan(&listKicauan, currentUser);
         }
-        else if (isSame(kata, "\nSUKA_KICAUAN;"))
+        else if (isSame(kata, "\nKICAUAN"))
+        {
+            TampilkanKicauan(listKicauan, currentUser);
+        }
+        else if (isSame(kata, "\nSUKA_KICAUAN"))
         {
             printf("ini SUKA_KICAUAN");
         }

@@ -30,11 +30,9 @@ int main()
     CreateListDinKicauan(&listKicauan, 100);
     CreateListUtas(&listUtas, 100);
     CreateListStatik(&listUser);
-    createMatrixTeman(20, 20, &RelasiPertemanan);
     currentUser = NULL;
-    Stack s;
-    CreateEmptyStack(&s);
-    DRAF(listUser,0) = s;
+    MASUKAN kata;
+    createMatrixTeman(20,20,&RelasiPertemanan);
     // Tampilan awal
     printf(".______    __    __  .______      .______    __  .______ \n");
     printf("|   _  \\  |  |  |  | |   _  \\     |   _  \\  |  | |   _  \\\n");
@@ -45,14 +43,13 @@ int main()
     printf("Selamat datang di BurBir.\n");
     printf("Aplikasi untuk studi kualitatif mengenai perilaku manusia dengan menggunakan \n");
     printf("metode (pengambilan data berupa) Focused Group Discussion kedua di zamannya.\n");
-    printf("Silahkan masukan folder konfigurasi untuk dimuat: \n");
-    printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
+    printf("Silahkan masukan folder konfigurasi untuk dimuat: ");
+    bacaInisialisasi(listUser,listUtas);
+
 
     // Baca config
-    MASUKAN kata;
-    printf(">>");
-    baca(&kata);
-
+    // printf(">>");
+    // baca(&kata);
     // Proses salin konfig ke dalam variabel program
     // FILE* output;
     // output = fopen("config/config-1/pengguna.config", "r");
@@ -61,44 +58,29 @@ int main()
     // }else{
     //     printf("berhasil\n");
     // }
+    // bacaPengguna(&listUser,kata);
+    // printf("sampe bacaPengguna\n");
+    // printf("%s\n", USERNAME(listUser,0));
+    // printf("%s\n", PASSWORD(listUser,0));
+    // printf("%s\n", MASUKANToStr(PHONE_NUM(listUser,0)));
+    // printf("%s\n", WETON(listUser,0));
+    // displayProfile(PROFILE(listUser,0));
+    // printf("%s\n", USERNAME(listUser,1));
+    // printf("%s\n", BIO(listUser,1));
+    // printf("%s\n", USERNAME(listUser,2));
+    // printf("%s\n", WETON(listUser,2));
 
-    // Load User
-    printf("\n\n\n\n");
-    bacaPengguna(&listUser, kata);
-    printf("sampe bacaPengguna\n");
-    printf("%s\n", USERNAME(listUser, 0));
-    printf("%s\n", PASSWORD(listUser, 0));
-    printf("%s\n", MASUKANToStr(PHONE_NUM(listUser, 0)));
-    printf("%s\n", WETON(listUser, 0));
-    displayProfile(PROFILE(listUser, 0));
-    printf("%s\n", USERNAME(listUser, 1));
-    printf("%s\n", BIO(listUser, 1));
-    printf("%s\n", USERNAME(listUser, 2));
-    printf("%s\n", WETON(listUser, 2));
-    displayMatrixTeman(RelasiPertemanan);
-
-    // Simpan
-    Simpan();
-
-    // // DUMMY CURRENT USER
-    // currentUser = &listUser.contents[0];
-    // // currentUser = NULL;
-    // printf("%p\n", currentUser);
-
-    // printf("\n\n\n\n");
-    // bacaKicauan(&listKicauan, kata, listUser);
+    // // bacaKicauan(&listKicauan,kata,listUser);
     // printf("sampe bacaKicauan\n");
-    // printDetailKicauan(ELMT_LDK(listKicauan, 0)->infoKicauan);
-    // printf("\n");
-    // printDetailKicauan(ELMT_LDK(listKicauan, 1)->infoKicauan);
-    // TampilkanKicauan();
-    // bacaDraf(kata);
+    // printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
+    // printDetailKicauan(ELMT_LDK(listKicauan,1)->infoKicauan);
+    // // bacaDraf(kata);
 
-    printf("%s\n", InfoTop(DRAF(listUser,0)).text);
-    displayTime( InfoTop(DRAF(listUser,0)).datetime);
-    printf("%s\n", InfoTop(DRAF(listUser,1)).text);
-    displayTime( InfoTop(DRAF(listUser,1)).datetime);
-    printf("sampe bacaDraf\n");
+    // printf("%s\n", InfoTop(DRAF(listUser,0)).text);
+    // displayTime( InfoTop(DRAF(listUser,0)).datetime);
+    // printf("%s\n", InfoTop(DRAF(listUser,1)).text);
+    // displayTime( InfoTop(DRAF(listUser,1)).datetime);
+    // printf("sampe bacaDraf\n");
 
     Simpan();
 
@@ -113,8 +95,8 @@ int main()
     // // TampilkanBalasanRekursif(ab, 0);
 
 
-    // printf("\n\n\n\n");
-    // bacaUtas(listKicauan, kata, listUser, &listUtas);
+    // printf("sampe bacaBalasan\n");
+    // bacaUtas(listKicauan,kata,listUser,&listUtas);
     // printf("sampe bacaUtas\n");
     // printf(">>");
 

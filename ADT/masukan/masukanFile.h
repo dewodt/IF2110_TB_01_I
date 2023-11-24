@@ -4,6 +4,8 @@
 #ifndef __MASUKANFILE_H__
 #define __MASUKANFILE_H__
 
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "../boolean.h"
 #include "charFile.h"
 #include "../masukan/masukanint.h"
@@ -17,6 +19,7 @@
 #include "../draf/draf.h"
 #include "../listdinUtas/listdinForUtas.h"
 #include "../prioQueue/prioQueueint.h"
+#include "../pengguna/pengguna.h"
 
 #define NMax 280
 #define BLANK ' '
@@ -63,13 +66,17 @@ void displayMASUKANFILE(MASUKANFILE masuk);
 
 MASUKAN masukanFileToMasukan(MASUKANFILE MASUKANFILE);
 
-void bacaPengguna(ListStatik* listPengguna, MASUKAN namaFile);
+void bacaInisialisasi();
 
-void bacaKicauan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaConfig();
+
+void bacaPengguna(MASUKAN namaFile);
+
+void bacaKicauan(MASUKAN namaFile);
 
 void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKANFILE* hasil2, boolean* neg);
 
-void bacaBalasan(ListDinKicauan* listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaBalasan(MASUKAN namaFile);
 
 void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas* listUtas);
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);

@@ -69,7 +69,7 @@ void Simpan()
   
   SimpanPengguna(folderDir);
   SimpanKicauan(folderDir);
-  // SimpanBalasan(folderDir);
+  SimpanBalasan(folderDir);
   saveDraf(folderDir);
   // SimpanUtas();
 
@@ -114,7 +114,7 @@ void SimpanPengguna(char *folderDir)
 
     // Hp
     char *noHp;
-    noHp = pengguna.phone_num.TabMASUKAN;
+    noHp = MASUKANToStr(pengguna.phone_num);
     fprintf(fptr, "\n%s", noHp);
 
     // Weton
@@ -495,6 +495,7 @@ void saveDraf(char *folderDir)
       }
     }
   }
+  fclose(fptr);
 }
 
 void SimpanUtas(char *folderDir)

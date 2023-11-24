@@ -1,6 +1,6 @@
-#include "../../masukan/masukan.c"
-#include "../../masukan/masukanint.c"
-#include "../matrixteman/matrixteman.c"
+#include "../../masukan/masukan.h"
+#include "../../masukan/masukanint.h"
+#include "../matrixteman/matrixteman.h"
 #include <stdio.h>
 
 int main()

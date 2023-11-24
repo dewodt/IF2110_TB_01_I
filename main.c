@@ -9,6 +9,9 @@
 #include "ADT/pengguna/pengguna.h"
 #include "ADT/teman/teman.h"
 #include "ADT/utas/utas.h"
+#include "ADT/Utas/utas.h"
+#include "ADT/kicauan/kicauan.h"
+#include "ADT/datetime/datetime.h"
 
 /* GLOBAL VARIABLES:
 currentUser
@@ -50,145 +53,253 @@ int main()
     printf("Selamat datang di BurBir.\n");
     printf("Aplikasi untuk studi kualitatif mengenai perilaku manusia dengan menggunakan \n");
     printf("metode (pengambilan data berupa) Focused Group Discussion kedua di zamannya.\n");
-    // printf("Silahkan masukan folder konfigurasi untuk dimuat: \n");
-    // printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
+    printf("Silahkan masukan folder konfigurasi untuk dimuat: \n");
+    printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
 
     // Baca config
-    MASUKAN kata, arg1, arg2;
-    printf(">> ");
-    perintah(&kata, &arg1, &arg2);
+    MASUKAN kata;
+    printf(">>");
+    baca(&kata);
     // Proses salin konfig ke dalam variabel program
-    // bacaPengguna(&listUser,kata);
-    // bacaKicauan(&listKicauan,kata,listUser);
-    // bacaBalasan(&listKicauan,kata,listUser);
-    // bacaUtas(listKicauan,kata,listUser,&listUtas);
-    // bacaDraf(listKicauan,kata,listUser);
-    // printf(">> ");
+    bacaPengguna(&listUser,kata);
+    bacaKicauan(&listKicauan,kata,listUser);
+    bacaBalasan(&listKicauan,kata,listUser);
+    bacaUtas(listKicauan,kata,listUser,&listUtas);
+    bacaDraf(listKicauan,kata,listUser);
+    printf(">>");
 
-    while (!isSame(kata, "TUTUP_PROGRAM;"))
+    while (!isSame(kata, "\nTUTUP_PROGRAM;"))
     {
-        if (isSame(kata, "DAFTAR;"))
+        if (isSame(kata, "\nDAFTAR;"))
         {
-            DAFTAR(&listUser);
+            printf("ini DAFTAR");
         }
-        else if (isSame(kata, "MASUK;"))
+        else if (isSame(kata, "\nDAFTAR;"))
         {
-            MASUK(&listUser, &currentUser);
-            isiReqPertemanan(&Q, RelasiPertemanan, listLength(listUser), searchID_Pengguna(strToMASUKAN(currentUser->username, stringLength(currentUser->username))));
-            PrintPrioQueueint(Q);
+            printf("ini DAFTAR");
         }
-        else if (isSame(kata, "KELUAR;"))
+        else if (isSame(kata, "\nMASUK;"))
         {
-            KELUAR(&currentUser);
+            printf("ini MASUK");
         }
-        else if (isSame(kata, "GANTI_PROFIL;"))
+        else if (isSame(kata, "\nMASUK;"))
         {
-            GANTI_PROFIL(&listUser, currentUser);
+            printf("ini MASUK");
         }
-        else if (isSame(kata, "LIHAT_PROFIL"))
+        else if (isSame(kata, "\nKELUAR;"))
         {
-            LIHAT_PROFIL(&listUser, arg1);
+            printf("ini KELUAR");
         }
-        else if (isSame(kata, "UBAH_FOTO_PROFIL;"))
+        else if (isSame(kata, "\nKELUAR;"))
         {
-            UBAH_FOTO_PROFIL(&listUser, currentUser);
+            printf("ini KELUAR");
         }
-        else if (isSame(kata, "ATUR_JENIS_AKUN;"))
+        else if (isSame(kata, "\nTUTUP_PROGRAM;"))
         {
-            ATUR_JENIS_AKUN(&listUser, currentUser);
+            printf("ini TUTUP_PROGRAM");
         }
-        else if (isSame(kata, "DAFTAR_TEMAN;"))
+        else if (isSame(kata, "\nTUTUP_PROGRAM;"))
         {
-            showFriendList();
+            printf("ini TUTUP_PROGRAM");
         }
-        else if (isSame(kata, "HAPUS_TEMAN;"))
+        else if (isSame(kata, "\nGANTI_PROFIL;"))
         {
-            deleteFriend();
+            printf("ini GANTI_PROFIL");
         }
-        else if (isSame(kata, "TAMBAH_TEMAN;"))
+        else if (isSame(kata, "\nGANTI_PROFIL;"))
         {
-            TAMBAH_TEMAN(Q, searchID_Pengguna(strToMASUKAN(currentUser->username, stringLength(currentUser->username))), listUser);
-            displayMatrixTeman(RelasiPertemanan);
+            printf("ini GANTI_PROFIL");
         }
-        else if (isSame(kata, "DAFTAR_PERMINTAAN_PERTEMANAN;"))
+        else if (isSame(kata, "\nLIHAT_PROFIL;"))
         {
-            DAFTAR_PERMINTAAN_PERTEMANAN(Q, listUser, listLength(listUser));
+            printf("ini LIHAT_PROFIL");
         }
-        else if (isSame(kata, "SETUJUI_PERTEMANAN;"))
+        else if (isSame(kata, "\nLIHAT_PROFIL;"))
         {
-            SETUJUI_PERTEMANAN(&Q, searchID_Pengguna(strToMASUKAN(currentUser->username, stringLength(currentUser->username))), listUser, listLength(listUser));
+            printf("ini LIHAT_PROFIL");
         }
-        else if (isSame(kata, "KICAU;"))
+        else if (isSame(kata, "\nATUR_JENIS_AKUN;"))
         {
-            BuatKicauan(&listKicauan, currentUser);
+            printf("ini ATUR_JENIS_AKUN");
         }
-        else if (isSame(kata, "KICAUAN;"))
+        else if (isSame(kata, "\nATUR_JENIS_AKUN;"))
         {
-            TampilkanKicauan(listKicauan, currentUser);
+            printf("ini ATUR_JENIS_AKUN");
         }
-        else if (isSame(kata, "SUKA_KICAUAN"))
+        else if (isSame(kata, "\nUBAH_FOTO_PROFIL;"))
         {
-            int IDKicau;
-            IDKicau = masukanToInt(arg1);
-            SukaKicauan(IDKicau);
+            printf("ini UBAH_FOTO_PROFIL");
         }
-        else if (isSame(kata, "UBAH_KICAUAN"))
+        else if (isSame(kata, "\nUBAH_FOTO_PROFIL;"))
         {
-            int IDKicau;
-            IDKicau = masukanToInt(arg1);
-            UbahKicauan(IDKicau);
+            printf("ini UBAH_FOTO_PROFIL");
         }
-        else if (isSame(kata, "BALAS"))
+        else if (isSame(kata, "\nDAFTAR_TEMAN;"))
         {
-            BuatBalasan(masukanToInt(arg1), masukanToInt(arg2));
+            printf("ini DAFTAR_TEMAN");
         }
-        else if (isSame(kata, "BALASAN;"))
+        else if (isSame(kata, "\nDAFTAR_TEMAN;"))
         {
-            TampilkanBalasan(masukanToInt(arg1));
+            printf("ini DAFTAR_TEMAN");
         }
-        else if (isSame(kata, "HAPUS_BALASAN;"))
+        else if (isSame(kata, "\nHAPUS_TEMAN;"))
         {
-            HapusBalasan(masukanToInt(arg1), masukanToInt(arg2));
+            printf("ini HAPUS_TEMAN");
         }
-        else if (isSame(kata, "BUAT_DRAF;"))
+        else if (isSame(kata, "\nHAPUS_TEMAN;"))
         {
-            BuatDraf();
+            printf("ini HAPUS_TEMAN");
         }
-        else if (isSame(kata, "LIHAT_DRAF;"))
+        else if (isSame(kata, "\nTAMBAH_TEMAN;"))
         {
-            LihatDraf();
+            printf("ini TAMBAH_TEMAN");
         }
-        else if (isSame(kata, "UTAS;"))
+        else if (isSame(kata, "\nTAMBAH_TEMAN;"))
         {
-            BUAT_UTAS(listKicauan, listUtas, *currentUser, masukanToInt(arg1));
+            printf("ini TAMBAH_TEMAN");
         }
-        else if (isSame(kata, "SAMBUNG_UTAS;"))
+        else if (isSame(kata, "\nBATAL_TAMBAH_TEMAN;"))
         {
-            SAMBUNG_UTAS(masukanToInt(arg1), masukanToInt(arg2), &listUtas, *currentUser);
+            printf("ini BATAL_TAMBAH_TEMAN");
         }
-        else if (isSame(kata, "HAPUS_UTAS;"))
+        else if (isSame(kata, "\nBATAL_TAMBAH_TEMAN;"))
+        {
+            printf("ini BATAL_TAMBAH_TEMAN");
+        }
+        else if (isSame(kata, "\nDAFTAR_PERMINTAAN_PERTEMANAN;"))
+        {
+            printf("ini DAFTAR_PERMINTAAN_PERTEMANAN");
+        }
+        else if (isSame(kata, "\nDAFTAR_PERMINTAAN_PERTEMANAN;"))
+        {
+            printf("ini DAFTAR_PERMINTAAN_PERTEMANAN");
+        }
+        else if (isSame(kata, "\nSETUJUI_PERTEMANAN;"))
+        {
+            printf("ini SETUJUI_PERTEMANAN");
+        }
+        else if (isSame(kata, "\nSETUJUI_PERTEMANAN;"))
+        {
+            printf("ini SETUJUI_PERTEMANAN");
+        }
+        else if (isSame(kata, "\nKICAU;"))
+        {
+            printf("ini KICAU");
+        }
+        else if (isSame(kata, "\nKICAU;"))
+        {
+            printf("ini KICAU");
+        }
+        else if (isSame(kata, "\nSUKA_KICAUAN;"))
+        {
+            printf("ini SUKA_KICAUAN");
+        }
+        else if (isSame(kata, "\nSUKA_KICAUAN;"))
+        {
+            printf("ini SUKA_KICAUAN");
+        }
+        else if (isSame(kata, "\nUBAH_KICAUAN;"))
+        {
+            printf("ini UBAH_KICAUAN");
+        }
+        else if (isSame(kata, "\nUBAH_KICAUAN;"))
+        {
+            printf("ini UBAH_KICAUAN");
+        }
+        else if (isSame(kata, "\nBALAS;"))
+        {
+            printf("ini BALAS");
+        }
+        else if (isSame(kata, "\nBALAS;"))
+        {
+            printf("ini BALAS");
+        }
+        else if (isSame(kata, "\nBALASAN;"))
+        {
+            printf("ini BALASAN");
+        }
+        else if (isSame(kata, "\nBALASAN;"))
+        {
+            printf("ini BALASAN");
+        }
+        else if (isSame(kata, "\nHAPUS_BALASAN;"))
+        {
+            printf("ini HAPUS_BALASAN");
+        }
+        else if (isSame(kata, "\nHAPUS_BALASAN;"))
+        {
+            printf("ini HAPUS_BALASAN");
+        }
+        else if (isSame(kata, "\nBUAT_DRAF;"))
+        {
+            printf("ini BUAT_DRAF");
+        }
+        else if (isSame(kata, "\nBUAT_DRAF;"))
+        {
+            printf("ini BUAT_DRAF");
+        }
+        else if (isSame(kata, "\nLIHAT_DRAF;"))
+        {
+            printf("ini LIHAT_DRAF");
+        }
+        else if (isSame(kata, "\nLIHAT_DRAF;"))
+        {
+            printf("ini LIHAT_DRAF");
+        }
+        else if (isSame(kata, "\nUTAS;"))
+        {
+            printf("ini UTAS");
+        }
+        else if (isSame(kata, "\nUTAS;"))
+        {
+            printf("ini UTAS");
+        }
+        else if (isSame(kata, "\nSAMBUNG_UTAS;"))
+        {
+            printf("ini SAMBUNG_UTAS");
+        }
+        else if (isSame(kata, "\nSAMBUNG_UTAS;"))
+        {
+            printf("ini SAMBUNG_UTAS");
+        }
+        else if (isSame(kata, "\nHAPUS_UTAS;"))
         {
             printf("ini HAPUS_UTAS");
         }
-        else if (isSame(kata, "CETAK_UTAS;"))
+        else if (isSame(kata, "\nHAPUS_UTAS;"))
+        {
+            printf("ini HAPUS_UTAS");
+        }
+        else if (isSame(kata, "\nCETAK_UTAS;"))
         {
             printf("ini CETAK_UTAS");
         }
-        else if (isSame(kata, "SIMPAN;"))
+        else if (isSame(kata, "\nCETAK_UTAS;"))
+        {
+            printf("ini CETAK_UTAS");
+        }
+        else if (isSame(kata, "\nSIMPAN;"))
         {
             printf("ini SIMPAN");
         }
-        else if (isSame(kata, "MUAT;"))
+        else if (isSame(kata, "\nSIMPAN;"))
+        {
+            printf("ini SIMPAN");
+        }
+        else if (isSame(kata, "\nMUAT;"))
         {
             printf("ini MUAT");
         }
-        printf(">> ");
-        perintah(&kata, &arg1, &arg2);
-    }
-
-    if (isSame(kata, "\nTUTUP_PROGRAM;"))
-    {
-        printf("Anda telah keluar dari program BurBir. Sampai jumpa di penjelajahan berikutnya.\n");
+        else if (isSame(kata, "\nMUAT;"))
+        {
+            printf("ini MUAT");
+        }
+        else
+        {
+            printf("lainnya\n");
+        }
+        printf(">>");
+        baca(&kata);
     }
 
     printf("###################Akhir#######################\n ");

@@ -10,9 +10,8 @@
 #define MAX_CHAR 280
 
 /* Definisi Node : */
-typedef int ElType;
-typedef struct nodeUtas *AddressUtas;
-typedef struct nodeUtas
+typedef struct nodeThread *AddressUtas;
+typedef struct nodeThread
 {
     char textThread[MAX_CHAR];
     AddressUtas nextThread;
@@ -26,17 +25,19 @@ typedef struct nodeUtas
 typedef AddressUtas threads; // thread -> thread -> thread
 
 /* TIPE BENTUKAN UTAS */
-typedef struct
+typedef struct utasNode *AddressNodeUtas;
+typedef struct utasNode
 {
-    Kicauan *KicauanUtama;    // Alamat kicauan utama
-    int IDUtas;               // ID Utas
-    threads KicauanSambungan; // Alamat kicauan sambungan pertama
-} UTAS;
+    AddressKicauan KicauanUtama; // Alamat kicauan utama
+    int IDUtas;                  // ID Utas
+    threads KicauanSambungan;    // Alamat kicauan sambungan pertama
+} UTASNode;
 
-#define KicauanUtama(u) (u).KicauanUtama
-#define IDUtas(u) (u).IDUtas
-#define KicauanSambungan(u) (u).KicauanSambungan
-#define AuthorUtas(u) (*((*KicauanUtama(u)).author)).username
+typedef AddressNodeUtas UTAS; // Node Utas
+
+#define KicauanUtama(u) (u)->KicauanUtama         // Alamat Kicauan Utama
+#define IDUtas(u) (u)->IDUtas                     // ID Utas
+#define KicauanSambungan(u) (u)->KicauanSambungan // Alamat Kicauan Sambungan
 
 #define FIRST(l) (l)
 
@@ -65,8 +66,9 @@ void insertLastThreads(threads *l, char text[MAX_CHAR], DATETIME time);
 // Memasukkan Elemen pada indeks tertentu, indeks dipastikan valid, index dimulai dari 1
 void insertAtThreads(threads *l, char text[MAX_CHAR], int idx);
 
+/* Primitif Utas */
 // Memasukkan kicauan sambungan terakhir pada utas
-void insertLastThreadForConfig(UTAS *utas, char text[MAX_CHAR], DATETIME time);
+void insertLastThreadForConfig(UTAS utas, char text[MAX_CHAR], DATETIME time);
 
 // Menghapus Elemen pertama pada utas
 void deleteFirstThreads(threads *l);
@@ -81,7 +83,7 @@ int lengthThreads(threads l);
 void displayThreads(threads l, char author[20]);
 
 // Konstruktor Utas
-void CreateUtas(UTAS *u, Kicauan *kicauan, int id);
+void CreateUtas(UTAS *u, AddressKicauan kicauan, int id);
 
 // Menyambung utas pada elemen terakhir, dipastikan index valid
 void SambungUtasLast(UTAS *u, char text[MAX_CHAR], DATETIME time);

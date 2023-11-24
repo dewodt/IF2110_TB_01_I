@@ -4,6 +4,7 @@
 int main() {
     Matrix m1, m2;
     createMatrix(5, 10, &m2);
+    printf("Profil awal: \n");
     displayProfile(m2);
     printf("Masukkan matriks profil: \n");
     readMatrixMasukan(&m1, 5, 10);

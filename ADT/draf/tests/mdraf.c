@@ -34,15 +34,14 @@ int main()
   user1.username[1] = 'E';
   user1.username[2] = 'S';
   user1.isPrivate = false; // Public
-  // CreateEmptyStack(&user1.draf);
+  CreateEmptyStack(&user1.draf);
   listUser.contents[0] = user1;
 
   user2.username[0] = 'A';
   user2.username[1] = 'B';
   user2.username[2] = 'C';
   user2.isPrivate = true; // Privat
-  // CreateEmptyStack(&user2.draf);
-
+  CreateEmptyStack(&user2.draf);
   listUser.contents[1] = user2;
 
   // Matriks pertemanan
@@ -52,37 +51,21 @@ int main()
   RelasiPertemanan.mem[1][0] = 0;
 
   // Tanpa login
-  BuatKicauan();
-  BuatBalasan(1, -1);
+  BuatDraf();
+  LihatDraf();
 
   // Login pertama
   currentUser = &user1;
   printf("Current user: %s\n", currentUser->username);
-  BuatKicauan();
 
-  currentUser = &user2;
-  BuatBalasan(1, -1); // id 1
-  BuatBalasan(1, 1);  // id 2
-  BuatBalasan(1, 1);  // id 3
-  BuatBalasan(1, 2);  // id 4
-  BuatBalasan(1, 2);  // id 5
+  // Buat draf
+  BuatDraf();
+  BuatDraf();
+  BuatDraf();
 
-  // Tampilkan balasan
-  TampilkanBalasan(1);
-
-  // Hapus balasan
-  HapusBalasan(1, 1);
-
-  // Tampilkan balasan setelah delete
-  TampilkanBalasan(1);
-
-  HapusBalasan(1, 2);
-
-  // Tampilkan balasan setelah delete
-  TampilkanBalasan(1);
-
-  HapusBalasan(1, 3);
-
-  // Tampilkan balasan setelah delete
-  TampilkanBalasan(1);
+  // Lihat draf
+  LihatDraf();
+  LihatDraf();
+  LihatDraf();
+  LihatDraf();
 }

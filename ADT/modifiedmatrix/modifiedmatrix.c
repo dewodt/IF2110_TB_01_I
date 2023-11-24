@@ -197,15 +197,6 @@ void displayProfile(Matrix m)
                     printf("\n");
                 }
             }
-            // printf("j: %d\n", j);
         }
     }
 }
-
-// int main() {
-//     Matrix m1, m2;
-//     createMatrix(5, 10, &m2);
-//     displayProfile(m2);
-//     readMatrixMasukan(&m1, 5, 10);
-//     displayProfile(m1);
-// }

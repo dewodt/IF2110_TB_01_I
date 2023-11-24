@@ -66,10 +66,10 @@ void Simpan()
   printf("\n");
 
   // Simpan semua config
-  // SimpanPengguna();
-  // SimpanKicauan(folderDir);
-  // SimpanBalasan(folderDir);
-  // SimpanDraf();
+  SimpanPengguna(folderDir);
+  SimpanKicauan(folderDir);
+  SimpanBalasan(folderDir);
+  saveDraf(folderDir);
   SimpanUtas(folderDir);
 
   // Cetak pesan berhasil
@@ -78,9 +78,9 @@ void Simpan()
 }
 
 // menyimpan pengguna
-// status: done?
 void SimpanPengguna(char *folderDir)
 {
+  /* Get full directory */
   char *fileDir = concatStr(folderDir, "/pengguna.config");
   FILE *fptr;
 
@@ -90,22 +90,38 @@ void SimpanPengguna(char *folderDir)
   fprintf(fptr, "%d", countPengguna);
 
   int i;
+  // Iterate each user
   for (i = 0; i < countPengguna; i++)
   {
     User pengguna;
     pengguna = listUser.contents[i];
+
+    // Nama
     char *nama;
     nama = pengguna.username;
     fprintf(fptr, "\n%s", nama);
+
+    // Password
     char *pw;
     pw = pengguna.password;
     fprintf(fptr, "\n%s", pw);
+
+    // Bio
     char *bio;
     bio = pengguna.bio;
     fprintf(fptr, "\n%s", bio);
+
+    // Hp
     char *noHp;
-    noHp = pengguna.phone_num.TabMASUKAN;
+    noHp = MASUKANToStr(pengguna.phone_num);
+
     fprintf(fptr, "\n%s", noHp);
+
+    // Weton
+    char *weton = pengguna.weton;
+    fprintf(fptr, "\n%s", weton);
+
+    // Jenis akun
     boolean jenisAkun;
     jenisAkun = pengguna.isPrivate;
     if (jenisAkun)
@@ -116,69 +132,117 @@ void SimpanPengguna(char *folderDir)
     {
       fprintf(fptr, "\n%s", "Publik");
     }
+
+    // Matriks Profile Picture
+    // Pre-Newline
+    fprintf(fptr, "\n");
+    // Iterate row
     int a;
     for (a = 0; a < 5; a++)
     {
+      // Iterate columns
       int b;
-      for (b = 0; b < 19; b++)
+      for (b = 0; b < 10; b++)
       {
-        fprintf(fptr, "%c", ELMT_MTX(PROFILE(listUser, i), a, b));
-        if (b == 18)
+        if (b == 9)
         {
-          fprintf(fptr, "\n");
+          // Print
+          fprintf(fptr, "%c", ELMT_MTX(PROFILE(listUser, i), a, b));
+
+          // Print newline if end column and not last row
+          if (a != 4)
+          {
+            fprintf(fptr, "\n");
+          }
+        }
+        else
+        {
+          // If not last column, print space
+          fprintf(fptr, "%c ", ELMT_MTX(PROFILE(listUser, i), a, b));
+
         }
       }
     }
   }
+
+  // Matriks Pertemanan
+  // Pre-Newline
+  fprintf(fptr, "\n");
+  // Iterate matriks pertemanan
+  // Iterate row
   int c;
   for (c = 0; c < listLength(listUser); c++)
   {
+    // Iterate col
     int d;
     for (d = 0; d < listLength(listUser); d++)
     {
+      // Already friends
       if (ELMT_MTX(RelasiPertemanan, c, d) == 1 && ELMT_MTX(RelasiPertemanan, d, c) == 1)
       {
+        // Last column
         if (d == listLength(listUser) - 1)
-        {
-          fprintf(fptr, "%d\n", 1);
-        }
-        else
         {
           fprintf(fptr, "%d", 1);
-        }
-      }
-      else
-      {
-        if (d == listLength(listUser) - 1)
-        {
-          fprintf(fptr, "%d\n", 0);
+
+          // If not last row & not last column
+          if (c != listLength(listUser) - 1)
+          {
+            fprintf(fptr, "\n");
+          }
         }
         else
         {
+          fprintf(fptr, "%d ", 1);
+        }
+      }
+      // Not friends or on friend request
+      else
+      {
+        // Last column
+        if (d == listLength(listUser) - 1)
+        {
           fprintf(fptr, "%d", 0);
+
+          // If not last row & not last column
+          if (c != listLength(listUser) - 1)
+          {
+            fprintf(fptr, "\n");
+          }
+        }
+        else
+        {
+          fprintf(fptr, "%d ", 0);
         }
       }
     }
   }
-  int countReqPertemanan;
-  countReqPertemanan = 0;
+
+  // Matriks request pertemanan
+  int countReqPertemanan = 0;
   int e;
   for (e = 0; e < listLength(listUser); e++)
   {
     int f;
-    for (f = 0; f < listLength(listUser); f++)
+    for (f = e; f < listLength(listUser); f++)
     {
-      if (ELMT_MTX(RelasiPertemanan, e, f) == 1 && ELMT_MTX(RelasiPertemanan, e, f) == 0)
+      if (ELMT_MTX(RelasiPertemanan, e, f) == 1 && ELMT_MTX(RelasiPertemanan, f, e) == 0)
       {
         countReqPertemanan += 1;
       }
-      else if (ELMT_MTX(RelasiPertemanan, e, f) == 0 && ELMT_MTX(RelasiPertemanan, e, f) == 1)
+      else if (ELMT_MTX(RelasiPertemanan, e, f) == 0 && ELMT_MTX(RelasiPertemanan, f, e) == 1)
       {
         countReqPertemanan += 1;
       }
     }
   }
-  fprintf(fptr, "%d \n", countReqPertemanan);
+
+  // Hitung jumlah pertemanan
+  fprintf(fptr, "\n%d", countReqPertemanan);
+
+  // Pre new line
+  fprintf(fptr, "\n");
+  // Matriks pertemanan
   int m;
   for (m = 0; m < listLength(listUser); m++)
   {
@@ -192,9 +256,9 @@ void SimpanPengguna(char *folderDir)
         int o;
         for (o = 0; o < listLength(listUser); o++)
         {
-          if (o != n && o != m)
+          if (o != m)
           {
-            if (ELMT_MTX(RelasiPertemanan, n, o) == 1 && ELMT_MTX(RelasiPertemanan, o, n) == 1 && ELMT_MTX(RelasiPertemanan, m, o) == 1 && ELMT_MTX(RelasiPertemanan, o, m) == 1)
+            if (ELMT_MTX(RelasiPertemanan, m, o) == 1 && ELMT_MTX(RelasiPertemanan, o, m) == 1)
             {
               pop += 1;
             }
@@ -213,14 +277,17 @@ void SimpanPengguna(char *folderDir)
           {
             if (ELMT_MTX(RelasiPertemanan, n, o) == 1 && ELMT_MTX(RelasiPertemanan, o, n) == 1 && ELMT_MTX(RelasiPertemanan, m, o) == 1 && ELMT_MTX(RelasiPertemanan, o, m) == 1)
             {
-              pop += 1;
+              // pop += 1;
             }
           }
         }
-        fprintf(fptr, "%d %d %d\n", n, m, pop);
+        // fprintf(fptr, "%d %d %d\n", n, m, pop);
       }
     }
   }
+
+  // Close file
+  fclose(fptr);
 }
 
 /* Prosedur untuk menyimpan data kicauan dalam folder config/foo */
@@ -367,6 +434,7 @@ void saveDraf(char *folderDir)
 
   fptr = fopen(fileDir, "w");
 
+  // Dapatkan banyak user yang memiliki draf
   Stack s;
   int i;
   int n = 0;
@@ -380,36 +448,54 @@ void saveDraf(char *folderDir)
   }
   fprintf(fptr, "%d", n);
 
+  // 
   int j;
   for (j = 0; j < listLength(listUser); j++)
   {
-    s = DRAF(listUser, j);
-    if (!IsEmptyStack(s))
-    {
-      Stack temp;
-      temp = s;
+    s = DRAF(listUser,j);
+    if(!IsEmptyStack(s)){
+      // hitung ukuran stack
+      Stack temp; 
+      CreateEmptyStack(&temp);
       int count = 0;
-      while (!IsEmptyStack(temp))
-      {
+      while(!IsEmptyStack(s)){
         infotype elmt;
-        PopStack(&temp, &elmt);
-        count++;
+        PopStack(&s,&elmt);
+        count ++;
+        PushStack(&temp,elmt);
       }
-      char *nama;
-      nama = USERNAME(listUser, j);
-      fprintf(fptr, "\n%s %d", nama, count);
+      // print user dan panjang stack
+      char* nama;
+      nama = USERNAME(listUser,j);
+      fprintf(fptr, "\n%s %d", nama ,count);
       Stack temp2;
-      temp2 = s;
-      while (!IsEmptyStack(temp2))
-      {
+      CreateEmptyStack(&temp2);
+      // reverse stack
+      while(!IsEmptyStack(temp)){
+        infotype elmt;
+        PopStack(&temp,&elmt);
+        PushStack(&temp2,elmt);
+      }
+      // print stack
+      while(!IsEmptyStack(temp2)){
         infotype elmt;
         PopStack(&temp2, &elmt);
         fprintf(fptr, "\n%s", elmt.text);
+        //printf("\n%s", elmt.text);
         DATETIME DT = elmt.datetime;
         fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+        //printf("\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+        PushStack(&temp,elmt);
+      }
+
+      while(!IsEmptyStack(temp)){
+        infotype elmt;
+        PopStack(&temp,&elmt);
+        PushStack(&s,elmt);
       }
     }
   }
+  fclose(fptr);
 }
 
 void SimpanUtas(char *folderDir)
@@ -421,6 +507,7 @@ void SimpanUtas(char *folderDir)
 
   // Hitung banyak utas
   int countUtas = listUtasLength(listUtas);
+
   fprintf(fptr, "%d", countUtas);
 
   int i;
@@ -452,7 +539,6 @@ void SimpanUtas(char *folderDir)
       p = p->nextThread;
     }
   }
-
   // Final newline
   fprintf(fptr, "\n");
 

@@ -53,7 +53,7 @@ int main()
                 {
                     commandAwal[i] = command.TabMASUKAN[i];
                 }
-                commandAwal[idx] = '\0'; // null-terminator
+                commandAwal[idx] = '\0';
 
                 int j = 0;
                 for (int i = idx + 1; i < len; i++)
@@ -62,12 +62,8 @@ int main()
                     j++;
                 }
                 namapengguna.Length = j;
-                namapengguna.TabMASUKAN[j] = '\0'; // null-terminator
+                namapengguna.TabMASUKAN[j] = '\0';
 
-                // printf("Perintah Awal: %s\n", commandAwal);
-                // printf("Nama Pengguna: %s\n", namapengguna.TabMASUKAN);
-
-                // baru call fungsi LIHAT_PROFIL dengan namapengguna
                 LIHAT_PROFIL(&pengguna, namapengguna);
             }
         }
@@ -79,10 +75,6 @@ int main()
         {
             ATUR_JENIS_AKUN(&pengguna, currentUser);
         }
-
-        // printList(&pengguna);
-        // printf("\n");
-        // printf("%d\n", listLength(pengguna));
 
         printf(">> ");
         baca(&command);

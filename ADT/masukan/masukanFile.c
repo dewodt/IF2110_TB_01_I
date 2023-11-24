@@ -533,7 +533,6 @@ void bacaUtas(MASUKAN namaFile)
 
       // Insert thread
 
-      displayUtas(utasUtama);
       insertLastThreadForConfig(utasUtama, text, datetime);
     }
     insertUtas(utasUtama, &listUtas);

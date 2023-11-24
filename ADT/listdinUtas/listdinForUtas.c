@@ -41,14 +41,11 @@ void expandListDinUtas(ListUtas *u, int num)
 // Memasukkan Utas baru kedalam list utas
 void insertUtas(UTAS U, ListUtas *lu)
 {
-  printf("insert utas\n");
   if (isFullListDinUtas(*lu))
   {
     expandListDinUtas(lu, CAPACITYListDinUtas(*lu));
   }
 
-  printf("test\n");
-  printf("NEFF LIST DIN :%d\n", NEFFListDinUtas(*lu));
   BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu)] = U;
 
   // printf("test2\n");
@@ -64,8 +61,6 @@ void insertUtas(UTAS U, ListUtas *lu)
   NEFFListDinUtas(*lu) += 1;
 
   displayUtas(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu) - 1]);
-
-  printf("NEFF :%d\n", NEFFListDinUtas(*lu));
 }
 
 // Menghapus Kicauan Sambungan pada utas dengan index tertentu

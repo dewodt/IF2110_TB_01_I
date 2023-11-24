@@ -1,4 +1,6 @@
+#include "stdio.h"
 #include "../datetime.h"
+#
 
 int main()
 {
@@ -34,14 +36,14 @@ int main()
   DATETIME DNDETIK;
   printf("Masukkan N: ");
   scanf("%d", &N);
-  DNDETIK = NextNDetik(InitDT, N);
+  DNDETIK = DATETIMENextNDetik(InitDT, N);
   TulisDATETIME(DNDETIK);
 
   // Prev N Detik
   DATETIME PNDETIK;
   printf("Masukkan N: ");
   scanf("%d", &N);
-  PNDETIK = PrevNDetik(InitDT, N);
+  PNDETIK = DATETIMEPrevNDetik(InitDT, N);
   TulisDATETIME(PNDETIK);
 
   return 0;

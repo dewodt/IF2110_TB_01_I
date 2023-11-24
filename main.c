@@ -8,7 +8,7 @@
 #include "ADT/prioQueue/prioQueueint.h"
 #include "ADT/pengguna/pengguna.h"
 #include "ADT/teman/teman.h"
-#include "ADT/Utas/utas.h"
+#include "ADT/utas/utas.h"
 
 /* GLOBAL VARIABLES:
 currentUser
@@ -73,7 +73,9 @@ int main()
         }
         else if (isSame(kata, "MASUK;"))
         {
-            MASUK(&listUser, &currentUser);;
+            MASUK(&listUser, &currentUser);
+            isiReqPertemanan(&Q, RelasiPertemanan, listLength(listUser), searchID_Pengguna(strToMASUKAN(currentUser->username, stringLength(currentUser->username))));
+            PrintPrioQueueint(Q);
         }
         else if (isSame(kata, "KELUAR;"))
         {
@@ -166,7 +168,7 @@ int main()
         }
         else if (isSame(kata, "HAPUS_UTAS;"))
         {
-            HAPUS_UTAS(&listUtas, masukanToInt(arg1), masukanToInt(arg2), *currentUser);
+            printf("ini HAPUS_UTAS");
         }
         else if (isSame(kata, "CETAK_UTAS;"))
         {

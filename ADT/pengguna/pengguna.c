@@ -343,7 +343,7 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
     }
     else
     {
-        printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", namapengguna.TabMASUKAN);
+        printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", MASUKANToStr(namapengguna));
     }
 }
 

@@ -77,6 +77,13 @@ void BUAT_UTAS(int idk) // Indeks Kicauan dimulai dari 1
     printf("Masukkan kicauan:\n");
     baca(&teks);
 
+    // Handle Jika input spasi semua
+    if (isAllSpace(teks))
+    {
+        printf("Kicauan tidak boleh hanya berisi spasi!\n");
+        return;
+    }
+
     SambungUtasLast(&utas, MASUKANToStr(teks), getCurrTime());
 
     printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
@@ -85,6 +92,14 @@ void BUAT_UTAS(int idk) // Indeks Kicauan dimulai dari 1
     {
         printf("Masukkan kicauan:\n");
         baca(&teks);
+
+        // Handle Jika input spasi semua
+        if (isAllSpace(teks))
+        {
+            printf("Kicauan tidak boleh hanya berisi spasi!\n");
+            return;
+        }
+
         SambungUtasLast(&utas, MASUKANToStr(teks), getCurrTime());
         printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
         baca(&teks);
@@ -126,6 +141,14 @@ void SAMBUNG_UTAS(int idU, int index)
 
     printf("Masukkan kicauan:\n");
     baca(&teks);
+
+    // Handle Jika input spasi semua
+    if (isAllSpace(teks))
+    {
+        printf("Kicauan tidak boleh hanya berisi spasi!\n");
+        return;
+    }
+
     SambungUtasAt(&(BUFFERListDinUtas(listUtas))[idU - 1], MASUKANToStr(teks), index);
 }
 

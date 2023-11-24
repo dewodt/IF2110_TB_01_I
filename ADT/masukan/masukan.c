@@ -36,18 +36,19 @@ void CopyMASUKAN()
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang MASUKAN melebihi NMax, maka sisa MASUKAN "dipotong" */
 {
-  int i = 0;
-  do
-  {
+int i = 0;
+  currentMASUKAN.Length = 0;
+  while (currentChar != ';') {
     if (i < NMax && currentChar != 10)
     {
       currentMASUKAN.TabMASUKAN[i] = currentChar;
       currentMASUKAN.Length = i + 1;
       i++;
     }
-    ADV();
-  } while (currentChar != ';');
+    ADV(); 
+  }
 }
+
 
 void baca(MASUKAN *masukan)
 {
@@ -59,6 +60,7 @@ void baca(MASUKAN *masukan)
 void perintah(MASUKAN *perintah, MASUKAN *argumen1, MASUKAN *argumen2)
 {
   // menerima input perintah beserta dengan argumen-argumennya
+  printf(">> ");
   MASUKAN temp;
   STARTMASUKAN();
   temp = currentMASUKAN;
@@ -103,6 +105,27 @@ void perintah(MASUKAN *perintah, MASUKAN *argumen1, MASUKAN *argumen2)
       }
     }
   }
+}
+
+void oneArgumen(MASUKAN com, MASUKAN arg1, MASUKAN arg2, MASUKAN* hasilCom, MASUKAN* hasilArg){
+  MASUKAN temp1;
+  int i;
+  for ( i = 0; i < arg1.Length; i++)
+  {
+    temp1.Length ++ ;
+    temp1.TabMASUKAN[i] = arg1.TabMASUKAN[i];
+  }
+  temp1.Length ++ ;
+  temp1.TabMASUKAN[temp1.Length] = ' ';
+  int j;
+  for ( j = 0; j < arg2.Length; j++)
+  {
+    temp1.Length ++ ;
+    temp1.TabMASUKAN[j+i] = arg2.TabMASUKAN[j];
+  }
+  *hasilCom = com;
+  *hasilArg = temp1;
+
 }
 
 boolean isSame(MASUKAN masuk, char string[])
@@ -283,4 +306,8 @@ int masukanToInt(MASUKAN masukan)
     hasil *= -1;
   }
   return hasil;
+}
+
+boolean isMasukanEmpty(MASUKAN masukan){
+  return masukan.Length == 0;
 }

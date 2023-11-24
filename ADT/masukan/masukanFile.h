@@ -84,4 +84,6 @@ void bacaUtas(MASUKAN namaFile);
 void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE *nama, int *angka);
 
 void bacaDraf(MASUKAN namaFile);
+
+void splitMasukanJadi2(MASUKAN masukan, MASUKAN *hasil1, MASUKAN *hasil2);
 #endif

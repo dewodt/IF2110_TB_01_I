@@ -4,6 +4,7 @@
 #include "../listdinkicauan/listdinkicauan.h" // Global variable listDinKicauan
 #include "../pengguna/pengguna.h"             // Global variable currentUser
 #include "../teman/teman.h"
+#include "../prioQueue/reqPertemanan.h"
 
 /* Konstruktor kicauan */
 void CreateKicauan(Kicauan *k, int id, char *text, int like, User *author, DATETIME datetime)
@@ -71,6 +72,9 @@ void BuatKicauan()
   Kicauan kicauanBaru;
 
   // Note: pakai global variable current user untuk author
+  int id;
+  // searchID_Pengguna(strToMASUKAN(currentUser->username, stringLength(currentUser->username)), &id);
+  // User user = ELMT(listUser, id);
   CreateKicauan(&kicauanBaru, idKicauanBaru, kicauanStr, 0, currentUser, waktuKicauan);
   TreeKicauan nodeKicauan = newNodeKicauan(kicauanBaru);
   insertLastListDinKicauan(&listKicauan, nodeKicauan);

@@ -63,7 +63,7 @@ int getCountFriend(User user)
 /* Prekondisi: User valid */
 {
   int count = 0;
-
+  printf("%d\n", listLength(listUser));
   int i;
   for (i = 0; i < listLength(listUser); i++)
   {
@@ -92,7 +92,11 @@ void showFriendList()
   }
 
   // Kasus jika sudah login namun belum punya teman
+  printf("belum cnt\n");
+  printf("%p\n", currentUser);
+  
   int countFriend = getCountFriend(*currentUser);
+  printf("sudah cnt\n");
   if (countFriend == 0)
   {
     printf("%s belum mempunyai teman\n", currentUser->username);

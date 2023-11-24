@@ -40,6 +40,8 @@ void baca(MASUKAN *masukan);
 void perintah(MASUKAN *perintah, MASUKAN *argumen1, MASUKAN *argumen2);
 // menerima input perintah beserta dengan argumen-argumennya
 
+void oneArgumen(MASUKAN com, MASUKAN arg1, MASUKAN arg2, MASUKAN* hasilCom, MASUKAN* hasilArg);
+
 boolean isSame(MASUKAN masuk, char string[]);
 // membandingkan masuk dengan string
 
@@ -76,4 +78,5 @@ void toLowerCase(char *str);
 
 int masukanToInt(MASUKAN masukan);
 
+boolean isMasukanEmpty(MASUKAN masukan);
 #endif

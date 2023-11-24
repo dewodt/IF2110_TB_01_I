@@ -91,7 +91,7 @@ void DAFTAR(ListStatik *pengguna)
 }
 
 // masuk sebagai pengguna
-void MASUK(ListStatik *pengguna, User **currentUser)
+void MASUK(ListStatik *pengguna)
 {
     if (isUserLoggedIn())
     {
@@ -148,21 +148,20 @@ void MASUK(ListStatik *pengguna, User **currentUser)
         }
     } while (!passwordvalid);
 
-    if (*currentUser != NULL) 
+    if (currentUser != NULL) 
     {
-        **currentUser = ELMT(*pengguna, userIndex);
+        currentUser = &ELMT(*pengguna, userIndex);
     } 
     else 
     {
-        *currentUser = malloc(sizeof(User));
-        **currentUser = ELMT(*pengguna, userIndex);
+        currentUser = &ELMT(*pengguna, userIndex);
     }
 
     return;
 }
 
 // keluar dari akun pengguna
-void KELUAR(User **currentUser)
+void KELUAR()
 {
     if (!isUserLoggedIn())
     {
@@ -170,15 +169,13 @@ void KELUAR(User **currentUser)
     }
     else
     {
-        free(*currentUser);
-        *currentUser = NULL;
+        currentUser = NULL;
         printf("Anda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n");
     }
     return;
 }
 
-// ganti profil (nama, bio akun, no HP, weton)
-void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
+void GANTI_PROFIL(ListStatik *pengguna)
 {
     if (!isUserLoggedIn())
     {
@@ -210,9 +207,31 @@ void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
         MASUKAN bio_temp;
         printf("Masukkan Bio Akun: ");
         baca(&bio_temp);
-        char *bio = MASUKANToStr(bio_temp);
+        // displayMASUKAN(bio_temp);
 
-        SetBio(pengguna, userIndex, bio);
+        boolean validbio = false;
+
+        do
+        {
+            validbio = false;
+            if (bio_temp.Length > 135) {
+                validbio = false;
+            }
+            else {
+                validbio = true;
+            }
+
+            if (!validbio)
+            {
+                printf("Bio anda > 135 karakter. Masukkan lagi: ");
+                baca(&bio_temp);
+            }
+        } while (!validbio);
+
+        if (validbio) {
+            char *bio = MASUKANToStr(bio_temp);
+            SetBio(pengguna, userIndex, bio);
+        }
 
         MASUKAN nohp;
         int z;
@@ -225,6 +244,9 @@ void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
             validnumber = true;
             if (nohp.Length > 15) {
                 validnumber = false;
+            }
+            else if (isMasukanEmpty(nohp)) {
+                validnumber = true;
             }
             else {
                 for (z = 0; z < nohp.Length; z++)
@@ -247,22 +269,24 @@ void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
         SetPhoneNum(pengguna, userIndex, nohp);
 
         MASUKAN weton_temp;
-        char weton[NMax];
+        char *weton;
         printf("Masukkan Weton: ");
         baca(&weton_temp);
         boolean validweton = false;
 
         do
         {
-            char *weton = MASUKANToStr(weton_temp);
-            if (compareString(weton, "\0", 1) == 0)
+            weton = MASUKANToStr(weton_temp);
+            // printf("%s\n", weton);
+            // printf("char[0]: %c\n", weton[0]);
+            if (isMasukanEmpty(weton_temp))
             {
                 validweton = true;
             }
             else
             {
                 toLowerCase(weton);
-                if (compareString(weton, ";", 1) == 0 || compareString(weton, "pahing", 6) == 0 || compareString(weton, "kliwon", 6) == 0 || compareString(weton, "wage", 4) == 0 || compareString(weton, "pon", 3) == 0 || compareString(weton, "legi", 4) == 0)
+                if ((compareString(weton, ";", 1) == 0)|| (compareString(weton, "pahing", 6) == 0 && weton_temp.Length == 6) || (compareString(weton, "kliwon", 6) == 0 && weton_temp.Length == 6) || (compareString(weton, "wage", 4) == 0 && weton_temp.Length == 4) || (compareString(weton, "pon", 3) == 0 && weton_temp.Length == 3) || (compareString(weton, "legi", 4) == 0 && weton_temp.Length == 4))
                 {
                     validweton = true;
                 }
@@ -280,6 +304,8 @@ void GANTI_PROFIL(ListStatik *pengguna, User *currentUser)
         printf("Profil Anda sudah berhasil diperbarui!\n");
     }
 }
+
+
 
 // lihat profil pengguna
 void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
@@ -306,22 +332,22 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna)
             char *phonenum = MASUKANToStr(ELMT(*pengguna, userIndex).phone_num);
             printf("| No HP: %s\n", phonenum);
             printf("| Weton: %s\n", ELMT(*pengguna, userIndex).weton);
-            printf("Foto profil akun %s \n", namapengguna.TabMASUKAN);
+            printf("Foto profil akun %s \n", MASUKANToStr(namapengguna));
             displayProfile(ELMT(*pengguna, userIndex).profile);
         }
         else if (ELMT(*pengguna, userIndex).isPrivate == true)
         {
-            printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", namapengguna.TabMASUKAN, namapengguna.TabMASUKAN);
+            printf("Wah, akun %s diprivat nih. Ikuti dulu yuk untuk bisa melihat profil %s!\n", MASUKANToStr(namapengguna), MASUKANToStr(namapengguna));
         }
     }
     else
     {
-        printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", namapengguna.TabMASUKAN);
+        printf("Maaf, pengguna dengan nama %s tidak ditemukan.\n", MASUKANToStr(namapengguna));
     }
 }
 
 // ganti profile
-void UBAH_FOTO_PROFIL(ListStatik *pengguna, User *currentUser)
+void UBAH_FOTO_PROFIL(ListStatik *pengguna)
 {
     if (!isUserLoggedIn())
     {
@@ -355,7 +381,7 @@ void UBAH_FOTO_PROFIL(ListStatik *pengguna, User *currentUser)
 }
 
 // atur jenis akun
-void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser)
+void ATUR_JENIS_AKUN(ListStatik *pengguna)
 {
     if (!isUserLoggedIn())
     {

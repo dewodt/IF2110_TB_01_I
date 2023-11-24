@@ -22,17 +22,17 @@ void DAFTAR(ListStatik *pengguna);
 // F.S.
 
 // masuk sebagai pengguna
-void MASUK(ListStatik *pengguna, User **currentUser);
+void MASUK(ListStatik *pengguna);
 // I.S.
 // F.S.
 
 // keluar dari akun pengguna
-void KELUAR(User **currentUser);
+void KELUAR();
 // I.S.
 // F.S.
 
 // ganti profil (nama, bio akun, no HP, weton)
-void GANTI_PROFIL(ListStatik *pengguna, User *currentUser);
+void GANTI_PROFIL(ListStatik *pengguna);
 // I.S.
 // F.S.
 
@@ -42,12 +42,12 @@ void LIHAT_PROFIL(ListStatik *pengguna, MASUKAN namapengguna);
 // F.S.
 
 // ganti profile
-void UBAH_FOTO_PROFIL(ListStatik *pengguna, User *currentUser);
+void UBAH_FOTO_PROFIL(ListStatik *pengguna);
 // I.S.
 // F.S.
 
 // atur jenis akun
-void ATUR_JENIS_AKUN(ListStatik *pengguna, User *currentUser);
+void ATUR_JENIS_AKUN(ListStatik *pengguna);
 // I.S.
 // F.S.
 

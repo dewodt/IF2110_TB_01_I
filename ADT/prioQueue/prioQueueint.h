@@ -41,6 +41,7 @@ typedef struct {
 #define MaxEl(Q)    (Q).MaxEl
 #define Elmt(Q,i)   (Q).T[(i)]
 
+extern PrioQueueint prioQ;
 /* ********* Prototype ********* */
 boolean IsEmptyQ (PrioQueueint Q);
 /* Mengirim true jika Q kosong: lihat definisi di atas */

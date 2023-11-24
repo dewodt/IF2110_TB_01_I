@@ -60,7 +60,7 @@ void insertUtas(UTAS U, ListUtas *lu)
   // printf("==================================================\n");
   NEFFListDinUtas(*lu) += 1;
 
-  displayUtas(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu) - 1]);
+  // displayUtas(BUFFERListDinUtas(*lu)[NEFFListDinUtas(*lu) - 1]);
 }
 
 // Menghapus Kicauan Sambungan pada utas dengan index tertentu

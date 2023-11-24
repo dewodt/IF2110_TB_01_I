@@ -743,3 +743,36 @@ void bacaDraf(MASUKAN namaFile)
     DRAF(listUser,b) = fs;
   }
 }
+
+void splitMasukanJadi2(MASUKAN masukan, MASUKAN *hasil1, MASUKAN *hasil2)
+{
+  boolean spaceFound = false;
+  hasil1->Length = 0;
+  hasil2->Length = 0;
+  int a, b;
+  a = 0;
+  b = 0;
+  int i;
+  for (i = 0; i < masukan.Length; i++)
+  {
+    if (masukan.TabMASUKAN[i] == ' ' && !spaceFound)
+    {
+      spaceFound = true;
+    }
+    else
+    {
+      if (spaceFound)
+      {
+        hasil2->TabMASUKAN[b] = masukan.TabMASUKAN[i];
+        hasil2->Length += 1;
+        b++;
+      }
+      else
+      {
+        hasil1->TabMASUKAN[a] = masukan.TabMASUKAN[i];
+        hasil1->Length += 1;
+        a++;
+      }
+    }
+  }
+}

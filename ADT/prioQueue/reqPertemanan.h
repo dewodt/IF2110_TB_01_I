@@ -1,5 +1,5 @@
-#ifndef REQPERTEMANAN_H
-#define REQPERTEMANAN_H
+#ifndef __REQPERTEMANAN_H__
+#define __REQPERTEMANAN_H__
 
 #include <stdio.h>
 #include "../modifiedliststatik/modifiedliststatik.h"
@@ -7,9 +7,7 @@
 #include "../masukan/masukan.h"
 #include "prioQueueint.h"
 
-void SETUJUI_PERTEMANAN(PrioQueueint* listReqPertemanan, MatrixTeman relasiPertemanan, int ID_Pengguna, ListStatik listPengguna, int jumlahPengguna);
-
-int searchID_Pengguna(ListStatik listPengguna, MASUKAN Pengguna);
+void searchID_Pengguna(MASUKAN Pengguna, int* id);
 
 // char* searchNamaPengguna(ListStatik listPengguna, int ID_Pengguna, int jumlahPengguna);
 

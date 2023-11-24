@@ -4,6 +4,8 @@
 #ifndef __MASUKANFILE_H__
 #define __MASUKANFILE_H__
 
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "../boolean.h"
 #include "charFile.h"
 #include "../masukan/masukanint.h"
@@ -17,6 +19,7 @@
 #include "../draf/draf.h"
 #include "../listdinUtas/listdinForUtas.h"
 #include "../prioQueue/prioQueueint.h"
+#include "../pengguna/pengguna.h"
 
 #define NMax 280
 #define BLANK ' '
@@ -31,7 +34,7 @@ typedef struct
 extern boolean EndMASUKANFILE;
 extern MASUKANFILE currentMASUKANFILE;
 
-void STARTMASUKANFILE(char nameFile[]);
+void STARTMASUKANFILE(char* nameFile);
 /* I.S. : currentChar sembarang
    F.S. : EndMASUKANFILE = true, dan currentChar = MARK;
           atau EndMASUKANFILE = false, currentMASUKANFILE adalah kata yang sudah diakuisisi,
@@ -63,18 +66,22 @@ void displayMASUKANFILE(MASUKANFILE masuk);
 
 MASUKAN masukanFileToMasukan(MASUKANFILE MASUKANFILE);
 
-void bacaPengguna(ListStatik *listPengguna, MASUKAN namaFile);
+void bacaInisialisasi();
 
-void bacaKicauan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaConfig();
 
-void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE *hasil1, MASUKANFILE *hasil2);
+void bacaPengguna(MASUKAN namaFile);
 
-void bacaBalasan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaKicauan(MASUKAN namaFile);
+
+void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKANFILE* hasil2, boolean* neg);
+
+void bacaBalasan(MASUKAN namaFile);
 
 void bacaUtas(MASUKAN namaFile);
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);
 
 void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE *nama, int *angka);
 
-void bacaDraf(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna);
+void bacaDraf(MASUKAN namaFile);
 #endif

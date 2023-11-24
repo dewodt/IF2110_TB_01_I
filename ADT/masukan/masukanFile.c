@@ -3,6 +3,7 @@
 #include "../boolean.h"
 // #include "../modifiedliststatik/modifiedliststatik.h"
 #include "masukanFile.h"
+#include "../prioQueue/reqPertemanan.h"
 #include "../matrixteman/matrixteman.h"
 
 /* State Mesin MASUKANFILE */
@@ -11,12 +12,13 @@ MASUKANFILE currentMASUKANFILE;
 // boolean EOP;
 // char currentChar;
 
-void STARTMASUKANFILE(char nameFile[])
+void STARTMASUKANFILE(char *nameFile)
 /* I.S. : currentChar sembarang
    F.S. : EndMASUKANFILE = true, dan currentChar = MARK;
           atau EndMASUKANFILE = false, currentMASUKANFILE adalah MASUKANFILE yang sudah diakuisisi,
           currentChar karakter pertama sesudah karakter terakhir MASUKANFILE */
 {
+  
   STARTFILE(nameFile);
   if (currentCharFILE == 10)
   {
@@ -25,7 +27,9 @@ void STARTMASUKANFILE(char nameFile[])
   else
   {
     EndMASUKANFILE = false;
+    
     CopyMASUKANFILE();
+    
   }
 }
 
@@ -86,25 +90,29 @@ void bacaAwalFile(MASUKANFILE *MASUKANFILE, MASUKAN namaFile, int x)
 {
 
   char *str = MASUKANToStr(namaFile);
-  // printf("%s\n", str);
   if (x == 1)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/", str), "pengguna.config"));
+    // printf("%s\n", concatStr(concatStr("config/", str), "/pengguna.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/pengguna.config"));
   }
   else if (x == 2)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/", str), "kicauan.config"));
+    // printf("%s\n", concatStr(concatStr("config/", str), "/kicauan.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/kicauan.config"));
   }
   else if (x == 3)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/", str), "balasan.config"));
+    // printf("%s\n", concatStr(concatStr("config/", str), "/balasan.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/balasan.config"));
   }
   else if (x == 4)
   {
-    STARTMASUKANFILE(concatStr(concatStr("config/", str), "draf.config"));
+    // printf("%s\n", concatStr(concatStr("config/", str), "/draf.config"));
+    STARTMASUKANFILE(concatStr(concatStr("config/", str), "/draf.config"));
   }
   else if (x == 5)
   {
+    // printf("%s\n", concatStr(concatStr("config/", str), "/utas.config"));
     STARTMASUKANFILE(concatStr(concatStr("config/", str), "/utas.config"));
   }
 
@@ -197,89 +205,155 @@ MASUKAN masukanFileToMasukan(MASUKANFILE masukanFile)
 //   str[len] = '\0';
 // }
 
+
+void bacaConfig(){
+  if(isUserLoggedIn()){
+    printf("Anda harus keluar terlebih dahulu untuk melakukan pemuatan.\n");
+    return;
+  }
+  MASUKAN masukan;
+  baca(&masukan);
+  char* folderDir = concatStr("config/", MASUKANToStr(masukan));
+  struct stat st = {0};
+  if(stat(folderDir, &st) != 0 || !S_ISDIR(st.st_mode)){
+    printf("Tidak ada folder yang dimaksud!\n");
+    return;
+  }
+    bacaPengguna( masukan);
+    bacaKicauan(masukan);
+    bacaBalasan(masukan);
+    // bacaUtas(listKicauan,masukan,listPengguna,&listUtas);
+    bacaDraf(masukan);
+    printf("Anda akan melakukan pemuatan dari Folder2.\n");
+    printf("Mohon tunggu...\n");
+    printf("1...\n");
+    printf("2...\n");
+    printf("3...\n");
+    printf("Pemuatan selesai!\n");
+}
+
+void bacaInisialisasi(){
+  MASUKAN masukan;
+  baca(&masukan);
+  char* folderDir = concatStr("config/", MASUKANToStr(masukan));
+  struct stat st = {0};
+  if(stat(folderDir, &st) != 0 || !S_ISDIR(st.st_mode)){
+    printf("Tidak ada folder yang dimaksud!\n");
+    return;
+  }
+    bacaPengguna( masukan);
+    bacaKicauan(masukan);
+    bacaBalasan(masukan);
+    // bacaUtas(listKicauan,masukan,listPengguna,&listUtas);
+    bacaDraf(masukan);
+    printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
+}
+
 // membaca pengguna.config
 // status: done?
-void bacaPengguna(ListStatik *listPengguna, MASUKAN namaFile)
+void bacaPengguna(MASUKAN namaFile)
 {
+  // Dapatkan jumlah user
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile, namaFile, 1);
   int n;
   n = masukanFileToInt(masukanFile);
+
   int i;
+  // Looping per row pengguna
   for (i = 0; i < n; i++)
   {
+    // Username
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int j;
     for (j = 0; j < masukanFile.Length; j++)
     {
-      listPengguna->contents[i].username[j] = masukanFile.TabMASUKANFILE[j];
+      listUser.contents[i].username[j] = masukanFile.TabMASUKANFILE[j];
     }
 
+    // Password
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int k;
     for (k = 0; k < masukanFile.Length; k++)
     {
-      listPengguna->contents[i].password[k] = masukanFile.TabMASUKANFILE[k];
+      listUser.contents[i].password[k] = masukanFile.TabMASUKANFILE[k];
     }
 
+    // Bio
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int l;
     for (l = 0; l < masukanFile.Length; l++)
     {
-      listPengguna->contents[i].bio[l] = masukanFile.TabMASUKANFILE[l];
+      listUser.contents[i].bio[l] = masukanFile.TabMASUKANFILE[l];
     }
 
+    // Phone number
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
-    listPengguna->contents[i].phone_num = masukanFileToMasukan(masukanFile);
+    listUser.contents[i].phone_num = masukanFileToMasukan(masukanFile);
 
+    // Weton
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int a;
     for (a = 0; a < masukanFile.Length; a++)
     {
-      listPengguna->contents[i].weton[a] = masukanFile.TabMASUKANFILE[a];
+      listUser.contents[i].weton[a] = masukanFile.TabMASUKANFILE[a];
     }
 
+    // Acc type
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     if (isSame(masukanFileToMasukan(masukanFile), "Privat"))
     {
-      IS_PRIVATE(*listPengguna, i) = true;
+      IS_PRIVATE(listUser, i) = true;
     }
     else
     {
-      IS_PRIVATE(*listPengguna, i) = false;
+      IS_PRIVATE(listUser, i) = false;
     }
 
+    // Profile picture
     int c;
+    // Loop row
     for (c = 0; c < 5; c++)
     {
+      // Loop column
       bacaLanjutFile(&masukanFile);
       // displayMASUKANFILE(masukanFile);
       int d;
       for (d = 0; d < 10; d++)
       {
-        ELMT_MTX(listPengguna->contents[i].profile, c, d) = masukanFile.TabMASUKANFILE[2 * (d)];
+        ELMT_MTX(listUser.contents[i].profile, c, d) = masukanFile.TabMASUKANFILE[2 * (d)];
       }
     }
   }
+
+  // displayMatrixTeman(RelasiPertemanan);
+  // Input relasi pertemanan
+  // note: ada n user
   int e;
   for (e = 0; e < n; e++)
   {
     bacaLanjutFile(&masukanFile);
     int f;
-    for (f = 0; f < masukanFile.Length; f++)
+    for (f = 0; f < n; f++)
     {
       ELMT_MTX(RelasiPertemanan, e, f) = masukanFile.TabMASUKANFILE[2 * f] - 48;
     }
   }
+  // printf("\n");
+  // displayMatrixTeman(RelasiPertemanan);
+
+  // Input relasi follow
   bacaLanjutFile(&masukanFile);
   int g;
   g = masukanFileToInt(masukanFile);
+
+  // Looping per row prioqueue
   int h;
   for (h = 0; h < g; h++)
   {
@@ -291,7 +365,7 @@ void bacaPengguna(ListStatik *listPengguna, MASUKAN namaFile)
     num2 = -1;
     for (x = 0; x < masukanFile.Length; x++)
     {
-      if (num1 == -1 && num2 == -1)
+      if (num1 == -1 || num2 == -1)
       {
         if (masukanFile.TabMASUKANFILE[x] != 32)
         {
@@ -303,6 +377,7 @@ void bacaPengguna(ListStatik *listPengguna, MASUKAN namaFile)
           if (num1 == -1)
           {
             num1 = numTemp;
+            numTemp = 0;
           }
           else
           {
@@ -317,41 +392,47 @@ void bacaPengguna(ListStatik *listPengguna, MASUKAN namaFile)
 
 // membaca kicauan.config
 // status: done?
-void bacaKicauan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listPengguna)
+void bacaKicauan(MASUKAN namaFile)
 {
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile, namaFile, 2);
   int n;
   n = masukanFileToInt(masukanFile);
+
   Kicauan tempKicauan;
   int i;
+
   for (i = 0; i < n; i++)
   {
+
     // id
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int id;
     id = masukanFileToInt(masukanFile);
-    tempKicauan.id = id;
+
     // text
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     char *text = MASUKANToStr(masukanFileToMasukan(masukanFile));
+
     // like
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     int like;
     like = masukanFileToInt(masukanFile);
-    tempKicauan.like = like;
+
     // author
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
     MASUKAN tempMasukan;
     tempMasukan = masukanFileToMasukan(masukanFile);
-    int idx;
-    idx = searchID_Pengguna(listPengguna, tempMasukan);
-    User author;
-    author = listPengguna.contents[idx];
+    // displayMASUKAN(tempMasukan);
+
+    int idx = 0;
+    searchID_Pengguna(tempMasukan, &idx);
+    User *author;
+    author = &listUser.contents[0];
     // datetime
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
@@ -363,23 +444,35 @@ void bacaKicauan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listP
     int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
     DATETIME datetime;
     CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
-    CreateKicauan(&tempKicauan, id, text, like, &author, datetime);
+
+    CreateKicauan(&tempKicauan, id, text, like, author, datetime);
     AddressKicauan addKicauan;
     addKicauan = newNodeKicauan(tempKicauan);
-    insertLastListDinKicauan(listKicauan, addKicauan);
+    insertLastListDinKicauan(&listKicauan, addKicauan);
   }
 }
 
-void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE *hasil1, MASUKANFILE *hasil2)
+void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE *hasil1, MASUKANFILE *hasil2, boolean *neg)
 {
-  int i;
   boolean spaceFound = false;
+  hasil1->Length = 0;
+  hasil2->Length = 0;
   int a, b;
   a = 0;
   b = 0;
+  boolean isNeg = false;
+  if (masukanFile.TabMASUKANFILE[0] == 45)
+  {
+    isNeg = true;
+  }
+  int i;
   for (i = 0; i < masukanFile.Length; i++)
   {
-    if (masukanFile.TabMASUKANFILE[i] == ' ')
+    if (isNeg && i == 0)
+    {
+    }
+    else if (masukanFile.TabMASUKANFILE[i] == ' ')
+
     {
       spaceFound = true;
     }
@@ -399,53 +492,67 @@ void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE *hasil1, MASUKAN
       }
     }
   }
+  (*neg) = isNeg;
 }
 
 // membaca balasan.config
 // status: done?
-void bacaBalasan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listPengguna)
+void bacaBalasan(MASUKAN namaFile)
 {
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile, namaFile, 3);
   int n;
   n = masukanFileToInt(masukanFile);
+
   int i;
   for (i = 0; i < n; i++)
   {
+
     bacaLanjutFile(&masukanFile);
     int id;
     id = masukanFileToInt(masukanFile);
+
     bacaLanjutFile(&masukanFile);
     int m;
     m = masukanFileToInt(masukanFile);
+
     int j;
     for (j = 0; j < m; j++)
     {
       bacaLanjutFile(&masukanFile);
+      // displayMASUKANFILE(masukanFile);
       // parent, id balasan
       MASUKANFILE mP, mQ;
-      splitMasukanFileJadi2(masukanFile, &mP, &mQ);
+      boolean neg;
+      splitMasukanFileJadi2(masukanFile, &mP, &mQ, &neg);
+      // displayMASUKANFILE(mP);
+      // displayMASUKANFILE(mQ);
       int p, q;
+      p = 0;
+      q = 0;
       p = masukanFileToInt(mP);
       q = masukanFileToInt(mQ);
+      if (neg)
+      {
+        p *= -1;
+      }
+
 
       // text
       bacaLanjutFile(&masukanFile);
-      char text[masukanFile.Length];
-      int a;
-      for (a = 0; a < masukanFile.Length; a++)
-      {
-        text[a] = masukanFile.TabMASUKANFILE[a];
-      }
+      char *text = MASUKANToStr(masukanFileToMasukan(masukanFile));
 
       // author
       bacaLanjutFile(&masukanFile);
+      // displayMASUKANFILE(masukanFile);
       MASUKAN tempMasukan;
       tempMasukan = masukanFileToMasukan(masukanFile);
-      int idx;
-      idx = searchID_Pengguna(listPengguna, tempMasukan);
-      User author;
-      author = listPengguna.contents[idx];
+
+      int idx = 0;
+      searchID_Pengguna(tempMasukan, &idx);
+
+      User* author;
+      author = &listUser.contents[idx];
 
       // datetime
       bacaLanjutFile(&masukanFile);
@@ -457,17 +564,20 @@ void bacaBalasan(ListDinKicauan *listKicauan, MASUKAN namaFile, ListStatik listP
       int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
-      Balasan tempBalasan;
-      CreateBalasan(&tempBalasan, q, text, &author, datetime); // masukan to str
-      TreeKicauan tempTree;
-      tempTree = ELMT_LDK(*listKicauan, id - 1);
+
+      Balasan infoBalasan;
+      CreateBalasan(&infoBalasan, q, text, author, datetime); // masukan to str
+      // CetakDetailBalasan(infoBalasan, false, 0);
+
+      TreeKicauan tempTree = ELMT_LDK(listKicauan, id - 1);
       if (p == -1)
       {
-        balasKicauan(tempTree, tempBalasan);
+        balasKicauan(tempTree, infoBalasan);
       }
       else
       {
-        balasBalasan(getBalasan(tempTree, p), tempBalasan);
+        AddressBalasan balasanNode = getBalasan(tempTree, p);
+        balasBalasan(balasanNode, infoBalasan);
       }
     }
   }
@@ -551,56 +661,61 @@ void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE *nama, int *ang
       idxLastSpace = a;
     }
   }
-  MASUKANFILE masukanNama, masukanAngka;
-  int b;
-  for (b = 0; b < idxLastSpace + 1; b++)
-  {
-    masukanNama.Length += 1;
-    masukanNama.TabMASUKANFILE[b] = masukanFile.TabMASUKANFILE[b];
-  }
+  MASUKANFILE masukanAngka; // masukanNama
+  // int b;
+  // for ( b = 0; b < idxLastSpace + 1; b++)
+  // {
+  //   masukanNama.Length += 1;
+  //   printf("%c\n", masukanFile.TabMASUKANFILE[b]);
+  //   masukanNama.TabMASUKANFILE[b] = masukanFile.TabMASUKANFILE[b];
+  // }
   int c;
   int idx;
   idx = 0;
+  *angka = 0;
   for (c = idxLastSpace + 1; c < masukanFile.Length; c++)
   {
     masukanAngka.Length += 1;
-    masukanAngka.TabMASUKANFILE[idx] = masukanFile.TabMASUKANFILE[c];
+    *angka *= 10;
+    *angka += masukanFile.TabMASUKANFILE[c] - 48;
     idx++;
   }
-  *nama = masukanNama;
-  *angka = masukanFileToInt(masukanAngka);
+  *nama = masukanFile;
+  (*nama).Length = idxLastSpace;
 }
 
-void bacaDraf(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna)
+void bacaDraf(MASUKAN namaFile)
 {
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile, namaFile, 4);
   int n;
   n = masukanFileToInt(masukanFile);
+  // printf("ini n %d\n", n);
   int i;
   for (i = 0; i < n; i++)
   {
     bacaLanjutFile(&masukanFile);
     MASUKANFILE tempAuthor;
+    // displayMASUKANFILE(masukanFile);
     int count;
     MASUKANFILEToStrAndInt(masukanFile, &tempAuthor, &count);
     char *nama = MASUKANToStr(masukanFileToMasukan(tempAuthor));
     // User author;
-    boolean authorFound;
-    authorFound = false;
-    int b = 0;
-    while (b < listLength(listPengguna) && !authorFound)
-    {
-      if (USERNAME(listPengguna, b) == nama)
-      {
-        authorFound = true;
-        // author = listPengguna.contents[b];
-      }
-      else
-      {
-        b++;
-      }
-    }
+    // boolean authorFound;
+    // authorFound = false;
+    // int b = 0;
+    // while(b < listLength(listUser) && !authorFound){
+    //   if(USERNAME(listUser,b) == nama){
+    //     authorFound = true;
+    //     printf("true");
+    //     // author = listPengguna.contents[b];
+    //   }else{
+    //     b ++;
+    //   }
+    // }
+    int b;
+    b = 0;
+    searchID_Pengguna(masukanFileToMasukan(tempAuthor),&b);
     Stack s;
     CreateEmptyStack(&s);
     int a;
@@ -623,7 +738,8 @@ void bacaDraf(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengg
       PushStack(&s, tempDraf);
     }
     Stack fs;
-    ReverseStack(s, &fs);
-    DRAF(listPengguna, b) = fs;
+    CreateEmptyStack(&fs);
+    ReverseStack(s,&fs);
+    DRAF(listUser,b) = fs;
   }
 }

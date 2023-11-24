@@ -1,20 +1,22 @@
 
 #include "reqPertemanan.h"
-int searchID_Pengguna(ListStatik listPengguna, MASUKAN Pengguna)
+#include "../modifiedliststatik/modifiedliststatik.h"
+
+void searchID_Pengguna(MASUKAN Pengguna, int* id)
 {
     int hasil;
     hasil = -1;
     int i;
     i = 0;
-    while (i < listLength(listPengguna) && hasil != -1)
+    while (i < listLength(listUser) && hasil == -1)
     {
-        if(USERNAME(listPengguna,i) == MASUKANToStr(Pengguna)){
+        if(isMASUKANEqual(strToMASUKAN(USERNAME(listUser,i),stringLength(USERNAME(listUser,i))),Pengguna)){
             hasil = i;
         }else{
             i++;
         }
     }
-    return hasil;
+    (*id) = hasil;
 }
 // void SETUJUI_PERTEMANAN(PrioQueueint* listReqPertemanan, MatrixTeman relasiPertemanan, int ID_Pengguna, ListStatik listPengguna, int jumlahPengguna){
 //     int id;
@@ -66,17 +68,19 @@ void TAMBAH_TEMAN(PrioQueueint listReqPertemanan, MatrixTeman relasiPertemanan, 
     }else{
         MASUKAN namaTeman;
         baca(&namaTeman);
-        if(searchID_Pengguna(listPengguna, namaTeman) == -1){
+        int idx;
+        searchID_Pengguna( namaTeman,&idx);
+        if(idx == -1){
             printf("Pengguna bernama namaTeman tidak ditemukan.\n"); 
         }
-        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 1 && ELMT_MTXTEMAN(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 0){
+        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, idx) == 1 && ELMT_MTXTEMAN(relasiPertemanan, idx, ID_Pengguna) == 0){
             printf("Anda sudah mengirimkan permintaan pertemanan kepada namaTeman. Silakan tunggu hingga permintaan Anda disetujui.\n");
         }
-        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 0 && ELMT_MTXTEMAN(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 0){
-            ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) = 1;
+        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, idx) == 0 && ELMT_MTXTEMAN(relasiPertemanan, idx, ID_Pengguna) == 0){
+            ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, idx) = 1;
             printf("Anda sudah mengirimkan permintaan pertemanan kepada namaTeman. Silakan tunggu hingga permintaan Anda disetujui.\n");
         }
-        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, searchID_Pengguna(listPengguna, namaTeman)) == 1 && ELMT_MTXTEMAN(relasiPertemanan, searchID_Pengguna(listPengguna, namaTeman), ID_Pengguna) == 1){
+        else if(ELMT_MTXTEMAN(relasiPertemanan, ID_Pengguna, idx) == 1 && ELMT_MTXTEMAN(relasiPertemanan, idx, ID_Pengguna) == 1){
             printf("Anda sudah berteman.\n");
         }
     }

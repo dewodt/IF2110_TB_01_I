@@ -7,6 +7,7 @@
 
 #include "../boolean.h"
 #include "../datetime/datetime.h"
+#include <stdio.h>
 
 #define Nil -1
 #define MaxElmt 100

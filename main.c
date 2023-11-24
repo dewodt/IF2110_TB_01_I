@@ -6,6 +6,7 @@
 #include "ADT/masukan/masukanFile.h"
 #include "ADT/matrixteman/matrixteman.h"
 #include "ADT/prioQueue/prioQueueint.h"
+#include "ADT/simpan/simpan.h"
 #include "ADT/Utas/utas.h"
 #include "ADT/kicauan/kicauan.h"
 #include "ADT/datetime/datetime.h"
@@ -33,7 +34,8 @@ int main()
     CreateListUtas(&listUtas, 100);
     CreateListStatik(&listUser);
     currentUser = NULL;
-
+    MASUKAN kata;
+    createMatrixTeman(20,20,&RelasiPertemanan);
     // Tampilan awal
     printf(".______    __    __  .______      .______    __  .______ \n");
     printf("|   _  \\  |  |  |  | |   _  \\     |   _  \\  |  | |   _  \\\n");
@@ -44,8 +46,9 @@ int main()
     printf("Selamat datang di BurBir.\n");
     printf("Aplikasi untuk studi kualitatif mengenai perilaku manusia dengan menggunakan \n");
     printf("metode (pengambilan data berupa) Focused Group Discussion kedua di zamannya.\n");
-    printf("Silahkan masukan folder konfigurasi untuk dimuat: \n");
-    printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
+    printf("Silahkan masukan folder konfigurasi untuk dimuat: ");
+    bacaInisialisasi(listUser,listUtas);
+
 
     // Buat user
     User user1, user2;
@@ -86,16 +89,76 @@ int main()
     insertLastListDinKicauan(&listKicauan, tk5);
 
     // Baca config
-    printf(">>");
-    MASUKAN command, arg1, arg2;
-
-    perintah(&command, &arg1, &arg2);
+    // printf(">>");
+    // baca(&kata);
     // Proses salin konfig ke dalam variabel program
-    // bacaPengguna(&listUser, kata);
-    // bacaKicauan(&listKicauan, kata, listUser);
-    // bacaBalasan(&listKicauan, kata, listUser);
+    // FILE* output;
+    // output = fopen("config/config-1/pengguna.config", "r");
+    // if(!output){
+    //     printf("error\n");
+    // }else{
+    //     printf("berhasil\n");
+    // }
+    // bacaPengguna(&listUser,kata);
+    // printf("sampe bacaPengguna\n");
+    // printf("%s\n", USERNAME(listUser,0));
+    // printf("%s\n", PASSWORD(listUser,0));
+    // printf("%s\n", MASUKANToStr(PHONE_NUM(listUser,0)));
+    // printf("%s\n", WETON(listUser,0));
+    // displayProfile(PROFILE(listUser,0));
+    // printf("%s\n", USERNAME(listUser,1));
+    // printf("%s\n", BIO(listUser,1));
+    // printf("%s\n", USERNAME(listUser,2));
+    // printf("%s\n", WETON(listUser,2));
+
+    // // bacaKicauan(&listKicauan,kata,listUser);
+    // printf("sampe bacaKicauan\n");
+    // printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
+    // printDetailKicauan(ELMT_LDK(listKicauan,1)->infoKicauan);
+    // // bacaDraf(kata);
+
+    // printf("%s\n", InfoTop(DRAF(listUser,0)).text);
+    // displayTime( InfoTop(DRAF(listUser,0)).datetime);
+    // printf("%s\n", InfoTop(DRAF(listUser,1)).text);
+    // displayTime( InfoTop(DRAF(listUser,1)).datetime);
+    // printf("sampe bacaDraf\n");
+
+    Simpan();
+
+    // printf("==================\n");
+    // printf("==================\n");
+    // printDetailKicauan(ELMT_LDK(listKicauan,0)->infoKicauan);
+    // printf("==================\n");
+    // printf("==================\n");
+    // bacaBalasan(&listKicauan,kata,listUser);
+    // TreeKicauan tk = ELMT_LDK(listKicauan,0);
+    // // AddressBalasan ab = FirstLeftChildBalasan(tk);
+    // // TampilkanBalasanRekursif(ab, 0);
+
+
+    // printf("sampe bacaBalasan\n");
+    // bacaUtas(listKicauan,kata,listUser,&listUtas);
+    // printf("sampe bacaUtas\n");
+    // printf(">>");
 
     bacaUtas(command);
+
+    currentUser = &user1;
+    // DISPLAY SEMUA KICAUAN DALAM LIST KICAUAN
+
+    printf("============================ KICAUAN LOADED IN  ============================\n");
+    for (int i = 0; i < listDinKicauanLength(listKicauan); i++)
+    {
+        printDetailKicauan(InfoKicauan(BUFFER_LDK(listKicauan)[i]));
+    }
+
+    // DISPLAY SEMUA UTAS DALAM LIST UTAS
+    printf("============================ UTAS LOADED IN  ============================\n");
+    for (int i = 0; i < listUtasLength(listUtas); i++)
+    {
+        displayUtas(BUFFERListDinUtas(listUtas)[i]);
+        printf("ID UTAS = %d\n", IDUtas(BUFFERListDinUtas(listUtas)[i]));
+    }
 
     // printf("MASUK WHILE");
     while (!isSame(command, "TUTUP_PROGRAM"))
@@ -279,19 +342,20 @@ int main()
         // }
         else if (isSame(command, "UTAS"))
         {
-            printf("ini UTAS\n");
             BUAT_UTAS(masukanToInt(arg1));
         }
 
         else if (isSame(command, "SAMBUNG_UTAS")) // bacaUtas(listKicauan, kata, listUser, &listUtas);
         {
-            printf("ini Sambung Utas\n");
             SAMBUNG_UTAS(masukanToInt(arg1), masukanToInt(arg2));
         }
         else if (isSame(command, "HAPUS_UTAS"))
         {
-            printf("ini Hapus UTAS");
             HAPUS_UTAS(masukanToInt(arg1), masukanToInt(arg2));
+        }
+        else if (isSame(command, "CETAK_UTAS"))
+        {
+            CETAK_UTAS(masukanToInt(arg1));
         }
         // else if (isSame(kata, "\nSIMPAN;"))
         //

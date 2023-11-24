@@ -10,7 +10,7 @@ void Simpan();
 /* F.S. Data program tersimpan dalam folder config/foo */
 
 /* Prosedur untuk menyimpan data pengguna dalam folder config/foo */
-void SimpanPengguna();
+void SimpanPengguna(char *folderDir);
 /* I.S. Sembarang */
 /* F.S. Data pengguna tersimpan dalam folder config/foo/pengguna */
 

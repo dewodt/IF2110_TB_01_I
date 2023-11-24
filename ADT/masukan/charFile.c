@@ -10,7 +10,7 @@ char currentCharFILE;
 static FILE *pita;
 static int retval;
 
-void STARTFILE(char nameFile[])
+void STARTFILE(char* nameFile)
 {
   /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
      Karakter pertama yang ada pada pita posisinya adalah pada jendela.
@@ -19,7 +19,18 @@ void STARTFILE(char nameFile[])
             Jika currentChar = MARK maka EOP akan menyala (true) */
 
   /* Algoritma */
+  // FILE* output;
+  // printf("%s", nameFile);
+  // output = fopen("config/config-1/pengguna.config", "r");
+  // if(!output){
+  //     printf("error\n");
+  // }else{
+  //     printf("berhasil\n");
+  // }
   pita = fopen(nameFile, "r");
+  if (!pita) {
+    printf("ERRPOR");
+  }
   ADVFILE();
 }
 

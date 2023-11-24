@@ -14,15 +14,15 @@
 
 #include <stdio.h>
 
-boolean iisKicauExistinUtas(AddressKicauan kicau, ListUtas lu);
+boolean isKicauExistinUtas(AddressKicauan kicau);
 
-int isIdUtasValid(ListUtas li, int idx);
+int isIdUtasValid(int idx);
 
 boolean isIndexSambunganValid(threads u, int index);
 
-boolean isUtasUser(UTAS u, User userloggedin);
+boolean isUtasUser(UTAS u);
 
-boolean isKicauanUser(AddressKicauan k, User userloggedin);
+boolean isKicauanUser(AddressKicauan k);
 
 void BUAT_UTAS(int idk);
 

@@ -1,26 +1,2 @@
-CC = gcc
-CFLAGS = -std=c11
-
-MAIN_FILES = main.c
-ADT_FILES = $(wildcard ADT/**/*.c)
-
-OBJ_FILES = $(ADT_FILES:.c=.o)
-
-INCLUDES = $(addprefix -I, $(dir ${wildcard ADT/*/}))
-
-all: ${OBJ_FILES}
-	${CC} ${CFLAGS} ${INCLUDES} -o $@ $^
-
-%.o: %.c
-	$(CC) $(CFLAGS) ${INCLUDES }-c -o $@ $<
-
-# todo: test
-# test:
-
-main: $(ADT_FILES)
-	${CC} ${CFLAGS} ${INCLUDES} -o tubesalstrukdat $(filter-out %_driver.c,$(ADT_FILES)) main.c
-
-clean:
-	rm -f $(OBJ_FILES) $(TARGET)
-
-.PHONY: all clean test
+main: main.c ADT/Utas/utas.c ADT/balasan/balasan.c ADT/charmachine/charmachine.c ADT/datetime/datetime.c ADT/draf/draf.c ADT/kicauan/kicauan.c ADT/listdinUtas/listdinForUtas.c ADT/listdinkicauan/listdinkicauan.c ADT/listlinierUtas/listlinierForUtas.c ADT/masukan/charFile.c ADT/masukan/masukan.c ADT/masukan/masukanFile.c ADT/masukan/masukanint.c ADT/masukan/temp.c ADT/matrixteman/matrixteman.c ADT/modifiedliststatik/modifiedliststatik.c ADT/modifiedmatrix/modifiedmatrix.c ADT/pcolor/pcolor.c ADT/pengguna/pengguna.c ADT/prioQueue/prioQueueint.c ADT/prioQueue/reqPertemanan.c ADT/simpan/simpan.c ADT/stackdraf/stackdraf.c ADT/teman/teman.c ADT/time/time.c ADT/tree/tree.c ADT/wordmachine/wordmachine.c
+	gcc -o $@ $^

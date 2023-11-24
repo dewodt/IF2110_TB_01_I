@@ -143,6 +143,23 @@ int main()
 
     bacaUtas(command);
 
+    currentUser = &user1;
+    // DISPLAY SEMUA KICAUAN DALAM LIST KICAUAN
+
+    printf("============================ KICAUAN LOADED IN  ============================\n");
+    for (int i = 0; i < listDinKicauanLength(listKicauan); i++)
+    {
+        printDetailKicauan(InfoKicauan(BUFFER_LDK(listKicauan)[i]));
+    }
+
+    // DISPLAY SEMUA UTAS DALAM LIST UTAS
+    printf("============================ UTAS LOADED IN  ============================\n");
+    for (int i = 0; i < listUtasLength(listUtas); i++)
+    {
+        displayUtas(BUFFERListDinUtas(listUtas)[i]);
+        printf("ID UTAS = %d\n", IDUtas(BUFFERListDinUtas(listUtas)[i]));
+    }
+
     // printf("MASUK WHILE");
     while (!isSame(command, "TUTUP_PROGRAM"))
     {
@@ -325,19 +342,20 @@ int main()
         // }
         else if (isSame(command, "UTAS"))
         {
-            printf("ini UTAS\n");
             BUAT_UTAS(masukanToInt(arg1));
         }
 
         else if (isSame(command, "SAMBUNG_UTAS")) // bacaUtas(listKicauan, kata, listUser, &listUtas);
         {
-            printf("ini Sambung Utas\n");
             SAMBUNG_UTAS(masukanToInt(arg1), masukanToInt(arg2));
         }
         else if (isSame(command, "HAPUS_UTAS"))
         {
-            printf("ini Hapus UTAS");
             HAPUS_UTAS(masukanToInt(arg1), masukanToInt(arg2));
+        }
+        else if (isSame(command, "CETAK_UTAS"))
+        {
+            CETAK_UTAS(masukanToInt(arg1));
         }
         // else if (isSame(kata, "\nSIMPAN;"))
         //

@@ -78,10 +78,10 @@ void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE* hasil1, MASUKAN
 
 void bacaBalasan(MASUKAN namaFile);
 
-void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas* listUtas);
+void bacaUtas(MASUKAN namaFile);
 // void MASUKANFILEToStr(MASUKANFILE masukanFile, char *str[]);
 
-void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE* nama, int* angka);
+void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE *nama, int *angka);
 
 void bacaDraf(MASUKAN namaFile);
 #endif

@@ -386,7 +386,6 @@ void bacaPengguna(MASUKAN namaFile)
         }
       }
     }
-
     ELMT_MTX(RelasiPertemanan, num1, num2) = 1;
   }
 }
@@ -395,10 +394,8 @@ void bacaPengguna(MASUKAN namaFile)
 // status: done?
 void bacaKicauan(MASUKAN namaFile)
 {
-
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile, namaFile, 2);
-
   int n;
   n = masukanFileToInt(masukanFile);
 
@@ -447,6 +444,7 @@ void bacaKicauan(MASUKAN namaFile)
     int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
     DATETIME datetime;
     CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
+
     CreateKicauan(&tempKicauan, id, text, like, author, datetime);
     AddressKicauan addKicauan;
     addKicauan = newNodeKicauan(tempKicauan);
@@ -474,6 +472,7 @@ void splitMasukanFileJadi2(MASUKANFILE masukanFile, MASUKANFILE *hasil1, MASUKAN
     {
     }
     else if (masukanFile.TabMASUKANFILE[i] == ' ')
+
     {
       spaceFound = true;
     }
@@ -548,6 +547,7 @@ void bacaBalasan(MASUKAN namaFile)
       // displayMASUKANFILE(masukanFile);
       MASUKAN tempMasukan;
       tempMasukan = masukanFileToMasukan(masukanFile);
+
       int idx = 0;
       searchID_Pengguna(tempMasukan, &idx);
 
@@ -564,6 +564,7 @@ void bacaBalasan(MASUKAN namaFile)
       int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
+
       Balasan infoBalasan;
       CreateBalasan(&infoBalasan, q, text, author, datetime); // masukan to str
       // CetakDetailBalasan(infoBalasan, false, 0);
@@ -584,31 +585,48 @@ void bacaBalasan(MASUKAN namaFile)
 
 // membaca pengguna.config
 // status: tinggal connectin thread
-void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengguna, ListUtas *listUtas)
+void bacaUtas(MASUKAN namaFile)
 {
   MASUKANFILE masukanFile;
   bacaAwalFile(&masukanFile, namaFile, 5);
+  // Banyak utas
   int n;
+  // printf("BANYAK UTAS : %d\n", n);
   n = masukanFileToInt(masukanFile);
+
   int i;
   for (i = 0; i < n; i++)
   {
+    // IDKICAUAN
     bacaLanjutFile(&masukanFile);
     int idKicau = masukanFileToInt(masukanFile);
+    printf("%d", idKicau);
+
+    // Jumlah sambungan
     bacaLanjutFile(&masukanFile);
-    int a;
-    a = 0;
-    a = masukanFileToInt(masukanFile);
-    Kicauan kicauan;
-    kicauan = ELMT_LDK(listKicauan, idKicau - 1)->infoKicauan;
+    int countSambungan = masukanFileToInt(masukanFile);
+    // printf("Jumlah Sambungan: %d\n", countSambungan);
+
+    // Kicauan
+    AddressKicauan kicauan = ELMT_LDK(listKicauan, idKicau - 1);
+
     UTAS utasUtama;
-    CreateUtas(&utasUtama, &kicauan, i);
-    for (a = 0; a < listKicauan.nEff; a++)
+    CreateUtas(&utasUtama, kicauan, i + 1);
+
+    // Loop jumlah sambungan
+    int j;
+    for (j = 0; j < countSambungan; j++)
     {
+      //  Kalimat sambubnngan
       bacaLanjutFile(&masukanFile);
       char *text;
       text = MASUKANToStr(masukanFileToMasukan(masukanFile));
+      // printf("TEKS: %s\n", text);
+
+      // Author
       bacaLanjutFile(&masukanFile); // just for skipping author karena udah bs ambil author dari kicauan
+
+      // Date
       bacaLanjutFile(&masukanFile);
       int HH = charToInt(masukanFile.TabMASUKANFILE[11]) * 10 + charToInt(masukanFile.TabMASUKANFILE[12]);
       int MM = charToInt(masukanFile.TabMASUKANFILE[14]) * 10 + charToInt(masukanFile.TabMASUKANFILE[15]);
@@ -618,13 +636,16 @@ void bacaUtas(ListDinKicauan listKicauan, MASUKAN namaFile, ListStatik listPengg
       int YYYY = charToInt(masukanFile.TabMASUKANFILE[6]) * 1000 + charToInt(masukanFile.TabMASUKANFILE[7]) * 100 + charToInt(masukanFile.TabMASUKANFILE[8]) * 10 + charToInt(masukanFile.TabMASUKANFILE[9]);
       DATETIME datetime;
       CreateDATETIME(&datetime, DD, BB, YYYY, HH, MM, SS);
-      // User author;
-      // author = tempKicauan.author;
-      // threads tempUtas;
-      // tempUtas = newThreadNode(text,datetime);
-      insertLastThreadForConfig(&utasUtama, text, datetime);
+
+      // printf("\n");
+      // displayTime(datetime);
+      // printf("\n");
+
+      // Insert thread
+
+      insertLastThreadForConfig(utasUtama, text, datetime);
     }
-    insertUtas(listUtas, utasUtama);
+    insertUtas(utasUtama, &listUtas);
   }
 }
 
@@ -657,7 +678,6 @@ void MASUKANFILEToStrAndInt(MASUKANFILE masukanFile, MASUKANFILE *nama, int *ang
     masukanAngka.Length += 1;
     *angka *= 10;
     *angka += masukanFile.TabMASUKANFILE[c] - 48;
-
     idx++;
   }
   *nama = masukanFile;
@@ -678,8 +698,8 @@ void bacaDraf(MASUKAN namaFile)
     MASUKANFILE tempAuthor;
     // displayMASUKANFILE(masukanFile);
     int count;
-    MASUKANFILEToStrAndInt(masukanFile,&tempAuthor,&count);
-    char* nama = MASUKANToStr(masukanFileToMasukan(tempAuthor));
+    MASUKANFILEToStrAndInt(masukanFile, &tempAuthor, &count);
+    char *nama = MASUKANToStr(masukanFileToMasukan(tempAuthor));
     // User author;
     // boolean authorFound;
     // authorFound = false;

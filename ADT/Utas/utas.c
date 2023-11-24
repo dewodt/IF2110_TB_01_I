@@ -1,12 +1,12 @@
 #include "utas.h"
 #include <stdio.h>
 
-boolean isKicauExistinUtas(Kicauan kicau, ListUtas lu)
+boolean isKicauExistinUtas(AddressKicauan kicau, ListUtas lu)
 {
     boolean exist = false;
     for (int i = 0; i < listUtasLength(lu); i++)
     {
-        if (ID(*KicauanUtama(BUFFERListDinUtas(lu)[i])) == ID(kicau))
+        if (ID(InfoKicauan(KicauanUtama(BUFFERListDinUtas(lu)[i]))) == ID(InfoKicauan(kicau)))
         {
             exist = true;
             break;
@@ -37,137 +37,166 @@ boolean isIndexSambunganValid(threads u, int index)
 
 boolean isUtasUser(UTAS u, User userloggedin)
 {
-    return (isSame(strToMASUKAN(AuthorUtas(u), 20), userloggedin.username));
+    return (isSame(strToMASUKAN(AUTHOR(InfoKicauan(KicauanUtama(u)))->username, 20), userloggedin.username));
 }
 
-boolean isKicauanUser(Kicauan k, User userloggedin)
+boolean isKicauanUser(AddressKicauan k, User userloggedin)
 {
-    return (isSame(strToMASUKAN((*AUTHOR(k)).username, 20), userloggedin.username));
+    return (isSame(strToMASUKAN(AUTHOR(InfoKicauan(k))->username, 20), userloggedin.username));
 }
 
-void BUAT_UTAS(ListDinKicauan lk, ListUtas lu, User userloggedIn, int idk) // Indeks Kicauan dimulai dari 1
+void BUAT_UTAS(int idk) // Indeks Kicauan dimulai dari 1
 {
     MASUKAN teks;
     UTAS utas;
-    if (isIdxEffListDinKicauan(lk, idk - 1)) // ID Kicauan Valid, fungsinya ngecek dari 0..
+
+    printf("MASUK BUAT UTAS\n");
+    // Validasi Apakah User Sudah login
+    if (!isUserLoggedIn())
     {
-        if (isKicauExistinUtas((InfoKicauan((BUFFER_LDK(lk))[idk - 1])), lu))
-        {
-            if (isKicauanUser((InfoKicauan((BUFFER_LDK(lk))[idk - 1])), userloggedIn)) // ID Kicauan Milik sendiri
-            {
-
-                CreateUtas(&utas, &(InfoKicauan((BUFFER_LDK(lk))[idk - 1])), listUtasLength(lu) + 1);
-
-                printf("Utas berhasil dibuat!\n\n");
-                printf("Masukkan kicauan:\n");
-                baca(&teks);
-
-                SambungUtasLast(&utas, MASUKANToStr(teks),getCurrTime());
-
-                printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
-                baca(&teks);
-                while (isSame(teks, "YA"))
-                {
-                    printf("Masukkan kicauan:\n");
-                    baca(&teks);
-                    SambungUtasLast(&utas, MASUKANToStr(teks),getCurrTime());
-                    printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
-                    baca(&teks);
-                }
-                printf("Utas selesai!\n");
-            }
-            else
-            {
-                printf("Utas ini bukan milik anda!\n");
-            }
-        }
-        else
-        {
-            printf("Kicauan sudah dibentuk menjadi utas\n");
-        }
+        printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+        return;
     }
-    else
+
+    // Validasi Apakah indeks kicauan terdefinisi
+    if (!isIdxEffListDinKicauan(listKicauan, idk - 1))
     {
-        printf("Kicauan tidak ditemuka\n");
+        printf("Kicauan tidak ditemukan\n");
+        return;
     }
+
+    // Validasi Apakah kicauan sudah dibuat menjadi utas
+    if (!isKicauExistinUtas(BUFFER_LDK(listKicauan)[idk - 1], listUtas))
+    {
+        printf("Kicauan sudah dibuat menjadi utas!");
+        return;
+    }
+
+    // Validasi Apakah kicauan milik user yang login
+    if (!isKicauanUser(BUFFER_LDK(listKicauan)[idk - 1], *currentUser))
+    {
+        printf("Utas ini bukan milik anda!\n");
+        return;
+    }
+
+    // Semua prekondisi telah memenuhi
+    CreateUtas(&utas, BUFFER_LDK(listKicauan)[idk - 1], listUtasLength(listUtas) + 1);
+
+    printf("Utas berhasil dibuat!\n\n");
+    printf("Masukkan kicauan:\n");
+    baca(&teks);
+
+    SambungUtasLast(&utas, MASUKANToStr(teks), getCurrTime());
+
+    printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
+    baca(&teks);
+    while (isSame(teks, "YA"))
+    {
+        printf("Masukkan kicauan:\n");
+        baca(&teks);
+        SambungUtasLast(&utas, MASUKANToStr(teks), getCurrTime());
+        printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK)\n");
+        baca(&teks);
+    }
+    printf("Utas selesai!\n");
 }
 
-void SAMBUNG_UTAS(int idU, int index, ListUtas *lu, User userloggedin)
+void SAMBUNG_UTAS(int idU, int index)
 {
     MASUKAN teks;
-    int id = isIdUtasValid(*lu, idU);
+    int id = isIdUtasValid(listUtas, idU);
 
-    if (id != -1) // ID Utas Valid
+    // Validasi Apakah User Sudah login
+    if (!isUserLoggedIn())
     {
-        if (isUtasUser((BUFFERListDinUtas(*lu))[idU], userloggedin)) // ID Utas milik user
-        {
-            if (isIndexSambunganValid(KicauanSambungan(BUFFERListDinUtas(*lu)[id]), index)) // Indeks sambungan valid
-            {
-                printf("Masukkan kicauan:\n");
-                baca(&teks);
-                SambungUtasAt(&(BUFFERListDinUtas(*lu))[id], MASUKANToStr(teks), index);
-            }
-            else
-            {
-                printf("Index terlalu tinggi!\n");
-            }
-        }
-        else
-        {
-            printf("Anda tidak bisa menyambung utas ini!\n");
-        }
+        printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+        return;
     }
-    else
+
+    //  Utas tidak terdefinisi
+    if (id == -1)
     {
         printf("Utas tidak ditemukan!\n");
+        return;
     }
+
+    // Utas bukan milik user
+    if (!isUtasUser((BUFFERListDinUtas(listUtas))[idU], *currentUser))
+    {
+        printf("Anda tidak bisa menyambung utas ini!\n");
+        return;
+    }
+
+    if (!isIndexSambunganValid(KicauanSambungan(BUFFERListDinUtas(listUtas)[id]), index))
+    {
+        printf("Index terlalu tinggi!\n");
+        return;
+    }
+
+    printf("Masukkan kicauan:\n");
+    baca(&teks);
+    SambungUtasAt(&(BUFFERListDinUtas(listUtas))[id], MASUKANToStr(teks), index);
 }
 
-void HAPUS_UTAS(ListUtas *li, int idU, int index, User userloggedin)
+void HAPUS_UTAS(int idU, int index)
 {
-    int id = isIdUtasValid(*li, idU);
+    printf("MASUK HAPUS UTAS\n");
 
-    if (id != -1) // ID Utas Valid
+    // Validasi Apakah User Sudah login
+    if (!isUserLoggedIn())
     {
-        if (isUtasUser(BUFFERListDinUtas(*li)[id], userloggedin)) // Utas dengan ID tersebut milik user terlogin
-        {
-            if (isIndexSambunganValid(KicauanSambungan(BUFFERListDinUtas(*li)[id]), index)) // Index Kicauan Sambungan Valid
-            {
-                deleteSambungan(&BUFFERListDinUtas(*li)[id], index);
-                printf("Kicauan sambungan berhasil dihapus!\n");
-            }
-            else
-            {
-                printf("Kicauan sambungan dengan index %d tidak ditemukan pada utas!\n", index);
-            }
-        }
-        else
-        {
-            printf("Anda tidak bisa menghapus kicauan dalam utas ini!\n");
-        }
+        printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+        return;
     }
-    else
+
+    int id = isIdUtasValid(listUtas, idU);
+
+    // ID Utas tidak valid
+    if (id == -1)
     {
         printf("Utas tidak ditemukan!\n");
+        return;
     }
+
+    // Utas bukan milik user
+    if (!isUtasUser(BUFFERListDinUtas(listUtas)[id], *currentUser))
+    {
+        printf("Anda tidak bisa menghapus kicauan dalam utas ini!\n");
+        return;
+    }
+
+    // Index kicauan sambungan tidak ada
+    if (!(isIndexSambunganValid(KicauanSambungan(BUFFERListDinUtas(listUtas)[id]), index)))
+    {
+        printf("Kicauan sambungan dengan index %d tidak ditemukan pada utas!\n", index);
+        return;
+    }
+
+    deleteSambungan(&BUFFERListDinUtas(listUtas)[id], index);
+    printf("Kicauan sambungan berhasil dihapus!\n");
 }
 
-void CETAK_UTAS(int idU, ListUtas li, User user1, User user2)
+void CETAK_UTAS(int idU)
 {
-
-    if (isIdUtasValid(li, idU))
+    // Validasi Apakah User Sudah login
+    if (!isUserLoggedIn())
     {
-        if (areFriendsEachOthers(user1, user2))
-        {
-            displayUtas((BUFFERListDinUtas(li))[idU - 1]);
-        }
-        else
-        {
-            printf("Akun yang membuat utas ini adalah akun privat! Ikuti dahulu akun ini untuk melihat utasnya!\n");
-        }
+        printf("Anda belum masuk! Masuk terlebih dahulu untuk menikmati layanan BurBir.\n");
+        return;
     }
-    else
+
+    // ID Utas tidak ditemukan
+    if (!isIdUtasValid(listUtas, idU))
     {
         printf("Utas tidak ditemukan!\n");
+        return;
     }
+
+    // ID Utas milik akun private dan belum berteman dengan user login
+    if (isUserPrivate(*AUTHOR(InfoKicauan(KicauanUtama(BUFFERListDinUtas(listUtas)[idU - 1])))) && !(areFriendsEachOthers(*currentUser, *AUTHOR(InfoKicauan(KicauanUtama(BUFFERListDinUtas(listUtas)[idU - 1]))))))
+    {
+        printf("Akun yang membuat utas ini adalah akun privat! Ikuti dahulu akun ini untuk melihat utasnya!\n");
+        return;
+    }
+    displayUtas((BUFFERListDinUtas(listUtas))[idU - 1]);
 }

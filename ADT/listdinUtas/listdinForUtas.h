@@ -9,7 +9,7 @@
 // List dinamis untuk menyimpan sekumpulan utas
 typedef struct
 {
-   UTAS *buffer;            // memori tempat penyimpan UTAS
+   AddressNodeUtas *buffer; // memori tempat penyimpan Node UTAS
    int NEFF;                // >=0, banyaknya elemen efektif
    int CAPACITYListDinUtas; // ukuran buffer
 } ListUtas;
@@ -36,7 +36,7 @@ int listUtasLength(ListUtas u);
 void expandListDinUtas(ListUtas *u, int num);
 
 // Memasukkan Utas baru kedalam list utas
-void insertUtas(ListUtas *lu, UTAS U);
+void insertUtas(UTAS U, ListUtas *lu);
 
 // Menghapus Kicauan Sambungan pada utas dengan index tertentu
 void deleteSambungan(UTAS *u, int idx);

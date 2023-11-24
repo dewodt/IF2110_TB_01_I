@@ -66,12 +66,11 @@ void Simpan()
   printf("\n");
 
   // Simpan semua config
-  
   SimpanPengguna(folderDir);
   SimpanKicauan(folderDir);
   SimpanBalasan(folderDir);
   saveDraf(folderDir);
-  // SimpanUtas();
+  SimpanUtas(folderDir);
 
   // Cetak pesan berhasil
   printf("Penyimpanan berhasil dilakukan.\n");
@@ -115,6 +114,7 @@ void SimpanPengguna(char *folderDir)
     // Hp
     char *noHp;
     noHp = MASUKANToStr(pengguna.phone_num);
+
     fprintf(fptr, "\n%s", noHp);
 
     // Weton
@@ -159,6 +159,7 @@ void SimpanPengguna(char *folderDir)
         {
           // If not last column, print space
           fprintf(fptr, "%c ", ELMT_MTX(PROFILE(listUser, i), a, b));
+
         }
       }
     }
@@ -432,7 +433,7 @@ void saveDraf(char *folderDir)
   FILE *fptr;
 
   fptr = fopen(fileDir, "w");
-  
+
   // Dapatkan banyak user yang memiliki draf
   Stack s;
   int i;
@@ -451,7 +452,6 @@ void saveDraf(char *folderDir)
   int j;
   for (j = 0; j < listLength(listUser); j++)
   {
-
     s = DRAF(listUser,j);
     if(!IsEmptyStack(s)){
       // hitung ukuran stack
@@ -503,37 +503,45 @@ void SimpanUtas(char *folderDir)
   char *fileDir = concatStr(folderDir, "/utas.config");
 
   FILE *fptr;
-
   fptr = fopen(fileDir, "w");
 
-  int countUtas;
-  countUtas = listUtasLength(listUtas);
+  // Hitung banyak utas
+  int countUtas = listUtasLength(listUtas);
+
   fprintf(fptr, "%d", countUtas);
+
   int i;
   for (i = 0; i < countUtas; i++)
   {
-    UTAS utasUtama;
-    utasUtama = listUtas.buffer[i];
+    // Get utas
+    UTAS utasUtama = listUtas.buffer[i];
 
-    fprintf(fptr, "\n%d", ID(*(utasUtama.KicauanUtama)));
+    // ID Kicauan Utama
+    fprintf(fptr, "\n%d", ID(InfoKicauan(KicauanUtama(utasUtama))));
 
-    AddressUtas p;
-    p = KicauanSambungan(utasUtama);
-    int x;
-    x = lengthThreads(p);
+    // Cetak banyaknya sambungan
+    AddressUtas p = KicauanSambungan(utasUtama);
+    int x = lengthThreads(p);
     fprintf(fptr, "\n%d", x);
 
+    // Cetak sambungan
     while (p != NULL)
     {
       char *text = p->textThread;
       fprintf(fptr, "\n%s", text);
 
-      char *username = (AUTHOR(*(utasUtama.KicauanUtama)))->username;
+      char *username = AUTHOR(InfoKicauan(KicauanUtama(utasUtama)))->username;
       fprintf(fptr, "\n%s", username);
 
       DATETIME DT = p->timeThread;
       fprintf(fptr, "\n%d/%d/%d %02d:%02d:%02d", Day(DT), Month(DT), Year(DT), Hour(Time(DT)), Minute(Time(DT)), Second(Time(DT)));
+
       p = p->nextThread;
     }
   }
+  // Final newline
+  fprintf(fptr, "\n");
+
+  // Close file
+  fclose(fptr);
 }

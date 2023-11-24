@@ -97,17 +97,10 @@ int main()
 
     bacaUtas(command);
 
-    // bacaDraf(listKicauan, kata, listUser);
-    // printf(">>");
-    printf("###################Awal#######################\n ");
-    displayUtas(BUFFERListDinUtas(listUtas)[0]);
-    displayUtas(BUFFERListDinUtas(listUtas)[1]);
-
     // printf("MASUK WHILE");
     while (!isSame(command, "TUTUP_PROGRAM"))
     {
 
-        printf("LOOPING\n");
         if (isSame(command, "DAFTAR;"))
         {
             printf("ini DAFTAR\n");
@@ -286,19 +279,19 @@ int main()
         // }
         else if (isSame(command, "UTAS"))
         {
-            printf("ini UTAS");
-            // BUAT_UTAS(listKicauan, listUtas, *currentUser, masukanToInt(arg1));
-            // displayUtas(BUFFERListDinUtas(listUtas)[0]);
-            // displayUtas(BUFFERListDinUtas(listUtas)[1]);
+            printf("ini UTAS\n");
+            BUAT_UTAS(masukanToInt(arg1));
         }
 
         else if (isSame(command, "SAMBUNG_UTAS")) // bacaUtas(listKicauan, kata, listUser, &listUtas);
         {
-            SAMBUNG_UTAS(masukanToInt(arg1), masukanToInt(arg2), &listUtas, *currentUser);
+            printf("ini Sambung Utas\n");
+            SAMBUNG_UTAS(masukanToInt(arg1), masukanToInt(arg2));
         }
         else if (isSame(command, "HAPUS_UTAS"))
         {
-            HAPUS_UTAS(&listUtas, masukanToInt(arg1), masukanToInt(arg2), *currentUser);
+            printf("ini Hapus UTAS");
+            HAPUS_UTAS(masukanToInt(arg1), masukanToInt(arg2));
         }
         // else if (isSame(kata, "\nSIMPAN;"))
         //
@@ -327,7 +320,7 @@ int main()
         // {
         //     printf("lainnya\n");
         // }
-        printf(">>");
+        printf(">> ");
         perintah(&command, &arg1, &arg2);
     }
     printf("###################Akhir#######################\n ");

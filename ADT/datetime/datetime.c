@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "datetime.h"
+#include "../time/time.h"
 
 int GetMaxDay(int M, int Y)
 /* Mengirimkan jumlah hari maksimum pada bulan M dan tahun Y */

@@ -10,10 +10,11 @@
 #include "../tree/tree.h"
 #include "../matrixteman/matrixteman.h"
 #include "../teman/teman.h"
+#include "../pengguna/pengguna.h"
 
 #include <stdio.h>
 
-boolean isKicauExistinUtas(Kicauan kicau, ListUtas lu);
+boolean iisKicauExistinUtas(AddressKicauan kicau, ListUtas lu);
 
 int isIdUtasValid(ListUtas li, int idx);
 
@@ -21,14 +22,14 @@ boolean isIndexSambunganValid(threads u, int index);
 
 boolean isUtasUser(UTAS u, User userloggedin);
 
-boolean isKicauanUser(Kicauan k, User userloggedin);
+boolean isKicauanUser(AddressKicauan k, User userloggedin);
 
-void BUAT_UTAS(ListDinKicauan lk, ListUtas lu, User userloggedIn, int idk);
+void BUAT_UTAS(int idk);
 
-void SAMBUNG_UTAS(int idU, int index, ListUtas *lu, User userloggedin);
+void SAMBUNG_UTAS(int idU, int index);
 
-void HAPUS_UTAS(ListUtas *li, int idU, int index, User userloggedin);
+void HAPUS_UTAS(int idU, int index);
 
-void CETAK_UTAS(int idU, ListUtas li, User user1, User user2);
+void CETAK_UTAS(int idU);
 
 #endif

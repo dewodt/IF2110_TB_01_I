@@ -291,7 +291,7 @@ int masukanToInt(MASUKAN masukan)
   int i;
   for (i = 0; i < masukan.Length; i++)
   {
-    if (i == 0 && i == 45)
+    if (i == 0 && masukan.TabMASUKAN[i] == 45)
     {
       isNeg = true;
     }

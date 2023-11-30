@@ -122,31 +122,11 @@ int main()
         }
         else if (isSame(command, "KICAU"))
         {
-            BuatKicauan(&listKicauan, currentUser);
+            BuatKicauan();
         }
         else if (isSame(command, "KICAUAN"))
         {
-            TampilkanKicauan(listKicauan, currentUser);
-        }
-        else if (isSame(command, "SUKA_KICAUAN"))
-        {
-            int IDKicau;
-            IDKicau = masukanToInt(arg1);
-            SukaKicauan(IDKicau);
-        }
-        else if (isSame(command, "UBAH_KICAUAN"))
-        {
-            int IDKicau;
-            IDKicau = masukanToInt(arg1);
-            UbahKicauan(IDKicau);
-        }
-        else if (isSame(command, "KICAU;"))
-        {
-            BuatKicauan(&listKicauan, currentUser);
-        }
-        else if (isSame(command, "KICAUAN;"))
-        {
-            TampilkanKicauan(listKicauan, currentUser);
+            TampilkanKicauan();
         }
         else if (isSame(command, "SUKA_KICAUAN"))
         {
@@ -163,22 +143,26 @@ int main()
         else if (isSame(command, "BALAS"))
         {
             splitMasukanJadi2(arg1,&arg2,&arg3);
+            displayMASUKAN(arg2);
+            displayMASUKAN(arg3);
+            // printf("%d %d", arg2, arg3);
+            printf("%d %d", masukanToInt(arg2), masukanToInt(arg3));
             BuatBalasan(masukanToInt(arg2), masukanToInt(arg3));
         }
-        else if (isSame(command, "BALASAN;"))
+        else if (isSame(command, "BALASAN"))
         {
             TampilkanBalasan(masukanToInt(arg1));
         }
-        else if (isSame(command, "HAPUS_BALASAN;"))
+        else if (isSame(command, "HAPUS_BALASAN"))
         {
             splitMasukanJadi2(arg1,&arg2,&arg3);
             HapusBalasan(masukanToInt(arg2), masukanToInt(arg3));
         }
-        else if (isSame(command, "BUAT_DRAF;"))
+        else if (isSame(command, "BUAT_DRAF"))
         {
             BuatDraf();
         }
-        else if (isSame(command, "LIHAT_DRAF;"))
+        else if (isSame(command, "LIHAT_DRAF"))
         {
             LihatDraf();
         }

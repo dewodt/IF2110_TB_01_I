@@ -267,8 +267,8 @@ void UbahDraf(Stack *stackDraf)
   }
   else if (isSame(pilihan, "HAPUS"))
   {
-    // Hapus
-    printf("Draf telah berhasil dihapus!\n\n");
+    // Hapus draf paling atas
+    HapusDraf(stackDraf);
   }
   else if (isSame(pilihan, "TERBIT"))
   {

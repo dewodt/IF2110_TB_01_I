@@ -278,6 +278,7 @@ void TampilkanBalasan(int idKicau)
     printf("\n");
     printf("Belum terdapat balasan apapun pada kicauan tersebut. Yuk balas kicauan tersebut!\n");
     printf("\n");
+    return;
   }
 
   // Kasus ada balasan (setidaknya satu) dan kicauan tidak privat

@@ -55,7 +55,7 @@ boolean areFriendsByName(char *Username1, char *Username2)
   IdxType IdxPengguna1 = searchIndexPenggunaByName(Username1);
   IdxType IdxPengguna2 = searchIndexPenggunaByName(Username2);
   IdxType i = IdxPengguna1, j = IdxPengguna2;
-  return (ELMT_MTXTEMAN(RelasiPertemanan, i, j) == 1 && ELMT_MTXTEMAN(RelasiPertemanan, j, i) == 1 && IdxPengguna1 != IdxPengguna2);
+  return (ELMT_MTXTEMAN(RelasiPertemanan, i, j) == 1 && ELMT_MTXTEMAN(RelasiPertemanan, j, i) == 1 );
 }
 
 int getCountFriend(User user)

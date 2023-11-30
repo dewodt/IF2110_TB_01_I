@@ -48,13 +48,14 @@ void isiReqPertemanan(int jumlahPengguna, int ID_Pengguna){
             int j;
             for ( j = 0; j < jumlahPengguna; j++)
             {
-                if((ELMT_MTXTEMAN(RelasiPertemanan, ID_Pengguna, i) == 1) && (ELMT_MTXTEMAN(RelasiPertemanan, i, ID_Pengguna) == 1)){
-                    countSameFriend ++;
+                if((ELMT_MTXTEMAN(RelasiPertemanan, ID_Pengguna, j) == 1) && (ELMT_MTXTEMAN(RelasiPertemanan, j, ID_Pengguna) == 1)){
+                    countSameFriend += 1;
                 }
             }
             infotypeQ reqFriend;
             reqFriend.info = i;
             reqFriend.prio = countSameFriend;
+            printf("%d\n", reqFriend.prio);
             Enqueue(&prioQ, reqFriend);
         }
     }

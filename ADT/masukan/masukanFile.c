@@ -222,7 +222,7 @@ void bacaConfig(){
     bacaPengguna( masukan);
     bacaKicauan(masukan);
     bacaBalasan(masukan);
-    // bacaUtas(listKicauan,masukan,listPengguna,&listUtas);
+    bacaUtas(masukan);
     bacaDraf(masukan);
     printf("Anda akan melakukan pemuatan dari Folder2.\n");
     printf("Mohon tunggu...\n");
@@ -244,7 +244,7 @@ void bacaInisialisasi(){
     bacaPengguna( masukan);
     bacaKicauan(masukan);
     bacaBalasan(masukan);
-    // bacaUtas(listKicauan,masukan,listPengguna,&listUtas);
+    bacaUtas(masukan);
     bacaDraf(masukan);
     printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n");
 }
@@ -432,7 +432,7 @@ void bacaKicauan(MASUKAN namaFile)
     int idx = 0;
     searchID_Pengguna(tempMasukan, &idx);
     User *author;
-    author = &listUser.contents[0];
+    author = &listUser.contents[idx];
     // datetime
     bacaLanjutFile(&masukanFile);
     // displayMASUKANFILE(masukanFile);
